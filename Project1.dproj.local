@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
-  <Transactions>
-    <Transaction>2022.05.10 11:11:11.933,=C:\Users\danchenko\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2022.05.10 11:12:15.114,C:\Users\danchenko\Documents\ОАИП\course-project\Unit1.pas=C:\Users\danchenko\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2022.05.10 11:12:15.114,C:\Users\danchenko\Documents\ОАИП\course-project\Unit1.dfm=C:\Users\danchenko\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
-    <Transaction>2022.05.10 11:12:16.683,C:\Users\danchenko\Documents\ОАИП\course-project\Project1.dproj=C:\Users\danchenko\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
-    <Transaction>2022.05.10 11:31:34.863,=C:\Users\danchenko\Documents\ОАИП\course-project\Unit2.pas</Transaction>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.114,C:\Users\danchenko\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\danchenko\Documents\ОАИП\course-project\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.933,=C:\Users\danchenko\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.114,C:\Users\danchenko\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\danchenko\Documents\ОАИП\course-project\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.683,C:\Users\danchenko\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\danchenko\Documents\ОАИП\course-project\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.863,=C:\Users\danchenko\Documents\ОАИП\course-project\Unit2.pas</Transaction>
+    <Transaction>2022.05.10 18:00:44.918,=C:\Users\danchenko\Documents\ОАИП\course-project\Unit3.pas</Transaction>
   </Transactions>
 </BorlandProject>

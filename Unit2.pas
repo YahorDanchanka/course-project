@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls;
 
 type
   TForm2 = class(TForm)
@@ -15,9 +15,11 @@ type
     SaveAsMenuItem: TMenuItem;
     StringGrid1: TStringGrid;
     OpenDialog1: TOpenDialog;
+    AddGroupButton: TButton;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
+    procedure AddGroupButtonClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -36,7 +38,7 @@ var
 
 implementation
 
-uses Unit1;
+uses Unit1, Unit3;
 
 {$R *.dfm}
 
@@ -51,6 +53,11 @@ begin
   group.time := Form2.StringGrid1.Cells[0, rowIndex];
   group.studentsCount := Form2.StringGrid1.Cells[0, rowIndex];
   result := group;
+end;
+
+procedure TForm2.AddGroupButtonClick(Sender: TObject);
+begin
+  Form3.ShowModal;
 end;
 
 procedure TForm2.FormActivate(Sender: TObject);
