@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, Unit2;
 
 type
   TForm3 = class(TForm)
@@ -29,13 +29,12 @@ type
   public
     { Public declarations }
   end;
+  procedure AddGroupToStringGrid(group: groupRecord);
 
 var
   Form3: TForm3;
 
 implementation
-
-uses Unit2;
 
 {$R *.dfm}
 

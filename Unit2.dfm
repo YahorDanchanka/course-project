@@ -48,8 +48,9 @@ object Form2: TForm2
     Top = 392
     object N1: TMenuItem
       Caption = #1060#1072#1081#1083
-      object N2: TMenuItem
+      object OpenMenuItem: TMenuItem
         Caption = #1054#1090#1082#1088#1099#1090#1100
+        OnClick = OpenMenuItemClick
       end
       object N3: TMenuItem
         Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100

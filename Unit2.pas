@@ -10,7 +10,7 @@ type
   TForm2 = class(TForm)
     MainMenu1: TMainMenu;
     N1: TMenuItem;
-    N2: TMenuItem;
+    OpenMenuItem: TMenuItem;
     N3: TMenuItem;
     SaveAsMenuItem: TMenuItem;
     StringGrid1: TStringGrid;
@@ -20,6 +20,7 @@ type
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
     procedure AddGroupButtonClick(Sender: TObject);
+    procedure OpenMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -46,12 +47,12 @@ function createGroupFromStringGrid(rowIndex: integer): groupRecord;
 var group: groupRecord;
 begin
   group.number := Form2.StringGrid1.Cells[0, rowIndex];
-  group.level := Form2.StringGrid1.Cells[0, rowIndex];
-  group.fullName := Form2.StringGrid1.Cells[0, rowIndex];
-  group.price := Form2.StringGrid1.Cells[0, rowIndex];
-  group.day := Form2.StringGrid1.Cells[0, rowIndex];
-  group.time := Form2.StringGrid1.Cells[0, rowIndex];
-  group.studentsCount := Form2.StringGrid1.Cells[0, rowIndex];
+  group.level := Form2.StringGrid1.Cells[1, rowIndex];
+  group.fullName := Form2.StringGrid1.Cells[2, rowIndex];
+  group.price := Form2.StringGrid1.Cells[3, rowIndex];
+  group.day := Form2.StringGrid1.Cells[4, rowIndex];
+  group.time := Form2.StringGrid1.Cells[5, rowIndex];
+  group.studentsCount := Form2.StringGrid1.Cells[6, rowIndex];
   result := group;
 end;
 
@@ -72,6 +73,25 @@ end;
 procedure TForm2.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Form1.Close;
+end;
+
+procedure TForm2.OpenMenuItemClick(Sender: TObject);
+var group: groupRecord;
+begin
+  if OpenDialog1.Execute <> true then exit;
+
+  StringGrid1.RowCount := 1;
+
+  AssignFile(storageFile, OpenDialog1.FileName);
+  Reset(storageFile);
+
+  for i := 1 to Filesize(storageFile) do
+  begin
+    read(storageFile, group);
+    AddGroupToStringGrid(group);
+  end;
+
+  CloseFile(storageFile);
 end;
 
 procedure TForm2.SaveAsMenuItemClick(Sender: TObject);
