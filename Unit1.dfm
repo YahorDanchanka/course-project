@@ -17,10 +17,10 @@ object Form1: TForm1
   PixelsPerInch = 96
   TextHeight = 15
   object HeaderLabel: TLabel
-    Left = 128
-    Top = 82
+    Left = 136
+    Top = 80
     Width = 470
-    Height = 74
+    Height = 73
     Alignment = taCenter
     Caption = #1048#1085#1092#1086#1088#1084#1072#1094#1080#1086#1085#1085#1086'-'#1087#1086#1080#1089#1082#1086#1074#1072#1103' '#1089#1080#1089#1090#1077#1084#1072' "'#1050#1091#1088#1089#1099' '#1072#1085#1075#1083#1080#1081#1089#1082#1086#1075#1086' '#1103#1079#1099#1082#1072'"'
     Font.Charset = DEFAULT_CHARSET
@@ -35,7 +35,7 @@ object Form1: TForm1
     Left = 528
     Top = 232
     Width = 173
-    Height = 30
+    Height = 31
     Caption = #1045#1075#1086#1088' '#1047#1072#1082#1088#1091#1078#1085#1099#1081
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText

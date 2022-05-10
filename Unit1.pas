@@ -37,7 +37,6 @@ end;
 procedure TForm1.FormActivate(Sender: TObject);
 begin
   HeaderLabel.Left := round((Form1.ClientWidth - HeaderLabel.Width) / 2);
-  HeaderLabel.Top := round((Form1.ClientHeight - HeaderLabel.Height) / 2) - 15;
 end;
 
 end.
