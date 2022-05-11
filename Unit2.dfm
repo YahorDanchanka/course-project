@@ -52,8 +52,9 @@ object Form2: TForm2
         Caption = #1054#1090#1082#1088#1099#1090#1100
         OnClick = OpenMenuItemClick
       end
-      object N3: TMenuItem
+      object SaveMenuItem: TMenuItem
         Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
+        OnClick = SaveMenuItemClick
       end
       object SaveAsMenuItem: TMenuItem
         Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1082#1072#1082

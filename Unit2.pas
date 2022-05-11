@@ -11,7 +11,7 @@ type
     MainMenu1: TMainMenu;
     N1: TMenuItem;
     OpenMenuItem: TMenuItem;
-    N3: TMenuItem;
+    SaveMenuItem: TMenuItem;
     SaveAsMenuItem: TMenuItem;
     StringGrid1: TStringGrid;
     OpenDialog1: TOpenDialog;
@@ -21,6 +21,7 @@ type
     procedure SaveAsMenuItemClick(Sender: TObject);
     procedure AddGroupButtonClick(Sender: TObject);
     procedure OpenMenuItemClick(Sender: TObject);
+    procedure SaveMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -35,6 +36,7 @@ const fields: array of String = ['Номер группы', 'Уровень', 'ФИО преподавателя',
 var
   Form2: TForm2;
   storageFile: file of groupRecord;
+  storageFilePath: string;
   i, j: integer;
 
 implementation
@@ -54,6 +56,12 @@ begin
   group.time := Form2.StringGrid1.Cells[5, rowIndex];
   group.studentsCount := Form2.StringGrid1.Cells[6, rowIndex];
   result := group;
+end;
+
+procedure SetStorageFilePath(path: string);
+begin
+  storageFilePath := path;
+  Form2.Caption := 'Основная форма - ' + storageFilePath;
 end;
 
 procedure TForm2.AddGroupButtonClick(Sender: TObject);
@@ -91,6 +99,7 @@ begin
     AddGroupToStringGrid(group);
   end;
 
+  SetStorageFilePath(OpenDialog1.FileName);
   CloseFile(storageFile);
 end;
 
@@ -99,6 +108,28 @@ begin
   if OpenDialog1.Execute <> true then exit;
 
   AssignFile(storageFile, OpenDialog1.FileName);
+  Rewrite(storageFile);
+
+  for i := 1 to StringGrid1.RowCount - 1 do
+  begin
+    var group: groupRecord := createGroupFromStringGrid(i);
+    write(storageFile, group);
+  end;
+
+  SetStorageFilePath(OpenDialog1.FileName);
+  CloseFile(storageFile);
+end;
+
+procedure TForm2.SaveMenuItemClick(Sender: TObject);
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    SaveAsMenuItemClick(SaveAsMenuItem);
+    ShowMessage('Save as');
+    exit;
+  end;
+
+  AssignFile(storageFile, storageFilePath);
   Rewrite(storageFile);
 
   for i := 1 to StringGrid1.RowCount - 1 do

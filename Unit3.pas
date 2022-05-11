@@ -65,6 +65,7 @@ begin
   group.time := TimeToStr(DateTimePicker2.Time);
   group.studentsCount := CountEdit.Text;
   AddGroupToStringGrid(group);
+  Form3.Close;
 end;
 
 end.
