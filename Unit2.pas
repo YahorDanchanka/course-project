@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls, System.Generics.Collections;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls, DateUtils;
 
 type
   TForm2 = class(TForm)
@@ -26,6 +26,8 @@ type
     N9: TMenuItem;
     NumberSortAsc: TMenuItem;
     NumberSortDesc: TMenuItem;
+    DateSortAsc: TMenuItem;
+    DateSortDesc: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -34,6 +36,8 @@ type
     procedure SaveMenuItemClick(Sender: TObject);
     procedure NumberSortAscClick(Sender: TObject);
     procedure NumberSortDescClick(Sender: TObject);
+    procedure DateSortAscClick(Sender: TObject);
+    procedure DateSortDescClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -96,6 +100,53 @@ end;
 procedure TForm2.AddGroupButtonClick(Sender: TObject);
 begin
   Form3.ShowModal;
+end;
+
+procedure TForm2.DateSortAscClick(Sender: TObject);
+var
+  groups: array [1..100] of groupRecord;
+  group: groupRecord;
+  i_min, min, groupsLength: integer;
+begin
+  if StringGrid1.RowCount <= 1 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  groupsLength := StringGrid1.RowCount - 1;
+
+  for i := 1 to groupsLength do
+    groups[i] := createGroupFromStringGrid(i);
+
+  for var i := 1 to groupsLength - 1 do
+  begin
+    min := DateTimeToUnix(StrToDate(groups[i].day)); i_min := i;
+
+    for var j := i + 1 to groupsLength do
+      if DateTimeToUnix(StrToDate(groups[j].day)) < min then
+      begin
+        min := DateTimeToUnix(StrToDate(groups[j].day));
+        i_min := j;
+      end;
+
+    group := groups[i_min];
+    groups[i_min] := groups[i];
+    groups[i] := group;
+  end;
+
+  StringGrid1.RowCount := 1;
+
+  for i := 1 to groupsLength do
+  begin
+    AddGroupToStringGrid(groups[i]);
+  end;
+end;
+
+procedure TForm2.DateSortDescClick(Sender: TObject);
+begin
+  DateSortAscClick(DateSortAsc);
+  ReverseStringGrid();
 end;
 
 procedure TForm2.FormActivate(Sender: TObject);

@@ -85,6 +85,14 @@ object Form2: TForm2
       end
       object N7: TMenuItem
         Caption = #1044#1077#1085#1100' '#1087#1088#1086#1074#1077#1076#1077#1085#1080#1103
+        object DateSortAsc: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = DateSortAscClick
+        end
+        object DateSortDesc: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = DateSortDescClick
+        end
       end
       object N8: TMenuItem
         Caption = #1042#1088#1077#1084#1103' '#1087#1088#1086#1074#1077#1076#1077#1085#1080#1103
