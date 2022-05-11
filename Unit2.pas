@@ -125,7 +125,6 @@ begin
   if length(storageFilePath) = 0 then
   begin
     SaveAsMenuItemClick(SaveAsMenuItem);
-    ShowMessage('Save as');
     exit;
   end;
 
