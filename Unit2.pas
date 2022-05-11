@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls, System.Generics.Collections;
 
 type
   TForm2 = class(TForm)
@@ -16,12 +16,24 @@ type
     StringGrid1: TStringGrid;
     OpenDialog1: TOpenDialog;
     AddGroupButton: TButton;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    N5: TMenuItem;
+    N6: TMenuItem;
+    N7: TMenuItem;
+    N8: TMenuItem;
+    N9: TMenuItem;
+    NumberSortAsc: TMenuItem;
+    NumberSortDesc: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
     procedure AddGroupButtonClick(Sender: TObject);
     procedure OpenMenuItemClick(Sender: TObject);
     procedure SaveMenuItemClick(Sender: TObject);
+    procedure NumberSortAscClick(Sender: TObject);
+    procedure NumberSortDescClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -64,6 +76,23 @@ begin
   Form2.Caption := 'Основная форма - ' + storageFilePath;
 end;
 
+procedure ReverseStringGrid();
+var
+  i, j, k, cnt: integer;
+  s: string;
+begin
+  cnt := Form2.StringGrid1.RowCount;
+  k := Form2.StringGrid1.RowCount div 2;
+
+  for j := 0 to 4 do
+    for i := 1 to k do
+    begin
+      s := Form2.StringGrid1.Cells[j,i];
+      Form2.StringGrid1.Cells[j,i] := Form2.StringGrid1.Cells[j,cnt-i];
+      Form2.StringGrid1.Cells[j,cnt-i] := s;
+    end;
+end;
+
 procedure TForm2.AddGroupButtonClick(Sender: TObject);
 begin
   Form3.ShowModal;
@@ -81,6 +110,53 @@ end;
 procedure TForm2.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Form1.Close;
+end;
+
+procedure TForm2.NumberSortAscClick(Sender: TObject);
+var
+  groups: array [1..100] of groupRecord;
+  group: groupRecord;
+  i_min, min, groupsLength: integer;
+begin
+  if StringGrid1.RowCount <= 1 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  groupsLength := StringGrid1.RowCount - 1;
+
+  for i := 1 to groupsLength do
+    groups[i] := createGroupFromStringGrid(i);
+
+  for var i := 1 to groupsLength - 1 do
+  begin
+    min := StrToInt(groups[i].number); i_min := i;
+
+    for var j := i + 1 to groupsLength do
+      if StrToInt(groups[j].number) < min then
+      begin
+        min := StrToInt(groups[j].number);
+        i_min := j;
+      end;
+
+    group := groups[i_min];
+    groups[i_min] := groups[i];
+    groups[i] := group;
+  end;
+
+  StringGrid1.RowCount := 1;
+
+  for i := 1 to groupsLength do
+  begin
+    AddGroupToStringGrid(groups[i]);
+  end;
+end;
+
+procedure TForm2.NumberSortDescClick(Sender: TObject);
+begin
+  NumberSortAscClick(NumberSortAsc);
+  ReverseStringGrid();
 end;
 
 procedure TForm2.OpenMenuItemClick(Sender: TObject);

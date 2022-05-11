@@ -61,6 +61,38 @@ object Form2: TForm2
         OnClick = SaveAsMenuItemClick
       end
     end
+    object N2: TMenuItem
+      Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1082#1072
+      object N3: TMenuItem
+        Caption = #1053#1086#1084#1077#1088' '#1075#1088#1091#1087#1087#1099
+        object NumberSortAsc: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = NumberSortAscClick
+        end
+        object NumberSortDesc: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = NumberSortDescClick
+        end
+      end
+      object N4: TMenuItem
+        Caption = #1059#1088#1086#1074#1077#1085#1100
+      end
+      object N5: TMenuItem
+        Caption = #1060#1048#1054' '#1087#1088#1077#1087#1086#1076#1072#1074#1072#1090#1077#1083#1103
+      end
+      object N6: TMenuItem
+        Caption = #1057#1090#1086#1080#1084#1086#1089#1090#1100' '#1079#1072' '#1079#1072#1085#1103#1090#1080#1077
+      end
+      object N7: TMenuItem
+        Caption = #1044#1077#1085#1100' '#1087#1088#1086#1074#1077#1076#1077#1085#1080#1103
+      end
+      object N8: TMenuItem
+        Caption = #1042#1088#1077#1084#1103' '#1087#1088#1086#1074#1077#1076#1077#1085#1080#1103
+      end
+      object N9: TMenuItem
+        Caption = #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086' '#1091#1095#1072#1097#1080#1093#1089#1103
+      end
+    end
   end
   object OpenDialog1: TOpenDialog
     Left = 848
