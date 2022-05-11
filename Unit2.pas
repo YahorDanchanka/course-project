@@ -22,7 +22,6 @@ type
     N5: TMenuItem;
     N6: TMenuItem;
     N7: TMenuItem;
-    N8: TMenuItem;
     N9: TMenuItem;
     NumberSortAsc: TMenuItem;
     NumberSortDesc: TMenuItem;
@@ -135,12 +134,12 @@ begin
 
   for var i := 1 to groupsLength - 1 do
   begin
-    min := DateTimeToUnix(StrToDate(groups[i].day)); i_min := i;
+    min := DateTimeToUnix(StrToDateTime(groups[i].day + ' ' + groups[i].time)); i_min := i;
 
     for var j := i + 1 to groupsLength do
-      if DateTimeToUnix(StrToDate(groups[j].day)) < min then
+      if DateTimeToUnix(StrToDateTime(groups[j].day + ' ' + groups[j].time)) < min then
       begin
-        min := DateTimeToUnix(StrToDate(groups[j].day));
+        min := DateTimeToUnix(StrToDateTime(groups[j].day + ' ' + groups[j].time));
         i_min := j;
       end;
 
@@ -152,9 +151,7 @@ begin
   StringGrid1.RowCount := 1;
 
   for i := 1 to groupsLength do
-  begin
     AddGroupToStringGrid(groups[i]);
-  end;
 end;
 
 procedure TForm2.DateSortDescClick(Sender: TObject);
