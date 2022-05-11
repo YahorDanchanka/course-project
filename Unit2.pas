@@ -88,13 +88,30 @@ begin
   cnt := Form2.StringGrid1.RowCount;
   k := Form2.StringGrid1.RowCount div 2;
 
-  for j := 0 to 4 do
+  for j := 0 to 6 do
     for i := 1 to k do
     begin
       s := Form2.StringGrid1.Cells[j,i];
       Form2.StringGrid1.Cells[j,i] := Form2.StringGrid1.Cells[j,cnt-i];
       Form2.StringGrid1.Cells[j,cnt-i] := s;
     end;
+end;
+
+procedure UpdateStringGridFromFile(path: string);
+var group: groupRecord;
+begin
+  Form2.StringGrid1.RowCount := 1;
+
+  AssignFile(storageFile, path);
+  Reset(storageFile);
+
+  for i := 1 to Filesize(storageFile) do
+  begin
+    read(storageFile, group);
+    AddGroupToStringGrid(group);
+  end;
+
+  CloseFile(storageFile);
 end;
 
 procedure TForm2.AddGroupButtonClick(Sender: TObject);
@@ -108,11 +125,8 @@ var
   group: groupRecord;
   i_min, min, groupsLength: integer;
 begin
-  if StringGrid1.RowCount <= 1 then
-  begin
-    ShowMessage('Данные не найдены.');
-    exit;
-  end;
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
 
   groupsLength := StringGrid1.RowCount - 1;
 
@@ -169,11 +183,8 @@ var
   group: groupRecord;
   i_min, min, groupsLength: integer;
 begin
-  if StringGrid1.RowCount <= 1 then
-  begin
-    ShowMessage('Данные не найдены.');
-    exit;
-  end;
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
 
   groupsLength := StringGrid1.RowCount - 1;
 
@@ -211,23 +222,11 @@ begin
 end;
 
 procedure TForm2.OpenMenuItemClick(Sender: TObject);
-var group: groupRecord;
 begin
   if OpenDialog1.Execute <> true then exit;
 
-  StringGrid1.RowCount := 1;
-
-  AssignFile(storageFile, OpenDialog1.FileName);
-  Reset(storageFile);
-
-  for i := 1 to Filesize(storageFile) do
-  begin
-    read(storageFile, group);
-    AddGroupToStringGrid(group);
-  end;
-
+  UpdateStringGridFromFile(OpenDialog1.FileName);
   SetStorageFilePath(OpenDialog1.FileName);
-  CloseFile(storageFile);
 end;
 
 procedure TForm2.SaveAsMenuItemClick(Sender: TObject);
