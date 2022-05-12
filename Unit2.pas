@@ -184,10 +184,10 @@ begin
   if length(storageFilePath) = 0 then exit;
   UpdateStringGridFromFile(storageFilePath);
 
-  groupsLength := StringGrid1.RowCount - 1;
-  SetLength(groups, groupsLength);
+  SetLength(groups, StringGrid1.RowCount - 1);
 
-  for i := 1 to groupsLength do
+  // Skip first row
+  for i := 1 to Length(groups) do
     groups[i - 1] := createGroupFromStringGrid(i);
 
   TArray.Sort<groupRecord>(groups, TDelegatedComparer<groupRecord>.Construct(
