@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, Unit2;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, Vcl.Grids, Unit2;
 
 type
   TForm3 = class(TForm)
@@ -42,6 +42,8 @@ procedure AddGroupToStringGrid(group: groupRecord);
 begin
   Form2.StringGrid1.RowCount := Form2.StringGrid1.RowCount + 1;
   Form2.StringGrid1.FixedRows := 1;
+  Form2.StringGrid1.Options := Form2.StringGrid1.Options + [goEditing];
+
 
   const rowIndex = Form2.StringGrid1.RowCount - 1;
 
