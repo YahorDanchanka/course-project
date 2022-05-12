@@ -38,6 +38,7 @@ type
     StudentsCountSortDesc: TMenuItem;
     N8: TMenuItem;
     DateFilter: TMenuItem;
+    DeleteGroupsButton: TButton;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -57,6 +58,7 @@ type
     procedure StudentsCountSortAscClick(Sender: TObject);
     procedure StudentsCountSortDescClick(Sender: TObject);
     procedure DateFilterClick(Sender: TObject);
+    procedure DeleteGroupsButtonClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -185,6 +187,26 @@ procedure TForm2.DateSortDescClick(Sender: TObject);
 begin
   DateSortAscClick(DateSortAsc);
   ReverseStringGrid();
+end;
+
+procedure TForm2.DeleteGroupsButtonClick(Sender: TObject);
+var
+  groups: array of groupRecord;
+  group: groupRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(groups, StringGrid1.RowCount - 1);
+
+  // Skip first row
+  for i := 1 to Length(groups) do
+    groups[i - 1] := createGroupFromStringGrid(i);
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(groups) - 1 do
+    if StrToInt(groups[i].studentsCount) >= 10 then AddGroupToStringGrid(groups[i]);
 end;
 
 procedure TForm2.FormActivate(Sender: TObject);

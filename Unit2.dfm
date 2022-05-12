@@ -43,6 +43,21 @@ object Form2: TForm2
     TabOrder = 1
     OnClick = AddGroupButtonClick
   end
+  object DeleteGroupsButton: TButton
+    Left = 175
+    Top = 360
+    Width = 362
+    Height = 30
+    Caption = #1059#1076#1072#1083#1080#1090#1100' '#1075#1088#1091#1087#1087#1099', '#1075#1076#1077' '#1091#1095#1072#1097#1080#1093#1089#1103' '#1084#1077#1085#1100#1096#1077' 10'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 2
+    OnClick = DeleteGroupsButtonClick
+  end
   object MainMenu1: TMainMenu
     Left = 888
     Top = 392
