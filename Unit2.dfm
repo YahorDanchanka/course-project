@@ -130,6 +130,13 @@ object Form2: TForm2
         end
       end
     end
+    object N8: TMenuItem
+      Caption = #1060#1080#1083#1100#1090#1088#1072#1094#1080#1103
+      object DateFilter: TMenuItem
+        Caption = #1044#1072#1090#1072' '#1087#1088#1086#1074#1077#1076#1077#1085#1080#1103
+        OnClick = DateFilterClick
+      end
+    end
   end
   object OpenDialog1: TOpenDialog
     Left = 848

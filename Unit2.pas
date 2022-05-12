@@ -36,6 +36,8 @@ type
     PriceSortDesc: TMenuItem;
     StudentsCountSortAsc: TMenuItem;
     StudentsCountSortDesc: TMenuItem;
+    N8: TMenuItem;
+    DateFilter: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -54,6 +56,7 @@ type
     procedure PriceSortDescClick(Sender: TObject);
     procedure StudentsCountSortAscClick(Sender: TObject);
     procedure StudentsCountSortDescClick(Sender: TObject);
+    procedure DateFilterClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -62,6 +65,8 @@ type
   groupRecord = record
     number, level, fullName, price, day, time, studentsCount: string[20];
   end;
+  procedure UpdateStringGridFromFile(path: string);
+  function createGroupFromStringGrid(rowIndex: integer): groupRecord;
 
 const fields: array of String = ['Номер группы', 'Уровень', 'ФИО преподавателя', 'Стоимость за занятие', 'День проведения', 'Время проведения', 'Количество учащихся'];
 
@@ -73,7 +78,7 @@ var
 
 implementation
 
-uses Unit1, Unit3;
+uses Unit1, Unit3, Unit4;
 
 {$R *.dfm}
 
@@ -133,6 +138,11 @@ end;
 procedure TForm2.AddGroupButtonClick(Sender: TObject);
 begin
   Form3.ShowModal;
+end;
+
+procedure TForm2.DateFilterClick(Sender: TObject);
+begin
+  Form4.ShowModal;
 end;
 
 procedure TForm2.DateSortAscClick(Sender: TObject);
