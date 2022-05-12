@@ -87,6 +87,14 @@ object Form2: TForm2
       end
       object N5: TMenuItem
         Caption = #1060#1048#1054' '#1087#1088#1077#1087#1086#1076#1072#1074#1072#1090#1077#1083#1103
+        object FullnameSortAsc: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = FullnameSortAscClick
+        end
+        object FullnameSortDesc: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = FullnameSortDescClick
+        end
       end
       object N6: TMenuItem
         Caption = #1057#1090#1086#1080#1084#1086#1089#1090#1100' '#1079#1072' '#1079#1072#1085#1103#1090#1080#1077

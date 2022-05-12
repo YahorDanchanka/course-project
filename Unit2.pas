@@ -30,6 +30,8 @@ type
     DateSortDesc: TMenuItem;
     LevelSortAsc: TMenuItem;
     LevelSortDesc: TMenuItem;
+    FullnameSortAsc: TMenuItem;
+    FullnameSortDesc: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -42,6 +44,8 @@ type
     procedure DateSortDescClick(Sender: TObject);
     procedure LevelSortAscClick(Sender: TObject);
     procedure LevelSortDescClick(Sender: TObject);
+    procedure FullnameSortAscClick(Sender: TObject);
+    procedure FullnameSortDescClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -177,6 +181,39 @@ end;
 procedure TForm2.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Form1.Close;
+end;
+
+procedure TForm2.FullnameSortAscClick(Sender: TObject);
+var
+  groups: array of groupRecord;
+  group: groupRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(groups, StringGrid1.RowCount - 1);
+
+  // Skip first row
+  for i := 1 to Length(groups) do
+    groups[i - 1] := createGroupFromStringGrid(i);
+
+  TArray.Sort<groupRecord>(groups, TDelegatedComparer<groupRecord>.Construct(
+    function(const Left, Right: groupRecord): integer
+    begin
+      Result := TComparer<string>.Default.Compare(left.fullName, right.fullName);
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(groups) - 1 do
+    AddGroupToStringGrid(groups[i]);
+end;
+
+procedure TForm2.FullnameSortDescClick(Sender: TObject);
+begin
+  FullnameSortAscClick(FullnameSortAsc);
+  ReverseStringGrid();
 end;
 
 procedure TForm2.LevelSortAscClick(Sender: TObject);
