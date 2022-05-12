@@ -27,15 +27,24 @@ type
   public
     { Public declarations }
   end;
-  groupRecord = record
-    number, level, fullName, price, day, time, studentsCount: string[20];
+  studentRecord = record
+    fullname, birthday, phone, address, specialty, groupNumber, receiptDate: string[20];
   end;
+  procedure AddStudentToStringGrid(student: studentRecord);
 
-const fields: array of String = ['Номер группы', 'Уровень', 'ФИО преподавателя', 'Стоимость за занятие', 'День проведения', 'Время проведения', 'Количество учащихся'];
+const fields: array of String = [
+  'ФИО учащегося',
+  'Дата рождения',
+  'Телефон',
+  'Адрес',
+  'Специальность',
+  'Номер группы',
+  'Дата поступления'
+];
 
 var
   Form2: TForm2;
-  storageFile: file of groupRecord;
+  storageFile: file of studentRecord;
   storageFilePath: string;
   i, j: integer;
 
@@ -45,17 +54,33 @@ uses Unit1, Unit3;
 
 {$R *.dfm}
 
-function createGroupFromStringGrid(rowIndex: integer): groupRecord;
-var group: groupRecord;
+procedure AddStudentToStringGrid(student: studentRecord);
 begin
-  group.number := Form2.StringGrid1.Cells[0, rowIndex];
-  group.level := Form2.StringGrid1.Cells[1, rowIndex];
-  group.fullName := Form2.StringGrid1.Cells[2, rowIndex];
-  group.price := Form2.StringGrid1.Cells[3, rowIndex];
-  group.day := Form2.StringGrid1.Cells[4, rowIndex];
-  group.time := Form2.StringGrid1.Cells[5, rowIndex];
-  group.studentsCount := Form2.StringGrid1.Cells[6, rowIndex];
-  result := group;
+  Form2.StringGrid1.RowCount := Form2.StringGrid1.RowCount + 1;
+  Form2.StringGrid1.FixedRows := 1;
+
+  const rowIndex = Form2.StringGrid1.RowCount - 1;
+
+  Form2.StringGrid1.Cells[0, rowIndex] := student.fullname;
+  Form2.StringGrid1.Cells[1, rowIndex] := student.birthday;
+  Form2.StringGrid1.Cells[2, rowIndex] := student.phone;
+  Form2.StringGrid1.Cells[3, rowIndex] := student.address;
+  Form2.StringGrid1.Cells[4, rowIndex] := student.specialty;
+  Form2.StringGrid1.Cells[5, rowIndex] := student.groupNumber;
+  Form2.StringGrid1.Cells[6, rowIndex] := student.receiptDate;
+end;
+
+function createStudentFromStringGrid(rowIndex: integer): studentRecord;
+var student: studentRecord;
+begin
+  student.fullname := Form2.StringGrid1.Cells[0, rowIndex];
+  student.birthday := Form2.StringGrid1.Cells[1, rowIndex];
+  student.phone := Form2.StringGrid1.Cells[2, rowIndex];
+  student.address := Form2.StringGrid1.Cells[3, rowIndex];
+  student.specialty := Form2.StringGrid1.Cells[4, rowIndex];
+  student.groupNumber := Form2.StringGrid1.Cells[5, rowIndex];
+  student.receiptDate := Form2.StringGrid1.Cells[6, rowIndex];
+  result := student;
 end;
 
 procedure SetStorageFilePath(path: string);
@@ -84,7 +109,7 @@ begin
 end;
 
 procedure TForm2.OpenMenuItemClick(Sender: TObject);
-var group: groupRecord;
+var student: studentRecord;
 begin
   if OpenDialog1.Execute <> true then exit;
 
@@ -95,8 +120,8 @@ begin
 
   for i := 1 to Filesize(storageFile) do
   begin
-    read(storageFile, group);
-    AddGroupToStringGrid(group);
+    read(storageFile, student);
+    AddStudentToStringGrid(student);
   end;
 
   SetStorageFilePath(OpenDialog1.FileName);
@@ -112,7 +137,7 @@ begin
 
   for i := 1 to StringGrid1.RowCount - 1 do
   begin
-    var group: groupRecord := createGroupFromStringGrid(i);
+    var group: studentRecord := createStudentFromStringGrid(i);
     write(storageFile, group);
   end;
 
@@ -133,7 +158,7 @@ begin
 
   for i := 1 to StringGrid1.RowCount - 1 do
   begin
-    var group: groupRecord := createGroupFromStringGrid(i);
+    var group: studentRecord := createStudentFromStringGrid(i);
     write(storageFile, group);
   end;
 
