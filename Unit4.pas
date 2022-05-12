@@ -59,9 +59,6 @@ begin
   for i := 0 to Length(groups) - 1 do
     if DayOfTheWeek(StrToDateTime(groups[i].day)) = activeIndex then
       AddGroupToStringGrid(groups[i]);
-
-
-  //ShowMessage(IntToStr(DayOfTheWeek(StrToDateTime('12.05.2022'))));
 end;
 
 end.

@@ -39,6 +39,8 @@ type
     N8: TMenuItem;
     DateFilter: TMenuItem;
     DeleteGroupsButton: TButton;
+    N10: TMenuItem;
+    IncreasePriceMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -59,6 +61,7 @@ type
     procedure StudentsCountSortDescClick(Sender: TObject);
     procedure DateFilterClick(Sender: TObject);
     procedure DeleteGroupsButtonClick(Sender: TObject);
+    procedure IncreasePriceMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -71,6 +74,7 @@ type
   function createGroupFromStringGrid(rowIndex: integer): groupRecord;
 
 const fields: array of String = ['Номер группы', 'Уровень', 'ФИО преподавателя', 'Стоимость за занятие', 'День проведения', 'Время проведения', 'Количество учащихся'];
+const levels: array of String = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
 var
   Form2: TForm2;
@@ -80,7 +84,7 @@ var
 
 implementation
 
-uses Unit1, Unit3, Unit4;
+uses Unit1, Unit3, Unit4, Unit5;
 
 {$R *.dfm}
 
@@ -254,6 +258,11 @@ procedure TForm2.FullnameSortDescClick(Sender: TObject);
 begin
   FullnameSortAscClick(FullnameSortAsc);
   ReverseStringGrid();
+end;
+
+procedure TForm2.IncreasePriceMenuItemClick(Sender: TObject);
+begin
+  Form5.ShowModal;
 end;
 
 procedure TForm2.LevelSortAscClick(Sender: TObject);
