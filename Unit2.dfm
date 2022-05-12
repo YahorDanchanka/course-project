@@ -120,6 +120,14 @@ object Form2: TForm2
       end
       object N9: TMenuItem
         Caption = #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086' '#1091#1095#1072#1097#1080#1093#1089#1103
+        object StudentsCountSortAsc: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = StudentsCountSortAscClick
+        end
+        object StudentsCountSortDesc: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = StudentsCountSortDescClick
+        end
       end
     end
   end
