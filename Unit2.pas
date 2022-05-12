@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls, DateUtils;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls, DateUtils,
+  System.Generics.Collections, System.Generics.Defaults;
 
 type
   TForm2 = class(TForm)
@@ -176,7 +177,7 @@ end;
 
 procedure TForm2.NumberSortAscClick(Sender: TObject);
 var
-  groups: array [1..100] of groupRecord;
+  groups: array of groupRecord;
   group: groupRecord;
   i_min, min, groupsLength: integer;
 begin
@@ -184,32 +185,22 @@ begin
   UpdateStringGridFromFile(storageFilePath);
 
   groupsLength := StringGrid1.RowCount - 1;
+  SetLength(groups, groupsLength);
 
   for i := 1 to groupsLength do
-    groups[i] := createGroupFromStringGrid(i);
+    groups[i - 1] := createGroupFromStringGrid(i);
 
-  for var i := 1 to groupsLength - 1 do
-  begin
-    min := StrToInt(groups[i].number); i_min := i;
-
-    for var j := i + 1 to groupsLength do
-      if StrToInt(groups[j].number) < min then
-      begin
-        min := StrToInt(groups[j].number);
-        i_min := j;
-      end;
-
-    group := groups[i_min];
-    groups[i_min] := groups[i];
-    groups[i] := group;
-  end;
+  TArray.Sort<groupRecord>(groups, TDelegatedComparer<groupRecord>.Construct(
+    function(const Left, Right: groupRecord): integer
+    begin
+      Result := TComparer<integer>.Default.Compare(StrToInt(left.number), StrToInt(right.number));
+    end
+  ));
 
   StringGrid1.RowCount := 1;
 
-  for i := 1 to groupsLength do
-  begin
+  for i := 0 to Length(groups) - 1 do
     AddGroupToStringGrid(groups[i]);
-  end;
 end;
 
 procedure TForm2.NumberSortDescClick(Sender: TObject);
