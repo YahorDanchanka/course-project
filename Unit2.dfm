@@ -107,6 +107,17 @@ object Form2: TForm2
           OnClick = SpecialtyDescMenuItemClick
         end
       end
+      object N7: TMenuItem
+        Caption = #1053#1086#1084#1077#1088' '#1075#1088#1091#1087#1087#1099
+        object GroupNumberAscMenuItem: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = GroupNumberAscMenuItemClick
+        end
+        object GroupNumberDescMenuItem: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = GroupNumberDescMenuItemClick
+        end
+      end
     end
   end
   object OpenDialog1: TOpenDialog

@@ -30,6 +30,9 @@ type
     N6: TMenuItem;
     SpecialtyAscMenuItem: TMenuItem;
     SpecialtyDescMenuItem: TMenuItem;
+    N7: TMenuItem;
+    GroupNumberDescMenuItem: TMenuItem;
+    GroupNumberAscMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -44,6 +47,8 @@ type
     procedure AddressDescMenuItemClick(Sender: TObject);
     procedure SpecialtyAscMenuItemClick(Sender: TObject);
     procedure SpecialtyDescMenuItemClick(Sender: TObject);
+    procedure GroupNumberAscMenuItemClick(Sender: TObject);
+    procedure GroupNumberDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -251,6 +256,36 @@ end;
 procedure TForm2.FullnameDescMenuItemClick(Sender: TObject);
 begin
   FullnameAscMenuItemClick(FullnameAscMenuItem);
+  ReverseStringGrid();
+end;
+
+procedure TForm2.GroupNumberAscMenuItemClick(Sender: TObject);
+var students: array of studentRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(students, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(students) do
+    students[i - 1] := createStudentFromStringGrid(i);
+
+  TArray.Sort<studentRecord>(students, TDelegatedComparer<studentRecord>.Construct(
+    function(const Left, Right: studentRecord): integer
+    begin
+      Result := TComparer<integer>.Default.Compare(StrToInt(left.groupNumber), StrToInt(right.groupNumber));
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(students) - 1 do
+    AddStudentToStringGrid(students[i]);
+end;
+
+procedure TForm2.GroupNumberDescMenuItemClick(Sender: TObject);
+begin
+  GroupNumberAscMenuItemClick(GroupNumberDescMenuItem);
   ReverseStringGrid();
 end;
 
