@@ -85,6 +85,17 @@ object Form2: TForm2
           OnClick = BirthdayDescMenuItemClick
         end
       end
+      object N5: TMenuItem
+        Caption = #1040#1076#1088#1077#1089
+        object AddressAscMenuItem: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = AddressAscMenuItemClick
+        end
+        object AddressDescMenuItem: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = AddressDescMenuItemClick
+        end
+      end
     end
   end
   object OpenDialog1: TOpenDialog
