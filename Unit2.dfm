@@ -131,6 +131,13 @@ object Form2: TForm2
         end
       end
     end
+    object N9: TMenuItem
+      Caption = #1060#1091#1085#1082#1094#1080#1080
+      object DeleteRecordsByGroupNumberMenuItem: TMenuItem
+        Caption = #1059#1076#1072#1083#1080#1090#1100' '#1074#1089#1077' '#1079#1072#1087#1080#1089#1080' '#1086#1073' '#1091#1095#1072#1097#1080#1093#1089#1103' '#1086#1087#1088#1077#1076#1077#1083#1077#1085#1085#1086#1081' '#1075#1088#1091#1087#1087#1099
+        OnClick = DeleteRecordsByGroupNumberMenuItemClick
+      end
+    end
   end
   object OpenDialog1: TOpenDialog
     Left = 848

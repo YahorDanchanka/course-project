@@ -36,6 +36,8 @@ type
     N8: TMenuItem;
     ReceiptDateAscMenuItem: TMenuItem;
     ReceiptDateDescMenuItem: TMenuItem;
+    N9: TMenuItem;
+    DeleteRecordsByGroupNumberMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -56,6 +58,7 @@ type
     procedure ReceiptDateDescMenuItemClick(Sender: TObject);
     procedure StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+    procedure DeleteRecordsByGroupNumberMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -221,6 +224,26 @@ procedure TForm2.BirthdayDescMenuItemClick(Sender: TObject);
 begin
   BirthdayAscMenuItemClick(BirthdayAscMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.DeleteRecordsByGroupNumberMenuItemClick(Sender: TObject);
+var
+  students: array of studentRecord;
+  groupNumber: integer;
+begin
+  groupNumber := StrToInt(InputBox('Удалить записи определенной группы', 'Номер группы', ''));
+
+  SetLength(students, StringGrid1.RowCount - 1);
+
+  for i := 1 to StringGrid1.RowCount - 1 do
+    students[i - 1] := createStudentFromStringGrid(i);
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(students) - 1 do
+    if StrToInt(students[i].groupNumber) <> groupNumber then AddStudentToStringGrid(students[i]);
+
+  if StringGrid1.RowCount <= 1 then StringGrid1.Options := StringGrid1.Options - [goEditing];
 end;
 
 procedure TForm2.FormActivate(Sender: TObject);
