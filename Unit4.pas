@@ -12,6 +12,7 @@ type
     ListBox1: TListBox;
     ApplyFilterButton: TButton;
     procedure ApplyFilterButtonClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -59,6 +60,11 @@ begin
   for i := 0 to Length(groups) - 1 do
     if DayOfTheWeek(StrToDateTime(groups[i].day)) = activeIndex then
       AddGroupToStringGrid(groups[i]);
+end;
+
+procedure TForm4.FormCreate(Sender: TObject);
+begin
+Form4.Color :=$C0DCC0;
 end;
 
 end.

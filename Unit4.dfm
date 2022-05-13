@@ -13,6 +13,7 @@ object Form4: TForm4
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poDesktopCenter
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 15
   object ListBox1: TListBox

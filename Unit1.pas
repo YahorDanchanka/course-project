@@ -13,6 +13,7 @@ type
     Button1: TButton;
     procedure FormActivate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -37,6 +38,11 @@ end;
 procedure TForm1.FormActivate(Sender: TObject);
 begin
   HeaderLabel.Left := round((Form1.ClientWidth - HeaderLabel.Width) / 2);
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+Form1.color:=	$C0C0C0;
 end;
 
 end.

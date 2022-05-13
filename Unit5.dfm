@@ -14,6 +14,7 @@ object Form5: TForm5
   Font.Style = []
   Position = poDesktopCenter
   OnActivate = FormActivate
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 15
   object Label1: TLabel

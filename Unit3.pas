@@ -24,6 +24,7 @@ type
     DateTimePicker1: TDateTimePicker;
     DateTimePicker2: TDateTimePicker;
     procedure AddGroupButtonClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -68,6 +69,11 @@ begin
   group.studentsCount := CountEdit.Text;
   AddGroupToStringGrid(group);
   Form3.Close;
+end;
+
+procedure TForm3.FormCreate(Sender: TObject);
+begin
+Form3.Color :=$C0DCC0;
 end;
 
 end.

@@ -16,6 +16,7 @@ object Form2: TForm2
   Position = poDesktopCenter
   OnActivate = FormActivate
   OnClose = FormClose
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 15
   object StringGrid1: TStringGrid

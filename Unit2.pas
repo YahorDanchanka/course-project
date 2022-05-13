@@ -62,6 +62,7 @@ type
     procedure DateFilterClick(Sender: TObject);
     procedure DeleteGroupsButtonClick(Sender: TObject);
     procedure IncreasePriceMenuItemClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -225,6 +226,11 @@ end;
 procedure TForm2.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Form1.Close;
+end;
+
+procedure TForm2.FormCreate(Sender: TObject);
+begin
+  Form2.Color:=	$C0C0C0;
 end;
 
 procedure TForm2.FullnameSortAscClick(Sender: TObject);

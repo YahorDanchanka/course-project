@@ -13,6 +13,7 @@ type
     Label1: TLabel;
     procedure FormActivate(Sender: TObject);
     procedure ApplyFilterButtonClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -63,6 +64,11 @@ begin
 
   for i := 0 to Length(levels) - 1 do
     ListBox1.Items.Add(levels[i]);
+end;
+
+procedure TForm5.FormCreate(Sender: TObject);
+begin
+Form5.Color :=$C0DCC0;
 end;
 
 end.
