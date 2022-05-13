@@ -96,6 +96,17 @@ object Form2: TForm2
           OnClick = AddressDescMenuItemClick
         end
       end
+      object N6: TMenuItem
+        Caption = #1057#1087#1077#1094#1080#1072#1083#1100#1085#1086#1089#1090#1100
+        object SpecialtyAscMenuItem: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = SpecialtyAscMenuItemClick
+        end
+        object SpecialtyDescMenuItem: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = SpecialtyDescMenuItemClick
+        end
+      end
     end
   end
   object OpenDialog1: TOpenDialog
