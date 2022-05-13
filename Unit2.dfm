@@ -27,6 +27,7 @@ object Form2: TForm2
     RowCount = 1
     FixedRows = 0
     TabOrder = 0
+    OnContextPopup = StringGrid1ContextPopup
   end
   object AddGroupButton: TButton
     Left = 8

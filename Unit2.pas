@@ -54,6 +54,8 @@ type
     procedure GroupNumberDescMenuItemClick(Sender: TObject);
     procedure ReceiptDateAscMenuItemClick(Sender: TObject);
     procedure ReceiptDateDescMenuItemClick(Sender: TObject);
+    procedure StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
   private
     { Private declarations }
   public
@@ -410,6 +412,28 @@ procedure TForm2.SpecialtyDescMenuItemClick(Sender: TObject);
 begin
   SpecialtyAscMenuItemClick(SpecialtyAscMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+var
+  activeIndex: integer;
+  students: array of studentRecord;
+begin
+  if StringGrid1.Row = 0 then exit;
+  activeIndex := StringGrid1.Row;
+
+  SetLength(students, StringGrid1.RowCount - 1);
+
+  for i := 1 to StringGrid1.RowCount - 1 do
+    students[i - 1] := createStudentFromStringGrid(i);
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(students) - 1 do
+    if i + 1 <> activeIndex then AddStudentToStringGrid(students[i]);
+
+  if StringGrid1.RowCount <= 1 then StringGrid1.Options := StringGrid1.Options - [goEditing];
 end;
 
 end.
