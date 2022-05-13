@@ -118,6 +118,17 @@ object Form2: TForm2
           OnClick = GroupNumberDescMenuItemClick
         end
       end
+      object N8: TMenuItem
+        Caption = #1044#1072#1090#1072' '#1087#1086#1089#1090#1091#1087#1083#1077#1085#1080#1103
+        object ReceiptDateAscMenuItem: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = ReceiptDateAscMenuItemClick
+        end
+        object ReceiptDateDescMenuItem: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = ReceiptDateDescMenuItemClick
+        end
+      end
     end
   end
   object OpenDialog1: TOpenDialog

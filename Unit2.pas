@@ -33,6 +33,9 @@ type
     N7: TMenuItem;
     GroupNumberDescMenuItem: TMenuItem;
     GroupNumberAscMenuItem: TMenuItem;
+    N8: TMenuItem;
+    ReceiptDateAscMenuItem: TMenuItem;
+    ReceiptDateDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -49,6 +52,8 @@ type
     procedure SpecialtyDescMenuItemClick(Sender: TObject);
     procedure GroupNumberAscMenuItemClick(Sender: TObject);
     procedure GroupNumberDescMenuItemClick(Sender: TObject);
+    procedure ReceiptDateAscMenuItemClick(Sender: TObject);
+    procedure ReceiptDateDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -307,6 +312,36 @@ begin
 
   SetStorageFilePath(OpenDialog1.FileName);
   CloseFile(storageFile);
+end;
+
+procedure TForm2.ReceiptDateAscMenuItemClick(Sender: TObject);
+var students: array of studentRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(students, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(students) do
+    students[i - 1] := createStudentFromStringGrid(i);
+
+  TArray.Sort<studentRecord>(students, TDelegatedComparer<studentRecord>.Construct(
+    function(const Left, Right: studentRecord): integer
+    begin
+      Result := TComparer<integer>.Default.Compare(DateTimeToUnix(StrToDateTime(left.receiptDate)), DateTimeToUnix(StrToDateTime(right.receiptDate)));
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(students) - 1 do
+    AddStudentToStringGrid(students[i]);
+end;
+
+procedure TForm2.ReceiptDateDescMenuItemClick(Sender: TObject);
+begin
+  ReceiptDateAscMenuItemClick(ReceiptDateDescMenuItem);
+  ReverseStringGrid();
 end;
 
 procedure TForm2.SaveAsMenuItemClick(Sender: TObject);
