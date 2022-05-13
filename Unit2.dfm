@@ -44,7 +44,7 @@ object Form2: TForm2
     OnClick = AddGroupButtonClick
   end
   object MainMenu1: TMainMenu
-    Left = 888
+    Left = 880
     Top = 392
     object N1: TMenuItem
       Caption = #1060#1072#1081#1083
@@ -59,6 +59,20 @@ object Form2: TForm2
       object SaveAsMenuItem: TMenuItem
         Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1082#1072#1082
         OnClick = SaveAsMenuItemClick
+      end
+    end
+    object N2: TMenuItem
+      Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1082#1072
+      object N3: TMenuItem
+        Caption = #1060#1048#1054' '#1091#1095#1072#1097#1077#1075#1086#1089#1103
+        object FullnameAscMenuItem: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = FullnameAscMenuItemClick
+        end
+        object FullnameDescMenuItem: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = FullnameDescMenuItemClick
+        end
       end
     end
   end
