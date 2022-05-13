@@ -124,6 +124,7 @@ procedure AddStudentToStringGrid(student: studentRecord);
 begin
   Form2.StringGrid1.RowCount := Form2.StringGrid1.RowCount + 1;
   Form2.StringGrid1.FixedRows := 1;
+  Form2.StringGrid1.Options := Form2.StringGrid1.Options + [goEditing];
 
   const rowIndex = Form2.StringGrid1.RowCount - 1;
 
