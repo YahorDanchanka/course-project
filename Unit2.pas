@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls, System.Generics.Collections,
-  System.Generics.Defaults;
+  System.Generics.Defaults, DateUtils;
 
 type
   TForm2 = class(TForm)
@@ -21,6 +21,9 @@ type
     N3: TMenuItem;
     FullnameAscMenuItem: TMenuItem;
     FullnameDescMenuItem: TMenuItem;
+    N4: TMenuItem;
+    BirthdayAscMenuItem: TMenuItem;
+    BirthdayDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -29,6 +32,8 @@ type
     procedure SaveMenuItemClick(Sender: TObject);
     procedure FullnameAscMenuItemClick(Sender: TObject);
     procedure FullnameDescMenuItemClick(Sender: TObject);
+    procedure BirthdayAscMenuItemClick(Sender: TObject);
+    procedure BirthdayDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -135,6 +140,36 @@ begin
   Form3.ShowModal;
 end;
 
+procedure TForm2.BirthdayAscMenuItemClick(Sender: TObject);
+var students: array of studentRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(students, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(students) do
+    students[i - 1] := createStudentFromStringGrid(i);
+
+  TArray.Sort<studentRecord>(students, TDelegatedComparer<studentRecord>.Construct(
+    function(const Left, Right: studentRecord): integer
+    begin
+      Result := TComparer<integer>.Default.Compare(DateTimeToUnix(StrToDateTime(left.birthday)), DateTimeToUnix(StrToDateTime(right.birthday)));
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(students) - 1 do
+    AddStudentToStringGrid(students[i]);
+end;
+
+procedure TForm2.BirthdayDescMenuItemClick(Sender: TObject);
+begin
+  BirthdayAscMenuItemClick(BirthdayAscMenuItem);
+  ReverseStringGrid();
+end;
+
 procedure TForm2.FormActivate(Sender: TObject);
 begin
   StringGrid1.DefaultColWidth := round(Form2.ClientWidth / Length(fields)) - 5;
@@ -150,9 +185,7 @@ begin
 end;
 
 procedure TForm2.FullnameAscMenuItemClick(Sender: TObject);
-var
-  students: array of studentRecord;
-  group: studentRecord;
+var students: array of studentRecord;
 begin
   if length(storageFilePath) = 0 then exit;
   UpdateStringGridFromFile(storageFilePath);
