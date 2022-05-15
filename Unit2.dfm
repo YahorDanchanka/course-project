@@ -19,7 +19,7 @@ object Form2: TForm2
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 15
-  object Label1: TLabel
+  object SearchLabel: TLabel
     Left = 8
     Top = 9
     Width = 63
