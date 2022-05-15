@@ -19,6 +19,19 @@ object Form2: TForm2
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 15
+  object Label1: TLabel
+    Left = 8
+    Top = 9
+    Width = 63
+    Height = 30
+    Caption = #1055#1086#1080#1089#1082
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -22
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
   object StringGrid1: TStringGrid
     Left = 8
     Top = 45
@@ -60,9 +73,9 @@ object Form2: TForm2
     OnClick = DeleteGroupsButtonClick
   end
   object SearchEdit: TEdit
-    Left = 8
+    Left = 88
     Top = 8
-    Width = 904
+    Width = 824
     Height = 31
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText

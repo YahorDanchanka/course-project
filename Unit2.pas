@@ -42,6 +42,7 @@ type
     N10: TMenuItem;
     IncreasePriceMenuItem: TMenuItem;
     SearchEdit: TEdit;
+    Label1: TLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
