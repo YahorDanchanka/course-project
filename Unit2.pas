@@ -38,6 +38,7 @@ type
     ReceiptDateDescMenuItem: TMenuItem;
     N9: TMenuItem;
     DeleteRecordsByGroupNumberMenuItem: TMenuItem;
+    IncreaseCourseMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -59,6 +60,7 @@ type
     procedure StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
     procedure DeleteRecordsByGroupNumberMenuItemClick(Sender: TObject);
+    procedure IncreaseCourseMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -68,6 +70,7 @@ type
     fullname, birthday, phone, address, specialty, groupNumber, receiptDate: string[20];
   end;
   procedure AddStudentToStringGrid(student: studentRecord);
+  function createStudentFromStringGrid(rowIndex: integer): studentRecord;
 
 const fields: array of String = [
   'ФИО учащегося',
@@ -87,7 +90,7 @@ var
 
 implementation
 
-uses Unit1, Unit3;
+uses Unit1, Unit3, Unit4;
 
 {$R *.dfm}
 
@@ -318,6 +321,11 @@ procedure TForm2.GroupNumberDescMenuItemClick(Sender: TObject);
 begin
   GroupNumberAscMenuItemClick(GroupNumberDescMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.IncreaseCourseMenuItemClick(Sender: TObject);
+begin
+  Form4.ShowModal;
 end;
 
 procedure TForm2.OpenMenuItemClick(Sender: TObject);
