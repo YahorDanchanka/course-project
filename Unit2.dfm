@@ -169,6 +169,13 @@ object Form2: TForm2
         end
       end
     end
+    object N10: TMenuItem
+      Caption = #1060#1091#1085#1082#1094#1080#1080
+      object DeleteOldSalesMenuItem: TMenuItem
+        Caption = #1059#1076#1072#1083#1080#1090#1100' '#1074#1089#1077' '#1072#1082#1094#1080#1080' '#1089' '#1080#1089#1090#1077#1082#1096#1080#1084' '#1089#1088#1086#1082#1086#1084
+        OnClick = DeleteOldSalesMenuItemClick
+      end
+    end
   end
   object OpenDialog1: TOpenDialog
     Left = 848

@@ -41,6 +41,8 @@ type
     DescriptionSortDescMenuItem: TMenuItem;
     Label1: TLabel;
     SearchEdit: TEdit;
+    N10: TMenuItem;
+    DeleteOldSalesMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -64,6 +66,7 @@ type
     procedure StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
     procedure SearchEditChange(Sender: TObject);
+    procedure DeleteOldSalesMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -161,6 +164,27 @@ end;
 procedure TForm2.AddSaleButtonClick(Sender: TObject);
 begin
   Form3.ShowModal;
+end;
+
+procedure TForm2.DeleteOldSalesMenuItemClick(Sender: TObject);
+var sales: array of saleRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(sales, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(sales) do
+    sales[i - 1] := createSaleFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(sales) - 1 do
+    if StrToDateTime(sales[i].endDate) >= Date then AddSaleToStringGrid(sales[i]);
 end;
 
 procedure TForm2.DescriptionSortAscMenuItemClick(Sender: TObject);
