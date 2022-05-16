@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls, System.Generics.Collections,
+  System.Generics.Defaults;
 
 type
   TForm2 = class(TForm)
@@ -15,13 +16,19 @@ type
     SaveAsMenuItem: TMenuItem;
     StringGrid1: TStringGrid;
     OpenDialog1: TOpenDialog;
-    AddGroupButton: TButton;
+    AddSaleButton: TButton;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    TitleSortAscMenuItem: TMenuItem;
+    TitleSortDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
-    procedure AddGroupButtonClick(Sender: TObject);
+    procedure AddSaleButtonClick(Sender: TObject);
     procedure OpenMenuItemClick(Sender: TObject);
     procedure SaveMenuItemClick(Sender: TObject);
+    procedure TitleSortAscMenuItemClick(Sender: TObject);
+    procedure TitleSortDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -30,6 +37,7 @@ type
   saleRecord = record
     title, foodSet, price, percent, startDate, endDate, description: string[20];
   end;
+  procedure AddSaleToStringGrid(sale: saleRecord);
 
 const fields: array of String = ['Название ресторана', 'Название набора', 'Стоимость', 'Процент скидки', 'Срок начала', 'Срок окончания', 'Описание'];
 
@@ -45,7 +53,57 @@ uses Unit1, Unit3;
 
 {$R *.dfm}
 
-function createGroupFromStringGrid(rowIndex: integer): saleRecord;
+procedure ReverseStringGrid();
+var
+  i, j, k, cnt: integer;
+  s: string;
+begin
+  cnt := Form2.StringGrid1.RowCount;
+  k := Form2.StringGrid1.RowCount div 2;
+
+  for j := 0 to 6 do
+    for i := 1 to k do
+    begin
+      s := Form2.StringGrid1.Cells[j,i];
+      Form2.StringGrid1.Cells[j,i] := Form2.StringGrid1.Cells[j,cnt-i];
+      Form2.StringGrid1.Cells[j,cnt-i] := s;
+    end;
+end;
+
+procedure UpdateStringGridFromFile(path: string);
+var sale: saleRecord;
+begin
+  Form2.StringGrid1.RowCount := 1;
+
+  AssignFile(storageFile, path);
+  Reset(storageFile);
+
+  for i := 1 to Filesize(storageFile) do
+  begin
+    read(storageFile, sale);
+    AddSaleToStringGrid(sale);
+  end;
+
+  CloseFile(storageFile);
+end;
+
+procedure AddSaleToStringGrid(sale: saleRecord);
+begin
+  Form2.StringGrid1.RowCount := Form2.StringGrid1.RowCount + 1;
+  Form2.StringGrid1.FixedRows := 1;
+
+  const rowIndex = Form2.StringGrid1.RowCount - 1;
+
+  Form2.StringGrid1.Cells[0, rowIndex] := sale.title;
+  Form2.StringGrid1.Cells[1, rowIndex] := sale.foodSet;
+  Form2.StringGrid1.Cells[2, rowIndex] := sale.price;
+  Form2.StringGrid1.Cells[3, rowIndex] := sale.percent;
+  Form2.StringGrid1.Cells[4, rowIndex] := sale.startDate;
+  Form2.StringGrid1.Cells[5, rowIndex] := sale.endDate;
+  Form2.StringGrid1.Cells[6, rowIndex] := sale.description;
+end;
+
+function createSaleFromStringGrid(rowIndex: integer): saleRecord;
 var sale: saleRecord;
 begin
   sale.title := Form2.StringGrid1.Cells[0, rowIndex];
@@ -64,7 +122,7 @@ begin
   Form2.Caption := 'Основная форма - ' + storageFilePath;
 end;
 
-procedure TForm2.AddGroupButtonClick(Sender: TObject);
+procedure TForm2.AddSaleButtonClick(Sender: TObject);
 begin
   Form3.ShowModal;
 end;
@@ -112,7 +170,7 @@ begin
 
   for i := 1 to StringGrid1.RowCount - 1 do
   begin
-    var group: saleRecord := createGroupFromStringGrid(i);
+    var group: saleRecord := createSaleFromStringGrid(i);
     write(storageFile, group);
   end;
 
@@ -133,11 +191,41 @@ begin
 
   for i := 1 to StringGrid1.RowCount - 1 do
   begin
-    var group: saleRecord := createGroupFromStringGrid(i);
-    write(storageFile, group);
+    var sale: saleRecord := createSaleFromStringGrid(i);
+    write(storageFile, sale);
   end;
 
   CloseFile(storageFile);
+end;
+
+procedure TForm2.TitleSortAscMenuItemClick(Sender: TObject);
+var sales: array of saleRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(sales, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(sales) do
+    sales[i - 1] := createSaleFromStringGrid(i);
+
+  TArray.Sort<saleRecord>(sales, TDelegatedComparer<saleRecord>.Construct(
+    function(const Left, Right: saleRecord): integer
+    begin
+      Result := TComparer<string>.Default.Compare(left.title, right.title);
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(sales) - 1 do
+    AddSaleToStringGrid(sales[i]);
+end;
+
+procedure TForm2.TitleSortDescMenuItemClick(Sender: TObject);
+begin
+  TitleSortAscMenuItemClick(TitleSortAscMenuItem);
+  ReverseStringGrid();
 end;
 
 end.

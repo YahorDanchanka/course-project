@@ -28,7 +28,7 @@ object Form2: TForm2
     FixedRows = 0
     TabOrder = 0
   end
-  object AddGroupButton: TButton
+  object AddSaleButton: TButton
     Left = 8
     Top = 360
     Width = 161
@@ -41,7 +41,7 @@ object Form2: TForm2
     Font.Style = []
     ParentFont = False
     TabOrder = 1
-    OnClick = AddGroupButtonClick
+    OnClick = AddSaleButtonClick
   end
   object MainMenu1: TMainMenu
     Left = 888
@@ -59,6 +59,20 @@ object Form2: TForm2
       object SaveAsMenuItem: TMenuItem
         Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1082#1072#1082
         OnClick = SaveAsMenuItemClick
+      end
+    end
+    object N2: TMenuItem
+      Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1082#1072
+      object N3: TMenuItem
+        Caption = #1055#1086' '#1085#1072#1079#1074#1072#1085#1080#1102
+        object TitleSortAscMenuItem: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = TitleSortAscMenuItemClick
+        end
+        object TitleSortDescMenuItem: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = TitleSortDescMenuItemClick
+        end
       end
     end
   end
