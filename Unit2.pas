@@ -66,6 +66,8 @@ type
     procedure IncreasePriceMenuItemClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure SearchEditChange(Sender: TObject);
+    procedure StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
   private
     { Private declarations }
   public
@@ -434,6 +436,28 @@ begin
         StringGrid1.Canvas.TextOut(rect.Left + 3, rect.Top + 3, StringGrid1.Cells[i, j]);
       end;
     end;
+end;
+
+procedure TForm2.StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+var
+  activeIndex: integer;
+  students: array of groupRecord;
+begin
+  if StringGrid1.Row = 0 then exit;
+  activeIndex := StringGrid1.Row;
+
+  SetLength(students, StringGrid1.RowCount - 1);
+
+  for i := 1 to StringGrid1.RowCount - 1 do
+    students[i - 1] := createGroupFromStringGrid(i);
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(students) - 1 do
+    if i + 1 <> activeIndex then AddGroupToStringGrid(students[i]);
+
+  if StringGrid1.RowCount <= 1 then StringGrid1.Options := StringGrid1.Options - [goEditing];
 end;
 
 procedure TForm2.StudentsCountSortAscClick(Sender: TObject);
