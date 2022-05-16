@@ -58,8 +58,18 @@ begin
 end;
 
 procedure TForm3.AddGroupButtonClick(Sender: TObject);
-var group: groupRecord;
+var
+  group: groupRecord;
+  i: integer;
 begin
+  for i := 0 to Form3.ComponentCount - 1 do
+    if Form3.Components[i] is TEdit then
+      if TEdit(Form3.Components[i]).Text = '' then
+      begin
+        ShowMessage('Заполните все поля!');
+        exit;
+      end;
+
   group.number := NumberEdit.Text;
   group.level := LevelEdit.Text;
   group.fullName := FullnameEdit.Text;
