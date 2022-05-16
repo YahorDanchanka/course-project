@@ -41,6 +41,7 @@ type
     IncreaseCourseMenuItem: TMenuItem;
     Label1: TLabel;
     SearchEdit: TEdit;
+    DumpCurrentYearStudentsMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -64,6 +65,7 @@ type
     procedure DeleteRecordsByGroupNumberMenuItemClick(Sender: TObject);
     procedure IncreaseCourseMenuItemClick(Sender: TObject);
     procedure SearchEditChange(Sender: TObject);
+    procedure DumpCurrentYearStudentsMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -250,6 +252,27 @@ begin
     if StrToInt(students[i].groupNumber) <> groupNumber then AddStudentToStringGrid(students[i]);
 
   if StringGrid1.RowCount <= 1 then StringGrid1.Options := StringGrid1.Options - [goEditing];
+end;
+
+procedure TForm2.DumpCurrentYearStudentsMenuItemClick(Sender: TObject);
+var students: array of studentRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(students, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(students) do
+    students[i - 1] := createStudentFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(students) - 1 do
+    if YearOf(StrToDateTime(students[i].receiptDate)) = CurrentYear then AddStudentToStringGrid(students[i]);
 end;
 
 procedure TForm2.SearchEditChange(Sender: TObject);
