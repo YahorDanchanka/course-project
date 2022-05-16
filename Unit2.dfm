@@ -4,7 +4,7 @@ object Form2: TForm2
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = #1054#1089#1085#1086#1074#1085#1072#1103' '#1092#1086#1088#1084#1072
-  ClientHeight = 430
+  ClientHeight = 440
   ClientWidth = 920
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,9 +18,22 @@ object Form2: TForm2
   OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 15
+  object Label1: TLabel
+    Left = 8
+    Top = 10
+    Width = 48
+    Height = 23
+    Caption = #1055#1086#1080#1089#1082
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
   object StringGrid1: TStringGrid
     Left = 8
-    Top = 8
+    Top = 48
     Width = 904
     Height = 337
     FixedCols = 0
@@ -31,7 +44,7 @@ object Form2: TForm2
   end
   object AddGroupButton: TButton
     Left = 8
-    Top = 360
+    Top = 400
     Width = 185
     Height = 30
     Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1091#1095#1072#1097#1077#1075#1086#1089#1103
@@ -43,6 +56,20 @@ object Form2: TForm2
     ParentFont = False
     TabOrder = 1
     OnClick = AddGroupButtonClick
+  end
+  object SearchEdit: TEdit
+    Left = 72
+    Top = 8
+    Width = 840
+    Height = 31
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 2
+    OnChange = SearchEditChange
   end
   object MainMenu1: TMainMenu
     Left = 880
