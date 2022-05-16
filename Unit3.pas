@@ -39,8 +39,18 @@ implementation
 {$R *.dfm}
 
 procedure TForm3.AddStudentButtonClick(Sender: TObject);
-var student: studentRecord;
+var
+  student: studentRecord;
+  i: integer;
 begin
+  for i := 0 to Form3.ComponentCount - 1 do
+    if Form3.Components[i] is TEdit then
+      if TEdit(Form3.Components[i]).Text = '' then
+      begin
+        ShowMessage('Заполните все поля!');
+        exit;
+      end;
+
   student.fullname := Edit1.Text;
   student.birthday := DateToStr(DateTimePicker1.Date);
   student.phone := MaskEdit1.Text;
