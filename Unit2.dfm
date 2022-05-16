@@ -96,6 +96,17 @@ object Form2: TForm2
           OnClick = PriceSortDescMenuItemClick
         end
       end
+      object N6: TMenuItem
+        Caption = #1055#1086' '#1087#1088#1086#1094#1077#1085#1090#1091' '#1089#1082#1080#1076#1082#1080
+        object PercentSortAscMenuItem: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = PercentSortAscMenuItemClick
+        end
+        object PercentSortDescMenuItem: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = PercentSortDescMenuItemClick
+        end
+      end
     end
   end
   object OpenDialog1: TOpenDialog

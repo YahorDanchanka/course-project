@@ -27,6 +27,9 @@ type
     N5: TMenuItem;
     PriceSortAscMenuItem: TMenuItem;
     PriceSortDescMenuItem: TMenuItem;
+    N6: TMenuItem;
+    PercentSortAscMenuItem: TMenuItem;
+    PercentSortDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -39,6 +42,8 @@ type
     procedure FoodSetSortDescMenuItemClick(Sender: TObject);
     procedure PriceSortAscMenuItemClick(Sender: TObject);
     procedure PriceSortDescMenuItemClick(Sender: TObject);
+    procedure PercentSortAscMenuItemClick(Sender: TObject);
+    procedure PercentSortDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -201,18 +206,48 @@ begin
   CloseFile(storageFile);
 end;
 
-procedure TForm2.PriceSortAscMenuItemClick(Sender: TObject);
-var students: array of saleRecord;
+procedure TForm2.PercentSortAscMenuItemClick(Sender: TObject);
+var sales: array of saleRecord;
 begin
   if length(storageFilePath) = 0 then exit;
   UpdateStringGridFromFile(storageFilePath);
 
-  SetLength(students, StringGrid1.RowCount - 1);
+  SetLength(sales, StringGrid1.RowCount - 1);
 
-  for i := 1 to Length(students) do
-    students[i - 1] := createSaleFromStringGrid(i);
+  for i := 1 to Length(sales) do
+    sales[i - 1] := createSaleFromStringGrid(i);
 
-  TArray.Sort<saleRecord>(students, TDelegatedComparer<saleRecord>.Construct(
+  TArray.Sort<saleRecord>(sales, TDelegatedComparer<saleRecord>.Construct(
+    function(const Left, Right: saleRecord): integer
+    begin
+      Result := TComparer<real>.Default.Compare(StrToFloat(left.percent), StrToFloat(right.percent));
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(sales) - 1 do
+    AddSaleToStringGrid(sales[i]);
+end;
+
+procedure TForm2.PercentSortDescMenuItemClick(Sender: TObject);
+begin
+  PercentSortAscMenuItemClick(PercentSortAscMenuItem);
+  ReverseStringGrid();
+end;
+
+procedure TForm2.PriceSortAscMenuItemClick(Sender: TObject);
+var sales: array of saleRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(sales, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(sales) do
+    sales[i - 1] := createSaleFromStringGrid(i);
+
+  TArray.Sort<saleRecord>(sales, TDelegatedComparer<saleRecord>.Construct(
     function(const Left, Right: saleRecord): integer
     begin
       Result := TComparer<real>.Default.Compare(StrToFloat(left.price), StrToFloat(right.price));
@@ -221,8 +256,8 @@ begin
 
   StringGrid1.RowCount := 1;
 
-  for i := 0 to Length(students) - 1 do
-    AddSaleToStringGrid(students[i]);
+  for i := 0 to Length(sales) - 1 do
+    AddSaleToStringGrid(sales[i]);
 end;
 
 procedure TForm2.PriceSortDescMenuItemClick(Sender: TObject);
