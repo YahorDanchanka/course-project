@@ -18,9 +18,22 @@ object Form2: TForm2
   OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 15
-  object StringGrid1: TStringGrid
+  object Label1: TLabel
     Left = 8
     Top = 8
+    Width = 48
+    Height = 23
+    Caption = #1055#1086#1080#1089#1082
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object StringGrid1: TStringGrid
+    Left = 8
+    Top = 40
     Width = 904
     Height = 337
     FixedCols = 0
@@ -31,7 +44,7 @@ object Form2: TForm2
   end
   object AddSaleButton: TButton
     Left = 8
-    Top = 360
+    Top = 392
     Width = 161
     Height = 30
     Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1072#1082#1094#1080#1102
@@ -43,6 +56,20 @@ object Form2: TForm2
     ParentFont = False
     TabOrder = 1
     OnClick = AddSaleButtonClick
+  end
+  object SearchEdit: TEdit
+    Left = 62
+    Top = 3
+    Width = 850
+    Height = 31
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 2
+    OnChange = SearchEditChange
   end
   object MainMenu1: TMainMenu
     Left = 888

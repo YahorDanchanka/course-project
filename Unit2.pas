@@ -39,6 +39,8 @@ type
     N9: TMenuItem;
     DescriptionSortAscMenuItem: TMenuItem;
     DescriptionSortDescMenuItem: TMenuItem;
+    Label1: TLabel;
+    SearchEdit: TEdit;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -61,6 +63,7 @@ type
     procedure DescriptionSortDescMenuItemClick(Sender: TObject);
     procedure StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+    procedure SearchEditChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -379,6 +382,24 @@ begin
   end;
 
   CloseFile(storageFile);
+end;
+
+procedure TForm2.SearchEditChange(Sender: TObject);
+var rect: TRect;
+begin
+  StringGrid1.Repaint();
+
+  for i := 0 to StringGrid1.ColCount - 1 do
+    for j := 1 to StringGrid1.RowCount - 1 do
+    begin
+      if Pos(AnsiLowerCase(Trim(SearchEdit.Text)), AnsiLowerCase(Trim(StringGrid1.Cells[i, j])))<> 0 then
+      begin
+        rect := StringGrid1.CellRect(i, j);
+        StringGrid1.Canvas.Brush.Color := $C0C0C0;
+        StringGrid1.Canvas.FillRect(rect);
+        StringGrid1.Canvas.TextOut(rect.Left + 3, rect.Top + 3, StringGrid1.Cells[i, j]);
+      end;
+    end;
 end;
 
 procedure TForm2.StartDateSortAscMenuItemClick(Sender: TObject);
