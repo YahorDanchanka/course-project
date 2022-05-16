@@ -47,7 +47,7 @@ begin
   sale.price := PriceEdit.Text;
   sale.percent := PercentEdit.Text;
   sale.startDate := DateToStr(StartDateTimePicker.Date);
-  sale.endDate := DateToStr(StartDateTimePicker.Date);
+  sale.endDate := DateToStr(EndDateTimePicker.Date);
   sale.description := DescriptionEdit.Text;
   AddSaleToStringGrid(sale);
   Form3.Close;

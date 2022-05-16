@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls, System.Generics.Collections,
-  System.Generics.Defaults;
+  System.Generics.Defaults, DateUtils;
 
 type
   TForm2 = class(TForm)
@@ -30,6 +30,9 @@ type
     N6: TMenuItem;
     PercentSortAscMenuItem: TMenuItem;
     PercentSortDescMenuItem: TMenuItem;
+    N7: TMenuItem;
+    StartDateSortAscMenuItem: TMenuItem;
+    StartDateSortDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -44,6 +47,8 @@ type
     procedure PriceSortDescMenuItemClick(Sender: TObject);
     procedure PercentSortAscMenuItemClick(Sender: TObject);
     procedure PercentSortDescMenuItemClick(Sender: TObject);
+    procedure StartDateSortAscMenuItemClick(Sender: TObject);
+    procedure StartDateSortDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -301,6 +306,36 @@ begin
   end;
 
   CloseFile(storageFile);
+end;
+
+procedure TForm2.StartDateSortAscMenuItemClick(Sender: TObject);
+var sales: array of saleRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(sales, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(sales) do
+    sales[i - 1] := createSaleFromStringGrid(i);
+
+  TArray.Sort<saleRecord>(sales, TDelegatedComparer<saleRecord>.Construct(
+    function(const Left, Right: saleRecord): integer
+    begin
+      Result := TComparer<integer>.Default.Compare(DateTimeToUnix(StrToDateTime(left.startDate)), DateTimeToUnix(StrToDateTime(right.startDate)));
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(sales) - 1 do
+    AddSaleToStringGrid(sales[i]);
+end;
+
+procedure TForm2.StartDateSortDescMenuItemClick(Sender: TObject);
+begin
+  StartDateSortAscMenuItemClick(StartDateSortAscMenuItem);
+  ReverseStringGrid();
 end;
 
 procedure TForm2.TitleSortAscMenuItemClick(Sender: TObject);
