@@ -59,6 +59,8 @@ type
     procedure EndDateSortDescMenuItemClick(Sender: TObject);
     procedure DescriptionSortAscMenuItemClick(Sender: TObject);
     procedure DescriptionSortDescMenuItemClick(Sender: TObject);
+    procedure StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
   private
     { Private declarations }
   public
@@ -407,6 +409,28 @@ procedure TForm2.StartDateSortDescMenuItemClick(Sender: TObject);
 begin
   StartDateSortAscMenuItemClick(StartDateSortAscMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+var
+  activeIndex: integer;
+  sales: array of saleRecord;
+begin
+  if StringGrid1.Row = 0 then exit;
+  activeIndex := StringGrid1.Row;
+
+  SetLength(sales, StringGrid1.RowCount - 1);
+
+  for i := 1 to StringGrid1.RowCount - 1 do
+    sales[i - 1] := createSaleFromStringGrid(i);
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(sales) - 1 do
+    if i + 1 <> activeIndex then AddSaleToStringGrid(sales[i]);
+
+  if StringGrid1.RowCount <= 1 then StringGrid1.Options := StringGrid1.Options - [goEditing];
 end;
 
 procedure TForm2.TitleSortAscMenuItemClick(Sender: TObject);
