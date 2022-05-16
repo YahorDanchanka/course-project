@@ -74,6 +74,28 @@ object Form2: TForm2
           OnClick = TitleSortDescMenuItemClick
         end
       end
+      object N4: TMenuItem
+        Caption = #1055#1086' '#1085#1072#1079#1074#1072#1085#1080#1102' '#1085#1072#1073#1086#1088#1072
+        object FoodSetSortAscMenuItem: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = FoodSetSortAscMenuItemClick
+        end
+        object FoodSetSortDescMenuItem: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = FoodSetSortDescMenuItemClick
+        end
+      end
+      object N5: TMenuItem
+        Caption = #1055#1086' '#1089#1090#1086#1080#1084#1086#1089#1090#1080
+        object PriceSortAscMenuItem: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = PriceSortAscMenuItemClick
+        end
+        object PriceSortDescMenuItem: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = PriceSortDescMenuItemClick
+        end
+      end
     end
   end
   object OpenDialog1: TOpenDialog
