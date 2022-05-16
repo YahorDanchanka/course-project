@@ -33,6 +33,9 @@ type
     N7: TMenuItem;
     StartDateSortAscMenuItem: TMenuItem;
     StartDateSortDescMenuItem: TMenuItem;
+    N8: TMenuItem;
+    EndDateSortAscMenuItem: TMenuItem;
+    EndDateSortDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -49,6 +52,8 @@ type
     procedure PercentSortDescMenuItemClick(Sender: TObject);
     procedure StartDateSortAscMenuItemClick(Sender: TObject);
     procedure StartDateSortDescMenuItemClick(Sender: TObject);
+    procedure EndDateSortAscMenuItemClick(Sender: TObject);
+    procedure EndDateSortDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -145,6 +150,36 @@ end;
 procedure TForm2.AddSaleButtonClick(Sender: TObject);
 begin
   Form3.ShowModal;
+end;
+
+procedure TForm2.EndDateSortAscMenuItemClick(Sender: TObject);
+var sales: array of saleRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(sales, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(sales) do
+    sales[i - 1] := createSaleFromStringGrid(i);
+
+  TArray.Sort<saleRecord>(sales, TDelegatedComparer<saleRecord>.Construct(
+    function(const Left, Right: saleRecord): integer
+    begin
+      Result := TComparer<integer>.Default.Compare(DateTimeToUnix(StrToDateTime(left.endDate)), DateTimeToUnix(StrToDateTime(right.endDate)));
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(sales) - 1 do
+    AddSaleToStringGrid(sales[i]);
+end;
+
+procedure TForm2.EndDateSortDescMenuItemClick(Sender: TObject);
+begin
+  EndDateSortAscMenuItemClick(EndDateSortAscMenuItem);
+  ReverseStringGrid();
 end;
 
 procedure TForm2.FoodSetSortAscMenuItemClick(Sender: TObject);
