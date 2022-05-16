@@ -64,7 +64,7 @@ object Form2: TForm2
     object N2: TMenuItem
       Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1082#1072
       object N3: TMenuItem
-        Caption = #1055#1086' '#1085#1072#1079#1074#1072#1085#1080#1102
+        Caption = #1053#1072#1079#1074#1072#1085#1080#1077
         object TitleSortAscMenuItem: TMenuItem
           Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
           OnClick = TitleSortAscMenuItemClick
@@ -75,7 +75,7 @@ object Form2: TForm2
         end
       end
       object N4: TMenuItem
-        Caption = #1055#1086' '#1085#1072#1079#1074#1072#1085#1080#1102' '#1085#1072#1073#1086#1088#1072
+        Caption = #1053#1072#1079#1074#1072#1085#1080#1077' '#1085#1072#1073#1086#1088#1072
         object FoodSetSortAscMenuItem: TMenuItem
           Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
           OnClick = FoodSetSortAscMenuItemClick
@@ -86,7 +86,7 @@ object Form2: TForm2
         end
       end
       object N5: TMenuItem
-        Caption = #1055#1086' '#1089#1090#1086#1080#1084#1086#1089#1090#1080
+        Caption = #1057#1090#1086#1080#1084#1086#1089#1090#1100
         object PriceSortAscMenuItem: TMenuItem
           Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
           OnClick = PriceSortAscMenuItemClick
@@ -97,7 +97,7 @@ object Form2: TForm2
         end
       end
       object N6: TMenuItem
-        Caption = #1055#1086' '#1087#1088#1086#1094#1077#1085#1090#1091' '#1089#1082#1080#1076#1082#1080
+        Caption = #1055#1088#1086#1094#1077#1085#1090' '#1089#1082#1080#1076#1082#1080
         object PercentSortAscMenuItem: TMenuItem
           Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
           OnClick = PercentSortAscMenuItemClick
@@ -127,6 +127,17 @@ object Form2: TForm2
         object EndDateSortDescMenuItem: TMenuItem
           Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
           OnClick = EndDateSortDescMenuItemClick
+        end
+      end
+      object N9: TMenuItem
+        Caption = #1054#1087#1080#1089#1072#1085#1080#1077
+        object DescriptionSortAscMenuItem: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = DescriptionSortAscMenuItemClick
+        end
+        object DescriptionSortDescMenuItem: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = DescriptionSortDescMenuItemClick
         end
       end
     end

@@ -36,6 +36,9 @@ type
     N8: TMenuItem;
     EndDateSortAscMenuItem: TMenuItem;
     EndDateSortDescMenuItem: TMenuItem;
+    N9: TMenuItem;
+    DescriptionSortAscMenuItem: TMenuItem;
+    DescriptionSortDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -54,6 +57,8 @@ type
     procedure StartDateSortDescMenuItemClick(Sender: TObject);
     procedure EndDateSortAscMenuItemClick(Sender: TObject);
     procedure EndDateSortDescMenuItemClick(Sender: TObject);
+    procedure DescriptionSortAscMenuItemClick(Sender: TObject);
+    procedure DescriptionSortDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -150,6 +155,36 @@ end;
 procedure TForm2.AddSaleButtonClick(Sender: TObject);
 begin
   Form3.ShowModal;
+end;
+
+procedure TForm2.DescriptionSortAscMenuItemClick(Sender: TObject);
+var sales: array of saleRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(sales, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(sales) do
+    sales[i - 1] := createSaleFromStringGrid(i);
+
+  TArray.Sort<saleRecord>(sales, TDelegatedComparer<saleRecord>.Construct(
+    function(const Left, Right: saleRecord): integer
+    begin
+      Result := TComparer<string>.Default.Compare(left.description, right.description);
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(sales) - 1 do
+    AddSaleToStringGrid(sales[i]);
+end;
+
+procedure TForm2.DescriptionSortDescMenuItemClick(Sender: TObject);
+begin
+  DescriptionSortAscMenuItemClick(DescriptionSortAscMenuItem);
+  ReverseStringGrid();
 end;
 
 procedure TForm2.EndDateSortAscMenuItemClick(Sender: TObject);
