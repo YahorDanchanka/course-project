@@ -183,6 +183,10 @@ object Form2: TForm2
         Caption = #1057#1090#1086#1080#1084#1086#1089#1090#1100
         OnClick = PriceFilterMenuItemClick
       end
+      object PercentFilterMenuItem: TMenuItem
+        Caption = #1055#1088#1086#1094#1077#1085#1090' '#1089#1082#1080#1076#1082#1080
+        OnClick = PercentFilterMenuItemClick
+      end
     end
     object N10: TMenuItem
       Caption = #1060#1091#1085#1082#1094#1080#1080
