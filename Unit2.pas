@@ -45,6 +45,8 @@ type
     DeleteOldSalesMenuItem: TMenuItem;
     IncreasePercentMenuItem: TMenuItem;
     DumpSalesByPercentMenuItem: TMenuItem;
+    N11: TMenuItem;
+    TitleFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -71,6 +73,7 @@ type
     procedure DeleteOldSalesMenuItemClick(Sender: TObject);
     procedure IncreasePercentMenuItemClick(Sender: TObject);
     procedure DumpSalesByPercentMenuItemClick(Sender: TObject);
+    procedure TitleFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -508,6 +511,33 @@ begin
     if i + 1 <> activeIndex then AddSaleToStringGrid(sales[i]);
 
   if StringGrid1.RowCount <= 1 then StringGrid1.Options := StringGrid1.Options - [goEditing];
+end;
+
+procedure TForm2.TitleFilterMenuItemClick(Sender: TObject);
+var
+  value: string;
+  sales: array of saleRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  value := InputBox('Фильтрация по полю "Название"', 'Название: ', '');
+
+  if length(value) = 0 then exit;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(sales, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(sales) do
+    sales[i - 1] := createSaleFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(sales) - 1 do
+    if sales[i].title = value then AddSaleToStringGrid(sales[i]);
 end;
 
 procedure TForm2.TitleSortAscMenuItemClick(Sender: TObject);

@@ -72,7 +72,7 @@ object Form2: TForm2
     OnChange = SearchEditChange
   end
   object MainMenu1: TMainMenu
-    Left = 888
+    Left = 880
     Top = 392
     object N1: TMenuItem
       Caption = #1060#1072#1081#1083
@@ -92,7 +92,7 @@ object Form2: TForm2
     object N2: TMenuItem
       Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1082#1072
       object N3: TMenuItem
-        Caption = #1053#1072#1079#1074#1072#1085#1080#1077
+        Caption = #1053#1072#1079#1074#1072#1085#1080#1077' '#1088#1077#1089#1090#1086#1088#1072#1085#1072
         object TitleSortAscMenuItem: TMenuItem
           Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
           OnClick = TitleSortAscMenuItemClick
@@ -167,6 +167,13 @@ object Form2: TForm2
           Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
           OnClick = DescriptionSortDescMenuItemClick
         end
+      end
+    end
+    object N11: TMenuItem
+      Caption = #1060#1080#1083#1100#1090#1088#1072#1094#1080#1103
+      object TitleFilterMenuItem: TMenuItem
+        Caption = #1053#1072#1079#1074#1072#1085#1080#1077' '#1088#1077#1089#1090#1086#1088#1072#1085#1072
+        OnClick = TitleFilterMenuItemClick
       end
     end
     object N10: TMenuItem
