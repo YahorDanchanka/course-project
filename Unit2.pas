@@ -48,6 +48,7 @@ type
     N11: TMenuItem;
     TitleFilterMenuItem: TMenuItem;
     FoodSetFilterMenuItem: TMenuItem;
+    PriceFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -76,6 +77,7 @@ type
     procedure DumpSalesByPercentMenuItemClick(Sender: TObject);
     procedure TitleFilterMenuItemClick(Sender: TObject);
     procedure FoodSetFilterMenuItemClick(Sender: TObject);
+    procedure PriceFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -405,6 +407,41 @@ begin
   ReverseStringGrid();
 end;
 
+procedure TForm2.PriceFilterMenuItemClick(Sender: TObject);
+var
+  valueNum1, valueNum2: string;
+  sales: array of saleRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  valueNum1 := InputBox('Фильтрация по полю "Стоимость"', 'От: ', '');
+  valueNum2 := InputBox('Фильтрация по полю "Стоимость"', 'До: ', '');
+
+  try
+    StrToFloat(valueNum1);
+    StrToFloat(valueNum2);
+  except
+    ShowMessage('Введите число!');
+    exit;
+  end;
+
+  if (length(valueNum1) = 0) or (length(valueNum2) = 0) then exit;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(sales, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(sales) do
+    sales[i - 1] := createSaleFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(sales) - 1 do
+    if (StrToFloat(sales[i].price) >= StrToFloat(valueNum1)) and (StrToFloat(sales[i].price) <= StrToFloat(valueNum2)) then AddSaleToStringGrid(sales[i]);
+end;
 procedure TForm2.PriceSortAscMenuItemClick(Sender: TObject);
 var sales: array of saleRecord;
 begin
