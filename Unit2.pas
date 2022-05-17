@@ -44,6 +44,7 @@ type
     N10: TMenuItem;
     DeleteOldSalesMenuItem: TMenuItem;
     IncreasePercentMenuItem: TMenuItem;
+    DumpSalesByPercentMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -69,6 +70,7 @@ type
     procedure SearchEditChange(Sender: TObject);
     procedure DeleteOldSalesMenuItemClick(Sender: TObject);
     procedure IncreasePercentMenuItemClick(Sender: TObject);
+    procedure DumpSalesByPercentMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -219,6 +221,27 @@ procedure TForm2.DescriptionSortDescMenuItemClick(Sender: TObject);
 begin
   DescriptionSortAscMenuItemClick(DescriptionSortAscMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.DumpSalesByPercentMenuItemClick(Sender: TObject);
+var sales: array of saleRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(sales, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(sales) do
+    sales[i - 1] := createSaleFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(sales) - 1 do
+    if (StrToFloat(sales[i].percent) >= 20) and (StrToFloat(sales[i].percent) <= 40) then AddSaleToStringGrid(sales[i]);
 end;
 
 procedure TForm2.EndDateSortAscMenuItemClick(Sender: TObject);
