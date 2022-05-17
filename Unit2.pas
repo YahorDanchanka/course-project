@@ -43,6 +43,7 @@ type
     SearchEdit: TEdit;
     N10: TMenuItem;
     DeleteOldSalesMenuItem: TMenuItem;
+    IncreasePercentMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -67,6 +68,7 @@ type
       var Handled: Boolean);
     procedure SearchEditChange(Sender: TObject);
     procedure DeleteOldSalesMenuItemClick(Sender: TObject);
+    procedure IncreasePercentMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -76,6 +78,8 @@ type
     title, foodSet, price, percent, startDate, endDate, description: string[20];
   end;
   procedure AddSaleToStringGrid(sale: saleRecord);
+  function createSaleFromStringGrid(rowIndex: integer): saleRecord;
+  procedure UpdateStringGridFromFile(path: string);
 
 const fields: array of String = ['Название ресторана', 'Название набора', 'Стоимость', 'Процент скидки', 'Срок начала', 'Срок окончания', 'Описание'];
 
@@ -87,7 +91,7 @@ var
 
 implementation
 
-uses Unit1, Unit3;
+uses Unit1, Unit3, Unit4;
 
 {$R *.dfm}
 
@@ -289,6 +293,11 @@ end;
 procedure TForm2.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Form1.Close;
+end;
+
+procedure TForm2.IncreasePercentMenuItemClick(Sender: TObject);
+begin
+  Form4.ShowModal;
 end;
 
 procedure TForm2.OpenMenuItemClick(Sender: TObject);

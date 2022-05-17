@@ -175,6 +175,10 @@ object Form2: TForm2
         Caption = #1059#1076#1072#1083#1080#1090#1100' '#1074#1089#1077' '#1072#1082#1094#1080#1080' '#1089' '#1080#1089#1090#1077#1082#1096#1080#1084' '#1089#1088#1086#1082#1086#1084
         OnClick = DeleteOldSalesMenuItemClick
       end
+      object IncreasePercentMenuItem: TMenuItem
+        Caption = #1059#1074#1077#1083#1080#1095#1080#1090#1100' '#1087#1088#1086#1094#1077#1085#1090' '#1089#1082#1080#1076#1082#1080' '#1085#1072' 3%'
+        OnClick = IncreasePercentMenuItemClick
+      end
     end
   end
   object OpenDialog1: TOpenDialog
