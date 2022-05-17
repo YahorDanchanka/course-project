@@ -47,6 +47,7 @@ type
     DumpSalesByPercentMenuItem: TMenuItem;
     N11: TMenuItem;
     TitleFilterMenuItem: TMenuItem;
+    FoodSetFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -74,6 +75,7 @@ type
     procedure IncreasePercentMenuItemClick(Sender: TObject);
     procedure DumpSalesByPercentMenuItemClick(Sender: TObject);
     procedure TitleFilterMenuItemClick(Sender: TObject);
+    procedure FoodSetFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -275,6 +277,33 @@ procedure TForm2.EndDateSortDescMenuItemClick(Sender: TObject);
 begin
   EndDateSortAscMenuItemClick(EndDateSortAscMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.FoodSetFilterMenuItemClick(Sender: TObject);
+var
+  value: string;
+  sales: array of saleRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  value := InputBox('Фильтрация по полю "Название набора"', 'Название набора: ', '');
+
+  if length(value) = 0 then exit;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(sales, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(sales) do
+    sales[i - 1] := createSaleFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(sales) - 1 do
+    if AnsiLowerCase(Trim(sales[i].foodSet)) = AnsiLowerCase(Trim(value)) then AddSaleToStringGrid(sales[i]);
 end;
 
 procedure TForm2.FoodSetSortAscMenuItemClick(Sender: TObject);
@@ -524,7 +553,7 @@ begin
     exit;
   end;
 
-  value := InputBox('Фильтрация по полю "Название"', 'Название: ', '');
+  value := InputBox('Фильтрация по полю "Название ресторана"', 'Название ресторана: ', '');
 
   if length(value) = 0 then exit;
 
@@ -537,7 +566,7 @@ begin
   Form2.StringGrid1.RowCount := 1;
 
   for i := 0 to Length(sales) - 1 do
-    if sales[i].title = value then AddSaleToStringGrid(sales[i]);
+    if AnsiLowerCase(Trim(sales[i].title)) = AnsiLowerCase(Trim(value)) then AddSaleToStringGrid(sales[i]);
 end;
 
 procedure TForm2.TitleSortAscMenuItemClick(Sender: TObject);
