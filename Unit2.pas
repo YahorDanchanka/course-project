@@ -51,6 +51,7 @@ type
     PriceFilterMenuItem: TMenuItem;
     PercentFilterMenuItem: TMenuItem;
     StartDateFilterMenuItem: TMenuItem;
+    EndDateFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -82,6 +83,7 @@ type
     procedure PriceFilterMenuItemClick(Sender: TObject);
     procedure PercentFilterMenuItemClick(Sender: TObject);
     procedure StartDateFilterMenuItemClick(Sender: TObject);
+    procedure EndDateFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -253,6 +255,34 @@ begin
 
   for i := 0 to Length(sales) - 1 do
     if (StrToFloat(sales[i].percent) >= 20) and (StrToFloat(sales[i].percent) <= 40) then AddSaleToStringGrid(sales[i]);
+end;
+
+procedure TForm2.EndDateFilterMenuItemClick(Sender: TObject);
+var
+  dateStart, dateEnd: integer;
+  sales: array of saleRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  DateRangeInputForm.ShowModal;
+
+  dateStart := DateTimeToUnix(DateRangeInputForm.DateTimePicker1.Date);
+  dateEnd := DateTimeToUnix(DateRangeInputForm.DateTimePicker2.Date);
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(sales, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(sales) do
+    sales[i - 1] := createSaleFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(sales) - 1 do
+    if (DateTimeToUnix(StrToDateTime(sales[i].endDate)) >= dateStart) and (DateTimeToUnix(StrToDateTime(sales[i].endDate)) <= dateEnd) then AddSaleToStringGrid(sales[i]);
 end;
 
 procedure TForm2.EndDateSortAscMenuItemClick(Sender: TObject);
