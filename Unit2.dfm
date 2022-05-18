@@ -89,7 +89,7 @@ object Form2: TForm2
   end
   object MainMenu1: TMainMenu
     Left = 888
-    Top = 392
+    Top = 408
     object N1: TMenuItem
       Caption = #1060#1072#1081#1083
       object OpenMenuItem: TMenuItem
@@ -176,10 +176,6 @@ object Form2: TForm2
     end
     object N8: TMenuItem
       Caption = #1060#1080#1083#1100#1090#1088#1072#1094#1080#1103
-      object DateFilter: TMenuItem
-        Caption = #1044#1072#1090#1072' '#1087#1088#1086#1074#1077#1076#1077#1085#1080#1103
-        OnClick = DateFilterClick
-      end
     end
     object N10: TMenuItem
       Caption = #1060#1091#1085#1082#1094#1080#1080
@@ -187,10 +183,16 @@ object Form2: TForm2
         Caption = #1059#1074#1077#1083#1080#1095#1080#1090#1100' '#1089#1090#1086#1080#1084#1086#1089#1090#1100' '#1079#1072#1085#1103#1090#1080#1081
         OnClick = IncreasePriceMenuItemClick
       end
+      object DumpGroupsInDayMenuItem: TMenuItem
+        Caption = 
+          #1042#1099#1074#1077#1089#1090#1080' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1102' '#1086' '#1075#1088#1091#1087#1087#1072#1093', '#1079#1072#1085#1080#1084#1072#1102#1097#1080#1093#1089#1103' '#1074' '#1086#1087#1088#1077#1076#1077#1083#1077#1085#1085#1099#1081' '#1076#1077#1085#1100' '#1085 +
+          #1077#1076#1077#1083#1080
+        OnClick = DumpGroupsInDayMenuItemClick
+      end
     end
   end
   object OpenDialog1: TOpenDialog
-    Left = 848
-    Top = 392
+    Left = 856
+    Top = 408
   end
 end

@@ -37,12 +37,12 @@ type
     StudentsCountSortAsc: TMenuItem;
     StudentsCountSortDesc: TMenuItem;
     N8: TMenuItem;
-    DateFilter: TMenuItem;
     DeleteGroupsButton: TButton;
     N10: TMenuItem;
     IncreasePriceMenuItem: TMenuItem;
     SearchEdit: TEdit;
     SearchLabel: TLabel;
+    DumpGroupsInDayMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -68,6 +68,7 @@ type
     procedure SearchEditChange(Sender: TObject);
     procedure StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+    procedure DumpGroupsInDayMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -217,6 +218,11 @@ begin
 
   for i := 0 to Length(groups) - 1 do
     if StrToInt(groups[i].studentsCount) >= 10 then AddGroupToStringGrid(groups[i]);
+end;
+
+procedure TForm2.DumpGroupsInDayMenuItemClick(Sender: TObject);
+begin
+  Form4.ShowModal;
 end;
 
 procedure TForm2.FormActivate(Sender: TObject);
