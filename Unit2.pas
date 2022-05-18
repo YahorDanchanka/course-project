@@ -593,7 +593,7 @@ begin
   Form2.StringGrid1.RowCount := 1;
 
   for i := 0 to Length(sales) - 1 do
-    if (DateTimeToUnix(StrToDateTime(sales[i].startDate)) >= dateStart) and (DateTimeToUnix(StrToDateTime(sales[i].endDate)) <= dateEnd) then AddSaleToStringGrid(sales[i]);
+    if (DateTimeToUnix(StrToDateTime(sales[i].startDate)) >= dateStart) and (DateTimeToUnix(StrToDateTime(sales[i].startDate)) <= dateEnd) then AddSaleToStringGrid(sales[i]);
 end;
 
 procedure TForm2.StartDateSortAscMenuItemClick(Sender: TObject);
