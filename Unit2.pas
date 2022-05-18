@@ -43,6 +43,7 @@ type
     SearchEdit: TEdit;
     SearchLabel: TLabel;
     DumpGroupsInDayMenuItem: TMenuItem;
+    NumberFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -69,6 +70,7 @@ type
     procedure StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
     procedure DumpGroupsInDayMenuItemClick(Sender: TObject);
+    procedure NumberFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -313,6 +315,33 @@ procedure TForm2.LevelSortDescClick(Sender: TObject);
 begin
   LevelSortAscClick(LevelSortAsc);
   ReverseStringGrid();
+end;
+
+procedure TForm2.NumberFilterMenuItemClick(Sender: TObject);
+var
+  value: string;
+  groups: array of groupRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  value := InputBox('Фильтрация по полю "Номер группы"', 'Номер группы:', '');
+
+  if length(value) = 0 then exit;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(groups, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(groups) do
+    groups[i - 1] := createGroupFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(groups) - 1 do
+    if groups[i].number = value then AddGroupToStringGrid(groups[i]);
 end;
 
 procedure TForm2.NumberSortAscClick(Sender: TObject);
