@@ -40,8 +40,18 @@ uses Unit2;
 {$R *.dfm}
 
 procedure TForm3.AddSaleButtonClick(Sender: TObject);
-var sale: saleRecord;
+var
+  i: integer;
+  sale: saleRecord;
 begin
+  for i := 0 to Form3.ComponentCount - 1 do
+    if Form3.Components[i] is TEdit then
+      if TEdit(Form3.Components[i]).Text = '' then
+      begin
+        ShowMessage('Заполните все поля!');
+        exit;
+      end;
+
   sale.title := TitleEdit.Text;
   sale.foodSet := FoodSetEdit.Text;
   sale.price := PriceEdit.Text;
