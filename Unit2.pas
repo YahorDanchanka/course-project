@@ -44,6 +44,7 @@ type
     SearchLabel: TLabel;
     DumpGroupsInDayMenuItem: TMenuItem;
     NumberFilterMenuItem: TMenuItem;
+    LevelFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -71,6 +72,7 @@ type
       var Handled: Boolean);
     procedure DumpGroupsInDayMenuItemClick(Sender: TObject);
     procedure NumberFilterMenuItemClick(Sender: TObject);
+    procedure LevelFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -282,6 +284,33 @@ end;
 procedure TForm2.IncreasePriceMenuItemClick(Sender: TObject);
 begin
   Form5.ShowModal;
+end;
+
+procedure TForm2.LevelFilterMenuItemClick(Sender: TObject);
+var
+  value: string;
+  groups: array of groupRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  value := InputBox('Фильтрация по полю "Уровень"', 'Уровень:', '');
+
+  if length(value) = 0 then exit;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(groups, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(groups) do
+    groups[i - 1] := createGroupFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(groups) - 1 do
+    if groups[i].level = value then AddGroupToStringGrid(groups[i]);
 end;
 
 procedure TForm2.LevelSortAscClick(Sender: TObject);
