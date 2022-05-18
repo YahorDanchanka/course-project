@@ -195,6 +195,10 @@ object Form2: TForm2
         Caption = #1057#1088#1086#1082' '#1086#1082#1086#1085#1095#1072#1085#1080#1103
         OnClick = EndDateFilterMenuItemClick
       end
+      object DescriptionFilterMenuItem: TMenuItem
+        Caption = #1054#1087#1080#1089#1072#1085#1080#1077
+        OnClick = DescriptionFilterMenuItemClick
+      end
     end
     object N10: TMenuItem
       Caption = #1060#1091#1085#1082#1094#1080#1080
