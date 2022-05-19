@@ -45,6 +45,7 @@ type
     N10: TMenuItem;
     FullnameFilterMenuItem: TMenuItem;
     BirthdayFilterMenuItem: TMenuItem;
+    AddressFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -71,6 +72,7 @@ type
     procedure DumpCurrentYearStudentsMenuItemClick(Sender: TObject);
     procedure FullnameFilterMenuItemClick(Sender: TObject);
     procedure BirthdayFilterMenuItemClick(Sender: TObject);
+    procedure AddressFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -207,6 +209,33 @@ procedure TForm2.AddressDescMenuItemClick(Sender: TObject);
 begin
   AddressAscMenuItemClick(AddressDescMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.AddressFilterMenuItemClick(Sender: TObject);
+var
+  value: string;
+  students: array of studentRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  value := InputBox('Фильтрация по полю "Адрес"', 'Адрес:', '');
+
+  if length(value) = 0 then exit;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(students, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(students) do
+    students[i - 1] := createStudentFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(students) - 1 do
+    if AnsiLowerCase(Trim(students[i].address)) = AnsiLowerCase(Trim(value)) then AddStudentToStringGrid(students[i]);
 end;
 
 procedure TForm2.BirthdayAscMenuItemClick(Sender: TObject);
