@@ -44,6 +44,7 @@ type
     DumpCurrentYearStudentsMenuItem: TMenuItem;
     N10: TMenuItem;
     FullnameFilterMenuItem: TMenuItem;
+    BirthdayFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -69,6 +70,7 @@ type
     procedure SearchEditChange(Sender: TObject);
     procedure DumpCurrentYearStudentsMenuItemClick(Sender: TObject);
     procedure FullnameFilterMenuItemClick(Sender: TObject);
+    procedure BirthdayFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -98,7 +100,7 @@ var
 
 implementation
 
-uses Unit1, Unit3, Unit4;
+uses Unit1, Unit3, Unit4, Unit5;
 
 {$R *.dfm}
 
@@ -235,6 +237,34 @@ procedure TForm2.BirthdayDescMenuItemClick(Sender: TObject);
 begin
   BirthdayAscMenuItemClick(BirthdayAscMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.BirthdayFilterMenuItemClick(Sender: TObject);
+var
+  dateStart, dateEnd: integer;
+  students: array of studentRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  DateRangeInputForm.ShowModal;
+
+  dateStart := DateTimeToUnix(DateRangeInputForm.DateTimePicker1.Date);
+  dateEnd := DateTimeToUnix(DateRangeInputForm.DateTimePicker2.Date);
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(students, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(students) do
+    students[i - 1] := createStudentFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(students) - 1 do
+    if (DateTimeToUnix(StrToDateTime(students[i].birthday)) >= dateStart) and (DateTimeToUnix(StrToDateTime(students[i].birthday)) <= dateEnd) then AddStudentToStringGrid(students[i]);
 end;
 
 procedure TForm2.DeleteRecordsByGroupNumberMenuItemClick(Sender: TObject);
