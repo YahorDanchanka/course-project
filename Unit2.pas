@@ -47,6 +47,7 @@ type
     BirthdayFilterMenuItem: TMenuItem;
     AddressFilterMenuItem: TMenuItem;
     SpecialtyFIlterMenuItem: TMenuItem;
+    GroupNumberFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -75,6 +76,7 @@ type
     procedure BirthdayFilterMenuItemClick(Sender: TObject);
     procedure AddressFilterMenuItemClick(Sender: TObject);
     procedure SpecialtyFIlterMenuItemClick(Sender: TObject);
+    procedure GroupNumberFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -456,6 +458,42 @@ procedure TForm2.GroupNumberDescMenuItemClick(Sender: TObject);
 begin
   GroupNumberAscMenuItemClick(GroupNumberDescMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.GroupNumberFilterMenuItemClick(Sender: TObject);
+var
+  valueNum1, valueNum2: string;
+  students: array of studentRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  valueNum1 := InputBox('Фильтрация по полю "Номер группы"', 'От: ', '');
+  valueNum2 := InputBox('Фильтрация по полю "Номер группы"', 'До: ', '');
+
+  try
+    StrToFloat(valueNum1);
+    StrToFloat(valueNum2);
+  except
+    ShowMessage('Введите число!');
+    exit;
+  end;
+
+  if (length(valueNum1) = 0) or (length(valueNum2) = 0) then exit;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(students, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(students) do
+    students[i - 1] := createStudentFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(students) - 1 do
+    if (StrToFloat(students[i].groupNumber) >= StrToFloat(valueNum1)) and (StrToFloat(students[i].groupNumber) <= StrToFloat(valueNum2)) then AddStudentToStringGrid(students[i]);
 end;
 
 procedure TForm2.IncreaseCourseMenuItemClick(Sender: TObject);
