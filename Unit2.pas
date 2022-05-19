@@ -48,6 +48,7 @@ type
     AddressFilterMenuItem: TMenuItem;
     SpecialtyFIlterMenuItem: TMenuItem;
     GroupNumberFilterMenuItem: TMenuItem;
+    ReceiptDateFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -77,6 +78,7 @@ type
     procedure AddressFilterMenuItemClick(Sender: TObject);
     procedure SpecialtyFIlterMenuItemClick(Sender: TObject);
     procedure GroupNumberFilterMenuItemClick(Sender: TObject);
+    procedure ReceiptDateFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -549,6 +551,34 @@ procedure TForm2.ReceiptDateDescMenuItemClick(Sender: TObject);
 begin
   ReceiptDateAscMenuItemClick(ReceiptDateDescMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.ReceiptDateFilterMenuItemClick(Sender: TObject);
+var
+  dateStart, dateEnd: integer;
+  students: array of studentRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  DateRangeInputForm.ShowModal;
+
+  dateStart := DateTimeToUnix(DateRangeInputForm.DateTimePicker1.Date);
+  dateEnd := DateTimeToUnix(DateRangeInputForm.DateTimePicker2.Date);
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(students, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(students) do
+    students[i - 1] := createStudentFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(students) - 1 do
+    if (DateTimeToUnix(StrToDateTime(students[i].receiptDate)) >= dateStart) and (DateTimeToUnix(StrToDateTime(students[i].receiptDate)) <= dateEnd) then AddStudentToStringGrid(students[i]);
 end;
 
 procedure TForm2.SaveAsMenuItemClick(Sender: TObject);

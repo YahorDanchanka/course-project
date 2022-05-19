@@ -180,6 +180,10 @@ object Form2: TForm2
         Caption = #1053#1086#1084#1077#1088' '#1075#1088#1091#1087#1087#1099
         OnClick = GroupNumberFilterMenuItemClick
       end
+      object ReceiptDateFilterMenuItem: TMenuItem
+        Caption = #1044#1072#1090#1072' '#1087#1086#1089#1090#1091#1087#1083#1077#1085#1080#1103
+        OnClick = ReceiptDateFilterMenuItemClick
+      end
     end
     object N9: TMenuItem
       Caption = #1060#1091#1085#1082#1094#1080#1080
