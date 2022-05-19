@@ -158,6 +158,13 @@ object Form2: TForm2
         end
       end
     end
+    object N10: TMenuItem
+      Caption = #1060#1080#1083#1100#1090#1088#1072#1094#1080#1103
+      object FullnameFilterMenuItem: TMenuItem
+        Caption = #1060#1048#1054' '#1091#1095#1072#1097#1077#1075#1086#1089#1103
+        OnClick = FullnameFilterMenuItemClick
+      end
+    end
     object N9: TMenuItem
       Caption = #1060#1091#1085#1082#1094#1080#1080
       object DeleteRecordsByGroupNumberMenuItem: TMenuItem
