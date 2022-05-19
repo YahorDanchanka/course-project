@@ -202,7 +202,15 @@ object Form2: TForm2
     end
   end
   object OpenDialog1: TOpenDialog
+    DefaultExt = 'pgdat'
+    Filter = #1057#1090#1091#1076#1077#1085#1090#1099'|*.pgdat'
     Left = 848
+    Top = 392
+  end
+  object SaveDialog1: TSaveDialog
+    DefaultExt = 'pgdat'
+    Filter = #1057#1090#1091#1076#1077#1085#1090#1099'|*.pgdat'
+    Left = 816
     Top = 392
   end
 end
