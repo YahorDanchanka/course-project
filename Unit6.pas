@@ -14,6 +14,7 @@ type
     DateTimePicker2: TDateTimePicker;
     Button1: TButton;
     procedure Button1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -30,6 +31,11 @@ implementation
 procedure TDateRangeInputForm.Button1Click(Sender: TObject);
 begin
   DateRangeInputForm.Close;
+end;
+
+procedure TDateRangeInputForm.FormCreate(Sender: TObject);
+begin
+DateRangeInputForm.Color:=	$C0DCC0;
 end;
 
 end.

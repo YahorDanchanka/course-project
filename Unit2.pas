@@ -50,6 +50,7 @@ type
     DateFilterMenuItem: TMenuItem;
     StudentsCountFilter: TMenuItem;
     SaveDialog1: TSaveDialog;
+    HelpLabelDelete: TLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
