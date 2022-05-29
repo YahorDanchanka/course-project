@@ -129,6 +129,17 @@ object Form2: TForm2
           OnClick = StartedDateSortDescMenuItemClick
         end
       end
+      object N9: TMenuItem
+        Caption = #1057#1088#1086#1082' '#1076#1077#1081#1089#1090#1074#1080#1103
+        object ExpiresSortAscMenuItem: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = ExpiresSortAscMenuItemClick
+        end
+        object ExpiresSortDescMenuItem: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = ExpiresSortDescMenuItemClick
+        end
+      end
     end
   end
   object OpenDialog1: TOpenDialog
