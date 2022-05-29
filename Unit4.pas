@@ -45,29 +45,36 @@ end;
 
 procedure TForm4.IncreasePercentButtonClick(Sender: TObject);
 var
-  sale: saleRecord;
+  sales: array of saleRecord;
   i: integer;
-  percent, increasedPercent: real;
 begin
-  if Form2.StringGrid1.RowCount <= 1 then
+  if (length(storageFilePath) = 0) or (ListBox1.ItemIndex = -1) then exit;
+
+  AssignFile(storageFile, storageFilePath);
+  Reset(storageFile);
+  SetLength(sales, Filesize(storageFile));
+
+  for i := 0 to Filesize(storageFile) - 1 do
+    read(storageFile, sales[i]);
+
+  CloseFile(storageFile);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(sales) - 1 do
   begin
-    ShowMessage('Данные не найдены.');
-    exit;
+    if (sales[i].title = ListBox1.Items[ListBox1.ItemIndex]) and (StrToFloat(sales[i].percent) + 3 <= 100) then
+      sales[i].percent := FloatToStr(StrToFloat(sales[i].percent) + 3);
+    AddSaleToStringGrid(sales[i]);
   end;
 
-  for i := 1 to Form2.StringGrid1.RowCount - 1 do
-  begin
-    sale := createSaleFromStringGrid(i);
-    if sale.title = ListBox1.Items[ListBox1.ItemIndex] then
-    begin
-      percent := StrToFloat(sale.percent);
-      increasedPercent := percent + 3;
+  AssignFile(storageFile, storageFilePath);
+  Rewrite(storageFile);
 
-      if increasedPercent > 100  then exit;
+  for i := 0 to Length(sales) - 1 do
+    write(storageFile, sales[i]);
 
-      Form2.StringGrid1.Cells[3, i] := FloatToStr(percent + 3);
-    end;
-  end;
+  CloseFile(storageFile);
 end;
 
 end.
