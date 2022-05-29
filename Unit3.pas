@@ -4,32 +4,32 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, Unit2;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, Unit2,
+  Vcl.Mask;
 
 type
   TForm3 = class(TForm)
     Label1: TLabel;
-    NumberEdit: TEdit;
-    LevelEdit: TEdit;
-    Label2: TLabel;
     FullnameEdit: TEdit;
+    Label2: TLabel;
+    VisitsCountEdit: TEdit;
     Label3: TLabel;
     PriceEdit: TEdit;
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
-    CountEdit: TEdit;
+    ExpiresEdit: TEdit;
     Label7: TLabel;
     AddGroupButton: TButton;
+    TicketTypeComboBox: TComboBox;
     DateTimePicker1: TDateTimePicker;
-    DateTimePicker2: TDateTimePicker;
+    PassportEdit: TMaskEdit;
     procedure AddGroupButtonClick(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
   end;
-  procedure AddGroupToStringGrid(group: groupRecord);
 
 var
   Form3: TForm3;
@@ -38,32 +38,34 @@ implementation
 
 {$R *.dfm}
 
-procedure AddGroupToStringGrid(group: groupRecord);
-begin
-  Form2.StringGrid1.RowCount := Form2.StringGrid1.RowCount + 1;
-  Form2.StringGrid1.FixedRows := 1;
-
-  const rowIndex = Form2.StringGrid1.RowCount - 1;
-
-  Form2.StringGrid1.Cells[0, rowIndex] := group.number;
-  Form2.StringGrid1.Cells[1, rowIndex] := group.level;
-  Form2.StringGrid1.Cells[2, rowIndex] := group.fullName;
-  Form2.StringGrid1.Cells[3, rowIndex] := group.price;
-  Form2.StringGrid1.Cells[4, rowIndex] := group.day;
-  Form2.StringGrid1.Cells[5, rowIndex] := group.time;
-  Form2.StringGrid1.Cells[6, rowIndex] := group.studentsCount;
-end;
-
 procedure TForm3.AddGroupButtonClick(Sender: TObject);
-var group: groupRecord;
+var
+  i: integer;
+  group: groupRecord;
 begin
-  group.number := NumberEdit.Text;
-  group.level := LevelEdit.Text;
-  group.fullName := FullnameEdit.Text;
+  for i := 0 to Form3.ComponentCount - 1 do
+  begin
+    if Form3.Components[i] is TEdit then
+      if TEdit(Form3.Components[i]).Text = '' then
+      begin
+        ShowMessage('Заполните все поля!');
+        exit;
+      end;
+
+    if (Pos(' ', PassportEdit.Text) <> 0) or (TicketTypeComboBox.ItemIndex = -1) then
+    begin
+      ShowMessage('Заполните все поля!');
+      exit;
+    end;
+  end;
+
+  group.fullname := FullnameEdit.Text;
+  group.passport := PassportEdit.Text;
+  group.visitsCount := VisitsCountEdit.Text;
   group.price := PriceEdit.Text;
-  group.day := DateToStr(DateTimePicker1.Date);
-  group.time := TimeToStr(DateTimePicker2.Time);
-  group.studentsCount := CountEdit.Text;
+  group.ticketType := TicketTypeComboBox.Items[TicketTypeComboBox.ItemIndex];
+  group.startedDate := DateToStr(DateTimePicker1.Date);
+  group.expires := ExpiresEdit.Text;
   AddGroupToStringGrid(group);
   Form3.Close;
 end;

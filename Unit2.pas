@@ -28,10 +28,11 @@ type
     { Public declarations }
   end;
   groupRecord = record
-    number, level, fullName, price, day, time, studentsCount: string[20];
+    fullname, passport, visitsCount, price, ticketType, startedDate, expires: string[20];
   end;
+  procedure AddGroupToStringGrid(group: groupRecord);
 
-const fields: array of String = ['Номер группы', 'Уровень', 'ФИО преподавателя', 'Стоимость за занятие', 'День проведения', 'Время проведения', 'Количество учащихся'];
+const fields: array of String = ['ФИО', 'Паспорт', 'Кол-во посещений', 'Стоимость', 'Тип абонемента', 'Дата начала', 'Срок действия'];
 
 var
   Form2: TForm2;
@@ -45,16 +46,32 @@ uses Unit1, Unit3;
 
 {$R *.dfm}
 
+procedure AddGroupToStringGrid(group: groupRecord);
+begin
+  Form2.StringGrid1.RowCount := Form2.StringGrid1.RowCount + 1;
+  Form2.StringGrid1.FixedRows := 1;
+
+  const rowIndex = Form2.StringGrid1.RowCount - 1;
+
+  Form2.StringGrid1.Cells[0, rowIndex] := group.fullname;
+  Form2.StringGrid1.Cells[1, rowIndex] := group.passport;
+  Form2.StringGrid1.Cells[2, rowIndex] := group.visitsCount;
+  Form2.StringGrid1.Cells[3, rowIndex] := group.price;
+  Form2.StringGrid1.Cells[4, rowIndex] := group.ticketType;
+  Form2.StringGrid1.Cells[5, rowIndex] := group.startedDate;
+  Form2.StringGrid1.Cells[6, rowIndex] := group.expires;
+end;
+
 function createGroupFromStringGrid(rowIndex: integer): groupRecord;
 var group: groupRecord;
 begin
-  group.number := Form2.StringGrid1.Cells[0, rowIndex];
-  group.level := Form2.StringGrid1.Cells[1, rowIndex];
-  group.fullName := Form2.StringGrid1.Cells[2, rowIndex];
+  group.fullname := Form2.StringGrid1.Cells[0, rowIndex];
+  group.passport := Form2.StringGrid1.Cells[1, rowIndex];
+  group.visitsCount := Form2.StringGrid1.Cells[2, rowIndex];
   group.price := Form2.StringGrid1.Cells[3, rowIndex];
-  group.day := Form2.StringGrid1.Cells[4, rowIndex];
-  group.time := Form2.StringGrid1.Cells[5, rowIndex];
-  group.studentsCount := Form2.StringGrid1.Cells[6, rowIndex];
+  group.ticketType := Form2.StringGrid1.Cells[4, rowIndex];
+  group.startedDate := Form2.StringGrid1.Cells[5, rowIndex];
+  group.expires := Form2.StringGrid1.Cells[6, rowIndex];
   result := group;
 end;
 
