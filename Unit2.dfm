@@ -107,6 +107,17 @@ object Form2: TForm2
           OnClick = PriceSortDescMenuItemClick
         end
       end
+      object N7: TMenuItem
+        Caption = #1058#1080#1087' '#1072#1073#1086#1085#1077#1084#1077#1085#1090#1072
+        object TicketTypeSortAscMenuItem: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = TicketTypeSortAscMenuItemClick
+        end
+        object TicketTypeSortDescMenuItem: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = TicketTypeSortDescMenuItemClick
+        end
+      end
     end
   end
   object OpenDialog1: TOpenDialog
