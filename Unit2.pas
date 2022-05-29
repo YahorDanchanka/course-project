@@ -27,6 +27,9 @@ type
     N5: TMenuItem;
     VisitsCountSortAscMenuItem: TMenuItem;
     VisitsCountSortDescMenuItem: TMenuItem;
+    N6: TMenuItem;
+    PriceSortAscMenuItem: TMenuItem;
+    PriceSortDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -39,6 +42,8 @@ type
     procedure PassportSortDescMenuItemClick(Sender: TObject);
     procedure VisitsCountSortAscMenuItemClick(Sender: TObject);
     procedure VisitsCountSortDescMenuItemClick(Sender: TObject);
+    procedure PriceSortAscMenuItemClick(Sender: TObject);
+    procedure PriceSortDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -234,6 +239,39 @@ end;
 procedure TForm2.PassportSortDescMenuItemClick(Sender: TObject);
 begin
   PassportSortAscMenuItemClick(PassportSortAscMenuItem);
+  ReverseStringGrid();
+end;
+
+procedure TForm2.PriceSortAscMenuItemClick(Sender: TObject);
+var
+  groups: array of groupRecord;
+  group: groupRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(groups, StringGrid1.RowCount - 1);
+
+  // Skip first row
+  for i := 1 to Length(groups) do
+    groups[i - 1] := createGroupFromStringGrid(i);
+
+  TArray.Sort<groupRecord>(groups, TDelegatedComparer<groupRecord>.Construct(
+    function(const Left, Right: groupRecord): integer
+    begin
+      Result := TComparer<real>.Default.Compare(StrToFloat(left.price), StrToFloat(right.price));
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(groups) - 1 do
+    AddGroupToStringGrid(groups[i]);
+end;
+
+procedure TForm2.PriceSortDescMenuItemClick(Sender: TObject);
+begin
+  PriceSortAscMenuItemClick(PriceSortAscMenuItem);
   ReverseStringGrid();
 end;
 
