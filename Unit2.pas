@@ -33,6 +33,9 @@ type
     N7: TMenuItem;
     TicketTypeSortAscMenuItem: TMenuItem;
     TicketTypeSortDescMenuItem: TMenuItem;
+    N8: TMenuItem;
+    StartedDateSortAscMenuItem: TMenuItem;
+    StartedDateSortDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -49,6 +52,8 @@ type
     procedure PriceSortDescMenuItemClick(Sender: TObject);
     procedure TicketTypeSortAscMenuItemClick(Sender: TObject);
     procedure TicketTypeSortDescMenuItemClick(Sender: TObject);
+    procedure StartedDateSortAscMenuItemClick(Sender: TObject);
+    procedure StartedDateSortDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -315,6 +320,36 @@ begin
   end;
 
   CloseFile(storageFile);
+end;
+
+procedure TForm2.StartedDateSortAscMenuItemClick(Sender: TObject);
+var groups: array of groupRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(groups, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(groups) do
+    groups[i - 1] := createGroupFromStringGrid(i);
+
+  TArray.Sort<groupRecord>(groups, TDelegatedComparer<groupRecord>.Construct(
+    function(const Left, Right: groupRecord): integer
+    begin
+      Result := TComparer<integer>.Default.Compare(DateTimeToUnix(StrToDateTime(left.startedDate)), DateTimeToUnix(StrToDateTime(right.startedDate)));
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(groups) - 1 do
+    AddGroupToStringGrid(groups[i]);
+end;
+
+procedure TForm2.StartedDateSortDescMenuItemClick(Sender: TObject);
+begin
+  StartedDateSortAscMenuItemClick(StartedDateSortAscMenuItem);
+  ReverseStringGrid();
 end;
 
 procedure TForm2.TicketTypeSortAscMenuItemClick(Sender: TObject);
