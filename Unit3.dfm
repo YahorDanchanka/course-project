@@ -144,6 +144,7 @@ object Form3: TForm3
     Font.Style = []
     ParentFont = False
     TabOrder = 2
+    OnKeyPress = PriceEditKeyPress
   end
   object PercentEdit: TEdit
     Left = 8
@@ -155,6 +156,7 @@ object Form3: TForm3
     Font.Height = -17
     Font.Name = 'Segoe UI'
     Font.Style = []
+    NumbersOnly = True
     ParentFont = False
     TabOrder = 3
   end

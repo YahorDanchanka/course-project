@@ -24,6 +24,7 @@ type
     StartDateTimePicker: TDateTimePicker;
     EndDateTimePicker: TDateTimePicker;
     procedure AddSaleButtonClick(Sender: TObject);
+    procedure PriceEditKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -61,6 +62,11 @@ begin
   sale.description := DescriptionEdit.Text;
   AddSaleToStringGrid(sale);
   Form3.Close;
+end;
+
+procedure TForm3.PriceEditKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not (Key in ['0'..'9', ',', #8]) then Key := #0;
 end;
 
 end.
