@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls, System.Generics.Collections,
+  System.Generics.Defaults, DateUtils;
 
 type
   TForm2 = class(TForm)
@@ -16,12 +17,18 @@ type
     StringGrid1: TStringGrid;
     OpenDialog1: TOpenDialog;
     AddGroupButton: TButton;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    FullnameSortAscMenuItem: TMenuItem;
+    FullnameSortDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
     procedure AddGroupButtonClick(Sender: TObject);
     procedure OpenMenuItemClick(Sender: TObject);
     procedure SaveMenuItemClick(Sender: TObject);
+    procedure FullnameSortAscMenuItemClick(Sender: TObject);
+    procedure FullnameSortDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -45,6 +52,40 @@ implementation
 uses Unit1, Unit3;
 
 {$R *.dfm}
+
+procedure UpdateStringGridFromFile(path: string);
+var group: groupRecord;
+begin
+  Form2.StringGrid1.RowCount := 1;
+
+  AssignFile(storageFile, path);
+  Reset(storageFile);
+
+  for i := 1 to Filesize(storageFile) do
+  begin
+    read(storageFile, group);
+    AddGroupToStringGrid(group);
+  end;
+
+  CloseFile(storageFile);
+end;
+
+procedure ReverseStringGrid();
+var
+  i, j, k, cnt: integer;
+  s: string;
+begin
+  cnt := Form2.StringGrid1.RowCount;
+  k := Form2.StringGrid1.RowCount div 2;
+
+  for j := 0 to 6 do
+    for i := 1 to k do
+    begin
+      s := Form2.StringGrid1.Cells[j,i];
+      Form2.StringGrid1.Cells[j,i] := Form2.StringGrid1.Cells[j,cnt-i];
+      Form2.StringGrid1.Cells[j,cnt-i] := s;
+    end;
+end;
 
 procedure AddGroupToStringGrid(group: groupRecord);
 begin
@@ -98,6 +139,39 @@ end;
 procedure TForm2.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Form1.Close;
+end;
+
+procedure TForm2.FullnameSortAscMenuItemClick(Sender: TObject);
+var
+  groups: array of groupRecord;
+  group: groupRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(groups, StringGrid1.RowCount - 1);
+
+  // Skip first row
+  for i := 1 to Length(groups) do
+    groups[i - 1] := createGroupFromStringGrid(i);
+
+  TArray.Sort<groupRecord>(groups, TDelegatedComparer<groupRecord>.Construct(
+    function(const Left, Right: groupRecord): integer
+    begin
+      Result := TComparer<string>.Default.Compare(left.fullname, right.fullName);
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(groups) - 1 do
+    AddGroupToStringGrid(groups[i]);
+end;
+
+procedure TForm2.FullnameSortDescMenuItemClick(Sender: TObject);
+begin
+  FullnameSortAscMenuItemClick(FullnameSortAscMenuItem);
+  ReverseStringGrid();
 end;
 
 procedure TForm2.OpenMenuItemClick(Sender: TObject);
