@@ -85,6 +85,17 @@ object Form2: TForm2
           OnClick = PassportSortDescMenuItemClick
         end
       end
+      object N5: TMenuItem
+        Caption = #1050#1086#1083'-'#1074#1086' '#1087#1086#1089#1077#1097#1077#1085#1080#1081
+        object VisitsCountSortAscMenuItem: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = VisitsCountSortAscMenuItemClick
+        end
+        object VisitsCountSortDescMenuItem: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = VisitsCountSortDescMenuItemClick
+        end
+      end
     end
   end
   object OpenDialog1: TOpenDialog
