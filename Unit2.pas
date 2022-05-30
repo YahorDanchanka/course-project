@@ -46,6 +46,7 @@ type
     AgeLimitFilterMenuItem: TMenuItem;
     CategoryFilterMenuItem: TMenuItem;
     PriceFilterMenuItem: TMenuItem;
+    PremiereDateFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -73,6 +74,7 @@ type
     procedure AgeLimitFilterMenuItemClick(Sender: TObject);
     procedure CategoryFilterMenuItemClick(Sender: TObject);
     procedure PriceFilterMenuItemClick(Sender: TObject);
+    procedure PremiereDateFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -91,7 +93,7 @@ var
 
 implementation
 
-uses Unit1, Unit3, Unit4;
+uses Unit1, Unit3, Unit4, Unit5;
 
 {$R *.dfm}
 
@@ -431,6 +433,34 @@ begin
 
   SetStorageFilePath(OpenDialog1.FileName);
   CloseFile(storageFile);
+end;
+
+procedure TForm2.PremiereDateFilterMenuItemClick(Sender: TObject);
+var
+  dateStart, dateEnd: integer;
+  performances: array of PerformanceRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  DateRangeInputForm.ShowModal;
+
+  dateStart := DateTimeToUnix(DateRangeInputForm.DateTimePicker1.Date);
+  dateEnd := DateTimeToUnix(DateRangeInputForm.DateTimePicker2.Date);
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(performances, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(performances) do
+    performances[i - 1] := createPerformanceFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(performances) - 1 do
+    if (DateTimeToUnix(StrToDateTime(performances[i].premiereDate)) >= dateStart) and (DateTimeToUnix(StrToDateTime(performances[i].premiereDate)) <= dateEnd) then AddPerformanceToStringGrid(performances[i]);
 end;
 
 procedure TForm2.PremiereDateSortAscMenuItemClick(Sender: TObject);
