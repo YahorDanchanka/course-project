@@ -50,6 +50,7 @@ type
     SaveDialog1: TSaveDialog;
     N18: TMenuItem;
     DeleteOldRecordMenuItem: TMenuItem;
+    N19: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -80,6 +81,7 @@ type
     procedure StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
     procedure DeleteOldRecordMenuItemClick(Sender: TObject);
+    procedure N19Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -89,6 +91,8 @@ type
     fullname, passport, visitsCount, price, ticketType, startedDate, expires: string[20];
   end;
   procedure AddGroupToStringGrid(group: groupRecord);
+  procedure UpdateStringGridFromFile(path: string);
+  function createGroupFromStringGrid(rowIndex: integer): groupRecord;
 
 const fields: array of String = ['ФИО', 'Паспорт', 'Кол-во посещений', 'Стоимость', 'Тип абонемента', 'Дата начала', 'Срок действия'];
 
@@ -100,7 +104,7 @@ var
 
 implementation
 
-uses Unit1, Unit3, Unit4;
+uses Unit1, Unit3, Unit4, Unit5;
 
 {$R *.dfm}
 
@@ -498,6 +502,12 @@ begin
 
   for i := 0 to Length(groups) - 1 do
     if (StrToFloat(groups[i].expires) >= StrToFloat(valueNum1)) and (StrToFloat(groups[i].expires) <= StrToFloat(valueNum2)) then AddGroupToStringGrid(groups[i]);
+end;
+
+procedure TForm2.N19Click(Sender: TObject);
+begin
+  if StringGrid1.RowCount <= 1 then exit;
+  Form5.ShowModal;
 end;
 
 procedure TForm2.OpenMenuItemClick(Sender: TObject);
