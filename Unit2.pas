@@ -40,6 +40,8 @@ type
     N9: TMenuItem;
     DaysSortAscMenuItem: TMenuItem;
     DaysSortDescMenuItem: TMenuItem;
+    N10: TMenuItem;
+    TitleFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -62,6 +64,7 @@ type
     procedure PremiereDateSortDescMenuItemClick(Sender: TObject);
     procedure DaysSortDescMenuItemClick(Sender: TObject);
     procedure DaysSortAscMenuItemClick(Sender: TObject);
+    procedure TitleFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -443,6 +446,33 @@ begin
     if i + 1 <> activeIndex then AddPerformanceToStringGrid(performances[i]);
 
   if StringGrid1.RowCount <= 1 then StringGrid1.Options := StringGrid1.Options - [goEditing];
+end;
+
+procedure TForm2.TitleFilterMenuItemClick(Sender: TObject);
+var
+  value: string;
+  performances: array of PerformanceRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  value := InputBox('Фильтрация по полю "Название спектакля"', 'Название спектакля: ', '');
+
+  if length(value) = 0 then exit;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(performances, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(performances) do
+    performances[i - 1] := createPerformanceFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(performances) - 1 do
+    if Trim(LowerCase(performances[i].title)) = Trim(LowerCase(value)) then AddPerformanceToStringGrid(performances[i]);
 end;
 
 procedure TForm2.TitleSortAscMenuItemClick(Sender: TObject);
