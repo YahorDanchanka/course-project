@@ -43,6 +43,7 @@ type
     N10: TMenuItem;
     TitleFilterMenuItem: TMenuItem;
     DurationFilterMenuItem: TMenuItem;
+    AgeLimitFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -67,6 +68,7 @@ type
     procedure DaysSortAscMenuItemClick(Sender: TObject);
     procedure TitleFilterMenuItemClick(Sender: TObject);
     procedure DurationFilterMenuItemClick(Sender: TObject);
+    procedure AgeLimitFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -162,6 +164,42 @@ end;
 procedure TForm2.AddPerfomanceButtonClick(Sender: TObject);
 begin
   Form3.ShowModal;
+end;
+
+procedure TForm2.AgeLimitFilterMenuItemClick(Sender: TObject);
+var
+  valueNum1, valueNum2: string;
+  performances: array of PerformanceRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  valueNum1 := InputBox('Фильтрация по полю "Возрастное ограничение"', 'От: ', '');
+  valueNum2 := InputBox('Фильтрация по полю "Возрастное ограничение"', 'До: ', '');
+
+  try
+    StrToFloat(valueNum1);
+    StrToFloat(valueNum2);
+  except
+    ShowMessage('Введите число!');
+    exit;
+  end;
+
+  if (length(valueNum1) = 0) or (length(valueNum2) = 0) then exit;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(performances, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(performances) do
+    performances[i - 1] := createPerformanceFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(performances) - 1 do
+    if (StrToFloat(performances[i].ageLimit) >= StrToFloat(valueNum1)) and (StrToFloat(performances[i].ageLimit) <= StrToFloat(valueNum2)) then AddPerformanceToStringGrid(performances[i]);
 end;
 
 procedure TForm2.AgeLimitSortAscMenuItemClick(Sender: TObject);
