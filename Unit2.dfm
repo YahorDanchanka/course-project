@@ -26,6 +26,7 @@ object Form2: TForm2
     FixedCols = 0
     RowCount = 1
     FixedRows = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing, goFixedRowDefAlign]
     TabOrder = 0
   end
   object AddGroupButton: TButton
@@ -139,6 +140,13 @@ object Form2: TForm2
           Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
           OnClick = ExpiresSortDescMenuItemClick
         end
+      end
+    end
+    object N10: TMenuItem
+      Caption = #1060#1080#1083#1100#1090#1088#1099
+      object N11: TMenuItem
+        Caption = #1060#1048#1054
+        OnClick = N11Click
       end
     end
   end

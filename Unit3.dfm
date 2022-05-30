@@ -187,8 +187,10 @@ object Form3: TForm3
     Font.Height = -17
     Font.Name = 'Segoe UI'
     Font.Style = []
+    ItemIndex = 0
     ParentFont = False
     TabOrder = 4
+    Text = #1054#1073#1099#1095#1085#1099#1081
     Items.Strings = (
       #1054#1073#1099#1095#1085#1099#1081
       #1057' '#1083#1080#1095#1085#1099#1084' '#1090#1088#1077#1085#1077#1088#1086#1084)

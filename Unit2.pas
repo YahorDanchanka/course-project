@@ -39,6 +39,8 @@ type
     N9: TMenuItem;
     ExpiresSortAscMenuItem: TMenuItem;
     ExpiresSortDescMenuItem: TMenuItem;
+    N10: TMenuItem;
+    N11: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -59,6 +61,7 @@ type
     procedure StartedDateSortDescMenuItemClick(Sender: TObject);
     procedure ExpiresSortAscMenuItemClick(Sender: TObject);
     procedure ExpiresSortDescMenuItemClick(Sender: TObject);
+    procedure N11Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -235,6 +238,33 @@ procedure TForm2.FullnameSortDescMenuItemClick(Sender: TObject);
 begin
   FullnameSortAscMenuItemClick(FullnameSortAscMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.N11Click(Sender: TObject);
+var
+  value: string;
+  groups: array of groupRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  value := InputBox('Фильтрация по полю "ФИО"', 'ФИО:', '');
+
+  if length(value) = 0 then exit;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(groups, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(groups) do
+    groups[i - 1] := createGroupFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(groups) - 1 do
+    if AnsiLowerCase(Trim(groups[i].fullName)) = AnsiLowerCase(Trim(value)) then AddGroupToStringGrid(groups[i]);
 end;
 
 procedure TForm2.OpenMenuItemClick(Sender: TObject);
