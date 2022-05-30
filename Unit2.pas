@@ -51,6 +51,7 @@ type
     N18: TMenuItem;
     DeleteOldRecordMenuItem: TMenuItem;
     N19: TMenuItem;
+    DumpMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -82,6 +83,7 @@ type
       var Handled: Boolean);
     procedure DeleteOldRecordMenuItemClick(Sender: TObject);
     procedure N19Click(Sender: TObject);
+    procedure DumpMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -204,6 +206,29 @@ begin
     expires := StrToInt(groups[i].expires);
     computedDate := IncDay(startedDate, expires);
     if not (computedDate < Date) then AddGroupToStringGrid(groups[i]);
+  end;
+end;
+
+procedure TForm2.DumpMenuItemClick(Sender: TObject);
+var
+  groups: array of groupRecord;
+  startedDate, decStartedDate: TDateTime;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(groups, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(groups) do
+    groups[i - 1] := createGroupFromStringGrid(i);
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(groups) - 1 do
+  begin
+    startedDate := StrToDateTime(groups[i].startedDate);
+    decStartedDate := IncMonth(StrToDateTime(groups[i].startedDate), -1);
+    if MonthsBetween(startedDate, decStartedDate) = 1 then AddGroupToStringGrid(groups[i]);
   end;
 end;
 
