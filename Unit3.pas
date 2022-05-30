@@ -74,7 +74,7 @@ begin
     exit;
   end;
 
-  AddPerfomanceToStringGrid(perfomance);
+  AddPerformanceToStringGrid(perfomance);
   Form3.Close;
 end;
 

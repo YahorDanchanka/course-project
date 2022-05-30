@@ -28,6 +28,7 @@ object Form2: TForm2
     FixedRows = 0
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goFixedRowDefAlign]
     TabOrder = 0
+    OnContextPopup = StringGrid1ContextPopup
   end
   object AddPerfomanceButton: TButton
     Left = 8

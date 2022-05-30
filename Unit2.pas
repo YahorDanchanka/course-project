@@ -23,6 +23,8 @@ type
     procedure OpenMenuItemClick(Sender: TObject);
     procedure SaveMenuItemClick(Sender: TObject);
     procedure AddPerfomanceButtonClick(Sender: TObject);
+    procedure StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
   private
     { Private declarations }
   public
@@ -31,7 +33,7 @@ type
   PerformanceRecord = record
     title, duration, ageLimit, category, price, premiereDate, days: string[30];
   end;
-  procedure AddPerfomanceToStringGrid(perfomance: PerformanceRecord);
+  procedure AddPerformanceToStringGrid(perfomance: PerformanceRecord);
 
 var
   Form2: TForm2;
@@ -45,7 +47,7 @@ uses Unit1, Unit3;
 
 {$R *.dfm}
 
-procedure AddPerfomanceToStringGrid(perfomance: PerformanceRecord);
+procedure AddPerformanceToStringGrid(perfomance: PerformanceRecord);
 begin
   Form2.StringGrid1.RowCount := Form2.StringGrid1.RowCount + 1;
   Form2.StringGrid1.FixedRows := 1;
@@ -119,7 +121,7 @@ begin
   for i := 1 to Filesize(storageFile) do
   begin
     read(storageFile, group);
-    AddPerfomanceToStringGrid(group);
+    AddPerformanceToStringGrid(group);
   end;
 
   SetStorageFilePath(OpenDialog1.FileName);
@@ -161,6 +163,31 @@ begin
   end;
 
   CloseFile(storageFile);
+end;
+
+procedure TForm2.StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+var
+  activeIndex, buttonSelected: integer;
+  performances: array of PerformanceRecord;
+begin
+  if StringGrid1.Row = 0 then exit;
+  activeIndex := StringGrid1.Row;
+
+  SetLength(performances, StringGrid1.RowCount - 1);
+
+  for i := 1 to StringGrid1.RowCount - 1 do
+    performances[i - 1] := createGroupFromStringGrid(i);
+
+  buttonSelected := MessageDlg('¬ы точно хотите удалить выступление (' + performances[activeIndex - 1].title + ')?', mtConfirmation, mbOKCancel, 0);
+  if buttonSelected <> mrOk then exit;
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(performances) - 1 do
+    if i + 1 <> activeIndex then AddPerformanceToStringGrid(performances[i]);
+
+  if StringGrid1.RowCount <= 1 then StringGrid1.Options := StringGrid1.Options - [goEditing];
 end;
 
 end.
