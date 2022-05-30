@@ -174,6 +174,13 @@ object Form2: TForm2
         OnClick = N17Click
       end
     end
+    object N18: TMenuItem
+      Caption = #1060#1091#1085#1082#1094#1080#1080
+      object DeleteOldRecordMenuItem: TMenuItem
+        Caption = #1059#1076#1072#1083#1080#1090#1100' '#1079#1072#1087#1080#1089#1080' '#1074' '#1082#1086#1090#1086#1088#1099#1093' '#1080#1089#1090#1077#1082' '#1089#1088#1086#1082' '#1076#1077#1081#1089#1090#1074#1080#1103
+        OnClick = DeleteOldRecordMenuItemClick
+      end
+    end
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = 'pgdat'

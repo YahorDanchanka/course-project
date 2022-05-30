@@ -48,6 +48,8 @@ type
     N16: TMenuItem;
     N17: TMenuItem;
     SaveDialog1: TSaveDialog;
+    N18: TMenuItem;
+    DeleteOldRecordMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -77,6 +79,7 @@ type
     procedure N17Click(Sender: TObject);
     procedure StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+    procedure DeleteOldRecordMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -173,6 +176,31 @@ end;
 procedure TForm2.AddGroupButtonClick(Sender: TObject);
 begin
   Form3.ShowModal;
+end;
+
+procedure TForm2.DeleteOldRecordMenuItemClick(Sender: TObject);
+var
+  groups: array of groupRecord;
+  startedDate, computedDate: TDateTime;
+  expires: integer;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(groups, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(groups) do
+    groups[i - 1] := createGroupFromStringGrid(i);
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(groups) - 1 do
+  begin
+    startedDate := StrToDateTime(groups[i].startedDate);
+    expires := StrToInt(groups[i].expires);
+    computedDate := IncDay(startedDate, expires);
+    if not (computedDate < Date) then AddGroupToStringGrid(groups[i]);
+  end;
 end;
 
 procedure TForm2.ExpiresSortAscMenuItemClick(Sender: TObject);
