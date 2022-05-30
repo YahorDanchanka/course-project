@@ -148,6 +148,10 @@ object Form2: TForm2
         Caption = #1060#1048#1054
         OnClick = N11Click
       end
+      object N12: TMenuItem
+        Caption = #1055#1072#1089#1087#1086#1088#1090
+        OnClick = N12Click
+      end
     end
   end
   object OpenDialog1: TOpenDialog
