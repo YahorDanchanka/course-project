@@ -52,6 +52,8 @@ type
     DeleteOldRecordMenuItem: TMenuItem;
     N19: TMenuItem;
     DumpMenuItem: TMenuItem;
+    Label1: TLabel;
+    Edit1: TEdit;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -84,6 +86,7 @@ type
     procedure DeleteOldRecordMenuItemClick(Sender: TObject);
     procedure N19Click(Sender: TObject);
     procedure DumpMenuItemClick(Sender: TObject);
+    procedure Edit1Change(Sender: TObject);
   private
     { Private declarations }
   public
@@ -148,6 +151,7 @@ procedure AddGroupToStringGrid(group: groupRecord);
 begin
   Form2.StringGrid1.RowCount := Form2.StringGrid1.RowCount + 1;
   Form2.StringGrid1.FixedRows := 1;
+  Form2.StringGrid1.Options := Form2.StringGrid1.Options + [goEditing];
 
   const rowIndex = Form2.StringGrid1.RowCount - 1;
 
@@ -230,6 +234,24 @@ begin
     decStartedDate := IncMonth(StrToDateTime(groups[i].startedDate), -1);
     if MonthsBetween(startedDate, decStartedDate) = 1 then AddGroupToStringGrid(groups[i]);
   end;
+end;
+
+procedure TForm2.Edit1Change(Sender: TObject);
+var rect: TRect;
+begin
+  StringGrid1.Repaint();
+
+  for i := 0 to StringGrid1.ColCount - 1 do
+    for j := 1 to StringGrid1.RowCount - 1 do
+    begin
+      if Pos(AnsiLowerCase(Trim(Edit1.Text)), AnsiLowerCase(Trim(StringGrid1.Cells[i, j])))<> 0 then
+      begin
+        rect := StringGrid1.CellRect(i, j);
+        StringGrid1.Canvas.Brush.Color := $C0C0C0;
+        StringGrid1.Canvas.FillRect(rect);
+        StringGrid1.Canvas.TextOut(rect.Left + 3, rect.Top + 3, StringGrid1.Cells[i, j]);
+      end;
+    end;
 end;
 
 procedure TForm2.ExpiresSortAscMenuItemClick(Sender: TObject);

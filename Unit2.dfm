@@ -18,21 +18,33 @@ object Form2: TForm2
   OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 15
+  object Label1: TLabel
+    Left = 8
+    Top = 12
+    Width = 52
+    Height = 23
+    Caption = #1055#1086#1080#1089#1082':'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
   object StringGrid1: TStringGrid
     Left = 8
-    Top = 8
+    Top = 49
     Width = 904
     Height = 337
     FixedCols = 0
     RowCount = 1
     FixedRows = 0
-    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing, goFixedRowDefAlign]
     TabOrder = 0
     OnContextPopup = StringGrid1ContextPopup
   end
   object AddGroupButton: TButton
     Left = 8
-    Top = 351
+    Top = 392
     Width = 185
     Height = 30
     Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1072#1073#1086#1085#1077#1084#1077#1085#1090
@@ -44,6 +56,20 @@ object Form2: TForm2
     ParentFont = False
     TabOrder = 1
     OnClick = AddGroupButtonClick
+  end
+  object Edit1: TEdit
+    Left = 72
+    Top = 8
+    Width = 840
+    Height = 31
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 2
+    OnChange = Edit1Change
   end
   object MainMenu1: TMainMenu
     Left = 888
