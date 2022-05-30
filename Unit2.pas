@@ -45,6 +45,7 @@ type
     N13: TMenuItem;
     N14: TMenuItem;
     N15: TMenuItem;
+    N16: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -70,6 +71,7 @@ type
     procedure N13Click(Sender: TObject);
     procedure N14Click(Sender: TObject);
     procedure N15Click(Sender: TObject);
+    procedure N16Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -90,7 +92,7 @@ var
 
 implementation
 
-uses Unit1, Unit3;
+uses Unit1, Unit3, Unit4;
 
 {$R *.dfm}
 
@@ -399,6 +401,34 @@ begin
 
   for i := 0 to Length(groups) - 1 do
     if AnsiLowerCase(Trim(groups[i].ticketType)) = AnsiLowerCase(Trim(value)) then AddGroupToStringGrid(groups[i]);
+end;
+
+procedure TForm2.N16Click(Sender: TObject);
+var
+  dateStart, dateEnd: integer;
+  groups: array of groupRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  DateRangeInputForm.ShowModal;
+
+  dateStart := DateTimeToUnix(DateRangeInputForm.DateTimePicker1.Date);
+  dateEnd := DateTimeToUnix(DateRangeInputForm.DateTimePicker2.Date);
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(groups, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(groups) do
+    groups[i - 1] := createGroupFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(groups) - 1 do
+    if (DateTimeToUnix(StrToDateTime(groups[i].startedDate)) >= dateStart) and (DateTimeToUnix(StrToDateTime(groups[i].startedDate)) <= dateEnd) then AddGroupToStringGrid(groups[i]);
 end;
 
 procedure TForm2.OpenMenuItemClick(Sender: TObject);
