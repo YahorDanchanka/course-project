@@ -161,6 +161,10 @@ object Form2: TForm2
         Caption = #1046#1072#1085#1088
         OnClick = CategoryFilterMenuItemClick
       end
+      object PriceFilterMenuItem: TMenuItem
+        Caption = #1057#1090#1086#1080#1084#1086#1089#1090#1100
+        OnClick = PriceFilterMenuItemClick
+      end
     end
   end
   object OpenDialog1: TOpenDialog
