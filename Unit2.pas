@@ -44,6 +44,7 @@ type
     N12: TMenuItem;
     N13: TMenuItem;
     N14: TMenuItem;
+    N15: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -68,6 +69,7 @@ type
     procedure N12Click(Sender: TObject);
     procedure N13Click(Sender: TObject);
     procedure N14Click(Sender: TObject);
+    procedure N15Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -370,6 +372,33 @@ begin
 
   for i := 0 to Length(groups) - 1 do
     if (StrToFloat(groups[i].price) >= StrToFloat(valueNum1)) and (StrToFloat(groups[i].price) <= StrToFloat(valueNum2)) then AddGroupToStringGrid(groups[i]);
+end;
+
+procedure TForm2.N15Click(Sender: TObject);
+var
+  value: string;
+  groups: array of groupRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  value := InputBox('Фильтрация по полю "Тип абонемента"', 'Тип абонемента:', '');
+
+  if length(value) = 0 then exit;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(groups, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(groups) do
+    groups[i - 1] := createGroupFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(groups) - 1 do
+    if AnsiLowerCase(Trim(groups[i].ticketType)) = AnsiLowerCase(Trim(value)) then AddGroupToStringGrid(groups[i]);
 end;
 
 procedure TForm2.OpenMenuItemClick(Sender: TObject);
