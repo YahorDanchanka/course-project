@@ -42,6 +42,7 @@ type
     N10: TMenuItem;
     N11: TMenuItem;
     N12: TMenuItem;
+    N13: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -64,6 +65,7 @@ type
     procedure ExpiresSortDescMenuItemClick(Sender: TObject);
     procedure N11Click(Sender: TObject);
     procedure N12Click(Sender: TObject);
+    procedure N13Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -294,6 +296,42 @@ begin
 
   for i := 0 to Length(groups) - 1 do
     if AnsiLowerCase(Trim(groups[i].passport)) = AnsiLowerCase(Trim(value)) then AddGroupToStringGrid(groups[i]);
+end;
+
+procedure TForm2.N13Click(Sender: TObject);
+var
+  valueNum1, valueNum2: string;
+  groups: array of groupRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  valueNum1 := InputBox('Фильтрация по полю "Количество посещений"', 'От ', '');
+  valueNum2 := InputBox('Фильтрация по полю "Количество посещений"', 'До: ', '');
+
+  try
+    StrToFloat(valueNum1);
+    StrToFloat(valueNum2);
+  except
+    ShowMessage('Введите число!');
+    exit;
+  end;
+
+  if (length(valueNum1) = 0) or (length(valueNum2) = 0) then exit;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(groups, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(groups) do
+    groups[i - 1] := createGroupFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(groups) - 1 do
+    if (StrToFloat(groups[i].visitsCount) >= StrToFloat(valueNum1)) and (StrToFloat(groups[i].visitsCount) <= StrToFloat(valueNum2)) then AddGroupToStringGrid(groups[i]);
 end;
 
 procedure TForm2.OpenMenuItemClick(Sender: TObject);
