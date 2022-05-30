@@ -37,6 +37,9 @@ type
     N8: TMenuItem;
     PremiereDateSortAscMenuItem: TMenuItem;
     PremiereDateSortDescMenuItem: TMenuItem;
+    N9: TMenuItem;
+    DaysSortAscMenuItem: TMenuItem;
+    DaysSortDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -57,6 +60,8 @@ type
     procedure PriceSortDescMenuItemClick(Sender: TObject);
     procedure PremiereDateSortAscMenuItemClick(Sender: TObject);
     procedure PremiereDateSortDescMenuItemClick(Sender: TObject);
+    procedure DaysSortDescMenuItemClick(Sender: TObject);
+    procedure DaysSortAscMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -213,6 +218,38 @@ end;
 procedure TForm2.CategorySortDescMenuItemClick(Sender: TObject);
 begin
   CategorySortAscMenuItemClick(CategorySortAscMenuItem);
+  ReverseStringGrid();
+end;
+
+procedure TForm2.DaysSortAscMenuItemClick(Sender: TObject);
+var
+  performances: array of PerformanceRecord;
+  group: PerformanceRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(performances, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(performances) do
+    performances[i - 1] := createPerformanceFromStringGrid(i);
+
+  TArray.Sort<PerformanceRecord>(performances, TDelegatedComparer<PerformanceRecord>.Construct(
+    function(const Left, Right: PerformanceRecord): integer
+    begin
+      Result := TComparer<string>.Default.Compare(left.days, right.days);
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(performances) - 1 do
+    AddPerformanceToStringGrid(performances[i]);
+end;
+
+procedure TForm2.DaysSortDescMenuItemClick(Sender: TObject);
+begin
+  DaysSortAscMenuItemClick(DaysSortAscMenuItem);
   ReverseStringGrid();
 end;
 

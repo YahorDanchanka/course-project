@@ -131,6 +131,17 @@ object Form2: TForm2
           OnClick = PremiereDateSortDescMenuItemClick
         end
       end
+      object N9: TMenuItem
+        Caption = #1044#1085#1080' '#1087#1086#1082#1072#1079#1072
+        object DaysSortAscMenuItem: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = DaysSortAscMenuItemClick
+        end
+        object DaysSortDescMenuItem: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = DaysSortDescMenuItemClick
+        end
+      end
     end
   end
   object OpenDialog1: TOpenDialog
