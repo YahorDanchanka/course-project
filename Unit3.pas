@@ -25,6 +25,8 @@ type
     DateTimePicker1: TDateTimePicker;
     PassportEdit: TMaskEdit;
     procedure AddGroupButtonClick(Sender: TObject);
+    procedure FullnameEditKeyPress(Sender: TObject; var Key: Char);
+    procedure PriceEditKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -37,6 +39,19 @@ var
 implementation
 
 {$R *.dfm}
+
+function IsRussianChars(const S: String): Boolean;
+var
+  i: Integer;
+begin
+  Result:= True;
+  for i:= 1 to Length(S) do
+    if (Ord(S[i]) >= $C0) // русские буквы
+        or (Ord(S[i]) = $A8) // буква "Ё"
+        or (Ord(S[i]) = $B8) // буква "ё"
+    then Exit;
+  Result:= False;
+end;
 
 procedure TForm3.AddGroupButtonClick(Sender: TObject);
 var
@@ -68,6 +83,16 @@ begin
   group.expires := ExpiresEdit.Text;
   AddGroupToStringGrid(group);
   Form3.Close;
+end;
+
+procedure TForm3.FullnameEditKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not ((Key in [' ', #8]) or (IsRussianChars(Key))) then Key := #0;
+end;
+
+procedure TForm3.PriceEditKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not (Key in ['0'..'9', ',', #8]) then Key := #0;
 end;
 
 end.
