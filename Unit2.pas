@@ -169,8 +169,8 @@ var sale: saleRecord;
 begin
   sale.title := Form2.StringGrid1.Cells[0, rowIndex];
   sale.foodSet := Form2.StringGrid1.Cells[1, rowIndex];
-  //sale.price := Form2.StringGrid1.Cells[2, rowIndex];
   sale.percent := Form2.StringGrid1.Cells[3, rowIndex];
+  sale.price := FloatToStr( StrToFloat(Form2.StringGrid1.Cells[2, rowIndex]) / (100 - StrToFloat(sale.percent)) * 100 );
   sale.startDate := Form2.StringGrid1.Cells[4, rowIndex];
   sale.endDate := Form2.StringGrid1.Cells[5, rowIndex];
   sale.description := Form2.StringGrid1.Cells[6, rowIndex];
