@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls,
-  System.Generics.Collections, System.Generics.Defaults;
+  System.Generics.Collections, System.Generics.Defaults, DateUtils;
 
 type
   TForm2 = class(TForm)
@@ -34,6 +34,9 @@ type
     N7: TMenuItem;
     PriceSortAscMenuItem: TMenuItem;
     PriceSortDescMenuItem: TMenuItem;
+    N8: TMenuItem;
+    PremiereDateSortAscMenuItem: TMenuItem;
+    PremiereDateSortDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -52,6 +55,8 @@ type
     procedure CategorySortDescMenuItemClick(Sender: TObject);
     procedure PriceSortAscMenuItemClick(Sender: TObject);
     procedure PriceSortDescMenuItemClick(Sender: TObject);
+    procedure PremiereDateSortAscMenuItemClick(Sender: TObject);
+    procedure PremiereDateSortDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -279,6 +284,36 @@ begin
 
   SetStorageFilePath(OpenDialog1.FileName);
   CloseFile(storageFile);
+end;
+
+procedure TForm2.PremiereDateSortAscMenuItemClick(Sender: TObject);
+var sales: array of PerformanceRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(sales, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(sales) do
+    sales[i - 1] := createPerformanceFromStringGrid(i);
+
+  TArray.Sort<PerformanceRecord>(sales, TDelegatedComparer<PerformanceRecord>.Construct(
+    function(const Left, Right: PerformanceRecord): integer
+    begin
+      Result := TComparer<integer>.Default.Compare(DateTimeToUnix(StrToDateTime(left.premiereDate)), DateTimeToUnix(StrToDateTime(right.premiereDate)));
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(sales) - 1 do
+    AddPerformanceToStringGrid(sales[i]);
+end;
+
+procedure TForm2.PremiereDateSortDescMenuItemClick(Sender: TObject);
+begin
+  PremiereDateSortAscMenuItemClick(PremiereDateSortAscMenuItem);
+  ReverseStringGrid();
 end;
 
 procedure TForm2.PriceSortAscMenuItemClick(Sender: TObject);
