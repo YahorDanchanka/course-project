@@ -31,6 +31,9 @@ type
     N6: TMenuItem;
     CategorySortAscMenuItem: TMenuItem;
     CategorySortDescMenuItem: TMenuItem;
+    N7: TMenuItem;
+    PriceSortAscMenuItem: TMenuItem;
+    PriceSortDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -47,6 +50,8 @@ type
     procedure AgeLimitSortDescMenuItemClick(Sender: TObject);
     procedure CategorySortAscMenuItemClick(Sender: TObject);
     procedure CategorySortDescMenuItemClick(Sender: TObject);
+    procedure PriceSortAscMenuItemClick(Sender: TObject);
+    procedure PriceSortDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -274,6 +279,36 @@ begin
 
   SetStorageFilePath(OpenDialog1.FileName);
   CloseFile(storageFile);
+end;
+
+procedure TForm2.PriceSortAscMenuItemClick(Sender: TObject);
+var performances: array of PerformanceRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(performances, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(performances) do
+    performances[i - 1] := createPerformanceFromStringGrid(i);
+
+  TArray.Sort<PerformanceRecord>(performances, TDelegatedComparer<PerformanceRecord>.Construct(
+    function(const Left, Right: PerformanceRecord): integer
+    begin
+      Result := TComparer<real>.Default.Compare(StrToFloat(left.price), StrToFloat(right.price));
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(performances) - 1 do
+    AddPerformanceToStringGrid(performances[i]);
+end;
+
+procedure TForm2.PriceSortDescMenuItemClick(Sender: TObject);
+begin
+  PriceSortAscMenuItemClick(PriceSortAscMenuItem);
+  ReverseStringGrid();
 end;
 
 procedure TForm2.SaveAsMenuItemClick(Sender: TObject);
