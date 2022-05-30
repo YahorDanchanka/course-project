@@ -63,7 +63,15 @@ object Form2: TForm2
     end
   end
   object OpenDialog1: TOpenDialog
+    DefaultExt = 'dat'
+    Filter = #1057#1087#1077#1082#1090#1072#1082#1083#1080'|*.dat'
     Left = 960
+    Top = 304
+  end
+  object SaveDialog1: TSaveDialog
+    DefaultExt = 'dat'
+    Filter = #1057#1087#1077#1082#1090#1072#1082#1083#1080'|*.dat'
+    Left = 896
     Top = 304
   end
 end
