@@ -22,6 +22,9 @@ type
     N3: TMenuItem;
     TitleSortAscMenuItem: TMenuItem;
     TitleSortDescMenuItem: TMenuItem;
+    N4: TMenuItem;
+    DurationSortAscMenuItem: TMenuItem;
+    DurationSortDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -32,6 +35,8 @@ type
       var Handled: Boolean);
     procedure TitleSortAscMenuItemClick(Sender: TObject);
     procedure TitleSortDescMenuItemClick(Sender: TObject);
+    procedure DurationSortAscMenuItemClick(Sender: TObject);
+    procedure DurationSortDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -105,7 +110,7 @@ begin
   Form2.StringGrid1.Cells[6, rowIndex] := perfomance.days;
 end;
 
-function createGroupFromStringGrid(rowIndex: integer): PerformanceRecord;
+function createPerformanceFromStringGrid(rowIndex: integer): PerformanceRecord;
 var perfomance: PerformanceRecord;
 begin
   perfomance.title := Form2.StringGrid1.Cells[0, rowIndex];
@@ -127,6 +132,36 @@ end;
 procedure TForm2.AddPerfomanceButtonClick(Sender: TObject);
 begin
   Form3.ShowModal;
+end;
+
+procedure TForm2.DurationSortAscMenuItemClick(Sender: TObject);
+var performances: array of PerformanceRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(performances, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(performances) do
+    performances[i - 1] := createPerformanceFromStringGrid(i);
+
+  TArray.Sort<PerformanceRecord>(performances, TDelegatedComparer<PerformanceRecord>.Construct(
+    function(const Left, Right: PerformanceRecord): integer
+    begin
+      Result := TComparer<real>.Default.Compare(StrToFloat(left.duration), StrToFloat(right.duration));
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(performances) - 1 do
+    AddPerformanceToStringGrid(performances[i]);
+end;
+
+procedure TForm2.DurationSortDescMenuItemClick(Sender: TObject);
+begin
+  DurationSortAscMenuItemClick(DurationSortAscMenuItem);
+  ReverseStringGrid();
 end;
 
 procedure TForm2.FormActivate(Sender: TObject);
@@ -178,7 +213,7 @@ begin
 
   for i := 1 to StringGrid1.RowCount - 1 do
   begin
-    var group: PerformanceRecord := createGroupFromStringGrid(i);
+    var group: PerformanceRecord := createPerformanceFromStringGrid(i);
     write(storageFile, group);
   end;
 
@@ -199,7 +234,7 @@ begin
 
   for i := 1 to StringGrid1.RowCount - 1 do
   begin
-    var group: PerformanceRecord := createGroupFromStringGrid(i);
+    var group: PerformanceRecord := createPerformanceFromStringGrid(i);
     write(storageFile, group);
   end;
 
@@ -218,7 +253,7 @@ begin
   SetLength(performances, StringGrid1.RowCount - 1);
 
   for i := 1 to StringGrid1.RowCount - 1 do
-    performances[i - 1] := createGroupFromStringGrid(i);
+    performances[i - 1] := createPerformanceFromStringGrid(i);
 
   buttonSelected := MessageDlg('¬ы точно хотите удалить выступление (' + performances[activeIndex - 1].title + ')?', mtConfirmation, mbOKCancel, 0);
   if buttonSelected <> mrOk then exit;
@@ -242,7 +277,7 @@ begin
   SetLength(performances, StringGrid1.RowCount - 1);
 
   for i := 1 to Length(performances) do
-    performances[i - 1] := createGroupFromStringGrid(i);
+    performances[i - 1] := createPerformanceFromStringGrid(i);
 
   TArray.Sort<PerformanceRecord>(performances, TDelegatedComparer<PerformanceRecord>.Construct(
     function(const Left, Right: PerformanceRecord): integer
