@@ -47,6 +47,7 @@ type
     CategoryFilterMenuItem: TMenuItem;
     PriceFilterMenuItem: TMenuItem;
     PremiereDateFilterMenuItem: TMenuItem;
+    DaysFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -75,6 +76,7 @@ type
     procedure CategoryFilterMenuItemClick(Sender: TObject);
     procedure PriceFilterMenuItemClick(Sender: TObject);
     procedure PremiereDateFilterMenuItemClick(Sender: TObject);
+    procedure DaysFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -93,7 +95,7 @@ var
 
 implementation
 
-uses Unit1, Unit3, Unit4, Unit5;
+uses Unit1, Unit3, Unit4, Unit5, Unit6;
 
 {$R *.dfm}
 
@@ -295,6 +297,33 @@ procedure TForm2.CategorySortDescMenuItemClick(Sender: TObject);
 begin
   CategorySortAscMenuItemClick(CategorySortAscMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.DaysFilterMenuItemClick(Sender: TObject);
+var performances: array of PerformanceRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  Form6.ShowModal;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(performances, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(performances) do
+    performances[i - 1] := createPerformanceFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(performances) - 1 do
+    for j := 0 to Form6.DaysListBox.Items.Count - 1 do
+    begin
+      if (Form6.DaysListBox.Selected[j]) and (Pos(Form6.DaysListBox.Items.Strings[j], performances[i].days) <> 0)
+        then AddPerformanceToStringGrid(performances[i]);
+    end;
 end;
 
 procedure TForm2.DaysSortAscMenuItemClick(Sender: TObject);
