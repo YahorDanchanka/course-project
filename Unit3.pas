@@ -4,68 +4,84 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, Unit2;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls;
 
 type
   TForm3 = class(TForm)
     Label1: TLabel;
-    NumberEdit: TEdit;
-    LevelEdit: TEdit;
+    TitleEdit: TEdit;
+    DurationEdit: TEdit;
     Label2: TLabel;
-    FullnameEdit: TEdit;
+    AgeLimitEdit: TEdit;
     Label3: TLabel;
-    PriceEdit: TEdit;
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
-    CountEdit: TEdit;
     Label7: TLabel;
-    AddGroupButton: TButton;
-    DateTimePicker1: TDateTimePicker;
-    DateTimePicker2: TDateTimePicker;
-    procedure AddGroupButtonClick(Sender: TObject);
+    AddPerfomanceButton: TButton;
+    PriceEdit: TEdit;
+    PremiereDateDateTimePicker: TDateTimePicker;
+    DaysListBox: TListBox;
+    CategoryComboBox: TComboBox;
+    procedure PriceEditKeyPress(Sender: TObject; var Key: Char);
+    procedure AddPerfomanceButtonClick(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
   end;
-  procedure AddGroupToStringGrid(group: groupRecord);
 
 var
   Form3: TForm3;
 
 implementation
 
+uses Unit2;
+
 {$R *.dfm}
 
-procedure AddGroupToStringGrid(group: groupRecord);
+procedure TForm3.AddPerfomanceButtonClick(Sender: TObject);
+var
+  perfomance: PerformanceRecord;
+  i: integer;
 begin
-  Form2.StringGrid1.RowCount := Form2.StringGrid1.RowCount + 1;
-  Form2.StringGrid1.FixedRows := 1;
+  for i := 0 to Form3.ComponentCount - 1 do
+    if Form3.Components[i] is TEdit then
+      if TEdit(Form3.Components[i]).Text = '' then
+      begin
+        ShowMessage('Заполните все поля!');
+        exit;
+      end;
 
-  const rowIndex = Form2.StringGrid1.RowCount - 1;
+  perfomance.title := TitleEdit.Text;
+  perfomance.duration := DurationEdit.Text;
+  perfomance.ageLimit := AgeLimitEdit.Text;
+  perfomance.category := CategoryComboBox.Text;
+  perfomance.price := PriceEdit.Text;
+  perfomance.premiereDate := DateToStr(PremiereDateDateTimePicker.Date);
+  perfomance.days := '';
 
-  Form2.StringGrid1.Cells[0, rowIndex] := group.number;
-  Form2.StringGrid1.Cells[1, rowIndex] := group.level;
-  Form2.StringGrid1.Cells[2, rowIndex] := group.fullName;
-  Form2.StringGrid1.Cells[3, rowIndex] := group.price;
-  Form2.StringGrid1.Cells[4, rowIndex] := group.day;
-  Form2.StringGrid1.Cells[5, rowIndex] := group.time;
-  Form2.StringGrid1.Cells[6, rowIndex] := group.studentsCount;
+  for i := 0 to DaysListBox.Items.Count - 1 do
+     if DaysListBox.Selected[i]
+      then perfomance.days := perfomance.days + DaysListBox.Items.Strings[i] + ', ';
+
+  // Удаляем запятую и пробел
+  Delete(perfomance.days, Length(perfomance.days) - 1, 2);
+
+  if Length(perfomance.days) = 0 then
+  begin
+    ShowMessage('Заполните все поля!');
+    exit;
+  end;
+
+  AddPerfomanceToStringGrid(perfomance);
+  Form3.Close;
 end;
 
-procedure TForm3.AddGroupButtonClick(Sender: TObject);
-var group: groupRecord;
+procedure TForm3.PriceEditKeyPress(Sender: TObject; var Key: Char);
 begin
-  group.number := NumberEdit.Text;
-  group.level := LevelEdit.Text;
-  group.fullName := FullnameEdit.Text;
-  group.price := PriceEdit.Text;
-  group.day := DateToStr(DateTimePicker1.Date);
-  group.time := TimeToStr(DateTimePicker2.Time);
-  group.studentsCount := CountEdit.Text;
-  AddGroupToStringGrid(group);
-  Form3.Close;
+  // Разрешаем ввод только цифр и запятой
+  if not (Key in ['0'..'9', ',', #8]) then Key := #0;
 end;
 
 end.
