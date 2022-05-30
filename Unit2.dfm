@@ -26,6 +26,7 @@ object Form2: TForm2
     FixedCols = 0
     RowCount = 1
     FixedRows = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goFixedRowDefAlign]
     TabOrder = 0
   end
   object AddPerfomanceButton: TButton
