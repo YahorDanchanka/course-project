@@ -44,6 +44,7 @@ type
     TitleFilterMenuItem: TMenuItem;
     DurationFilterMenuItem: TMenuItem;
     AgeLimitFilterMenuItem: TMenuItem;
+    CategoryFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -69,6 +70,7 @@ type
     procedure TitleFilterMenuItemClick(Sender: TObject);
     procedure DurationFilterMenuItemClick(Sender: TObject);
     procedure AgeLimitFilterMenuItemClick(Sender: TObject);
+    procedure CategoryFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -87,7 +89,7 @@ var
 
 implementation
 
-uses Unit1, Unit3;
+uses Unit1, Unit3, Unit4;
 
 {$R *.dfm}
 
@@ -230,6 +232,33 @@ procedure TForm2.AgeLimitSortDescMenuItemClick(Sender: TObject);
 begin
   AgeLimitSortAscMenuItemClick(AgeLimitSortAscMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.CategoryFilterMenuItemClick(Sender: TObject);
+var
+  performances: array of PerformanceRecord;
+  value: string;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  Form4.ShowModal;
+
+  value := Form4.CategoryComboBox.Text;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(performances, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(performances) do
+    performances[i - 1] := createPerformanceFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(performances) - 1 do
+    if Trim(LowerCase(performances[i].category)) = Trim(LowerCase(value)) then AddPerformanceToStringGrid(performances[i]);
 end;
 
 procedure TForm2.CategorySortAscMenuItemClick(Sender: TObject);

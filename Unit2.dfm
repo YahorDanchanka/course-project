@@ -157,6 +157,10 @@ object Form2: TForm2
         Caption = #1042#1086#1079#1088#1072#1089#1090#1085#1086#1077' '#1086#1075#1088#1072#1085#1080#1095#1077#1085#1080#1077
         OnClick = AgeLimitFilterMenuItemClick
       end
+      object CategoryFilterMenuItem: TMenuItem
+        Caption = #1046#1072#1085#1088
+        OnClick = CategoryFilterMenuItemClick
+      end
     end
   end
   object OpenDialog1: TOpenDialog
