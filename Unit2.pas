@@ -46,6 +46,7 @@ type
     N14: TMenuItem;
     N15: TMenuItem;
     N16: TMenuItem;
+    N17: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -72,6 +73,7 @@ type
     procedure N14Click(Sender: TObject);
     procedure N15Click(Sender: TObject);
     procedure N16Click(Sender: TObject);
+    procedure N17Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -429,6 +431,42 @@ begin
 
   for i := 0 to Length(groups) - 1 do
     if (DateTimeToUnix(StrToDateTime(groups[i].startedDate)) >= dateStart) and (DateTimeToUnix(StrToDateTime(groups[i].startedDate)) <= dateEnd) then AddGroupToStringGrid(groups[i]);
+end;
+
+procedure TForm2.N17Click(Sender: TObject);
+var
+  valueNum1, valueNum2: string;
+  groups: array of groupRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  valueNum1 := InputBox('Фильтрация по полю "Срок действия"', 'От ', '');
+  valueNum2 := InputBox('Фильтрация по полю "Срок действия"', 'До: ', '');
+
+  try
+    StrToFloat(valueNum1);
+    StrToFloat(valueNum2);
+  except
+    ShowMessage('Введите число!');
+    exit;
+  end;
+
+  if (length(valueNum1) = 0) or (length(valueNum2) = 0) then exit;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(groups, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(groups) do
+    groups[i - 1] := createGroupFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(groups) - 1 do
+    if (StrToFloat(groups[i].expires) >= StrToFloat(valueNum1)) and (StrToFloat(groups[i].expires) <= StrToFloat(valueNum2)) then AddGroupToStringGrid(groups[i]);
 end;
 
 procedure TForm2.OpenMenuItemClick(Sender: TObject);
