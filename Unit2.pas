@@ -75,6 +75,8 @@ type
     procedure N15Click(Sender: TObject);
     procedure N16Click(Sender: TObject);
     procedure N17Click(Sender: TObject);
+    procedure StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
   private
     { Private declarations }
   public
@@ -621,6 +623,31 @@ procedure TForm2.StartedDateSortDescMenuItemClick(Sender: TObject);
 begin
   StartedDateSortAscMenuItemClick(StartedDateSortAscMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+var
+  activeIndex, buttonSelected: integer;
+  groups: array of groupRecord;
+begin
+  if StringGrid1.Row = 0 then exit;
+  activeIndex := StringGrid1.Row;
+
+  SetLength(groups, StringGrid1.RowCount - 1);
+
+  for i := 1 to StringGrid1.RowCount - 1 do
+    groups[i - 1] := createGroupFromStringGrid(i);
+
+  buttonSelected := MessageDlg('Вы точно хотите удалить абонемент (' + groups[activeIndex - 1].fullname + ')?', mtConfirmation, mbOKCancel, 0);
+  if buttonSelected <> mrOk then exit;
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(groups) - 1 do
+    if i + 1 <> activeIndex then AddGroupToStringGrid(groups[i]);
+
+  if StringGrid1.RowCount <= 1 then StringGrid1.Options := StringGrid1.Options - [goEditing];
 end;
 
 procedure TForm2.TicketTypeSortAscMenuItemClick(Sender: TObject);
