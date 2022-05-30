@@ -28,6 +28,9 @@ type
     N5: TMenuItem;
     AgeLimitSortAscMenuItem: TMenuItem;
     AgeLimitSortDescMenuItem: TMenuItem;
+    N6: TMenuItem;
+    CategorySortAscMenuItem: TMenuItem;
+    CategorySortDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -42,6 +45,8 @@ type
     procedure DurationSortDescMenuItemClick(Sender: TObject);
     procedure AgeLimitSortAscMenuItemClick(Sender: TObject);
     procedure AgeLimitSortDescMenuItemClick(Sender: TObject);
+    procedure CategorySortAscMenuItemClick(Sender: TObject);
+    procedure CategorySortDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -166,6 +171,38 @@ end;
 procedure TForm2.AgeLimitSortDescMenuItemClick(Sender: TObject);
 begin
   AgeLimitSortAscMenuItemClick(AgeLimitSortAscMenuItem);
+  ReverseStringGrid();
+end;
+
+procedure TForm2.CategorySortAscMenuItemClick(Sender: TObject);
+var
+  performances: array of PerformanceRecord;
+  group: PerformanceRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(performances, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(performances) do
+    performances[i - 1] := createPerformanceFromStringGrid(i);
+
+  TArray.Sort<PerformanceRecord>(performances, TDelegatedComparer<PerformanceRecord>.Construct(
+    function(const Left, Right: PerformanceRecord): integer
+    begin
+      Result := TComparer<string>.Default.Compare(left.category, right.category);
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(performances) - 1 do
+    AddPerformanceToStringGrid(performances[i]);
+end;
+
+procedure TForm2.CategorySortDescMenuItemClick(Sender: TObject);
+begin
+  CategorySortAscMenuItemClick(CategorySortAscMenuItem);
   ReverseStringGrid();
 end;
 
