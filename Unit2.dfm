@@ -63,6 +63,20 @@ object Form2: TForm2
         OnClick = SaveAsMenuItemClick
       end
     end
+    object N2: TMenuItem
+      Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1082#1072
+      object N3: TMenuItem
+        Caption = #1053#1072#1079#1074#1072#1085#1080#1077' '#1089#1087#1077#1082#1090#1072#1082#1083#1103
+        object TitleSortAscMenuItem: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = TitleSortAscMenuItemClick
+        end
+        object TitleSortDescMenuItem: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = TitleSortDescMenuItemClick
+        end
+      end
+    end
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = 'dat'

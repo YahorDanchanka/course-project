@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls,
+  System.Generics.Collections, System.Generics.Defaults;
 
 type
   TForm2 = class(TForm)
@@ -17,6 +18,10 @@ type
     OpenDialog1: TOpenDialog;
     AddPerfomanceButton: TButton;
     SaveDialog1: TSaveDialog;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    TitleSortAscMenuItem: TMenuItem;
+    TitleSortDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -25,6 +30,8 @@ type
     procedure AddPerfomanceButtonClick(Sender: TObject);
     procedure StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+    procedure TitleSortAscMenuItemClick(Sender: TObject);
+    procedure TitleSortDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -46,6 +53,40 @@ implementation
 uses Unit1, Unit3;
 
 {$R *.dfm}
+
+procedure UpdateStringGridFromFile(path: string);
+var group: PerformanceRecord;
+begin
+  Form2.StringGrid1.RowCount := 1;
+
+  AssignFile(storageFile, path);
+  Reset(storageFile);
+
+  for i := 1 to Filesize(storageFile) do
+  begin
+    read(storageFile, group);
+    AddPerformanceToStringGrid(group);
+  end;
+
+  CloseFile(storageFile);
+end;
+
+procedure ReverseStringGrid();
+var
+  i, j, k, cnt: integer;
+  s: string;
+begin
+  cnt := Form2.StringGrid1.RowCount;
+  k := Form2.StringGrid1.RowCount div 2;
+
+  for j := 0 to 6 do
+    for i := 1 to k do
+    begin
+      s := Form2.StringGrid1.Cells[j,i];
+      Form2.StringGrid1.Cells[j,i] := Form2.StringGrid1.Cells[j,cnt-i];
+      Form2.StringGrid1.Cells[j,cnt-i] := s;
+    end;
+end;
 
 procedure AddPerformanceToStringGrid(perfomance: PerformanceRecord);
 begin
@@ -188,6 +229,38 @@ begin
     if i + 1 <> activeIndex then AddPerformanceToStringGrid(performances[i]);
 
   if StringGrid1.RowCount <= 1 then StringGrid1.Options := StringGrid1.Options - [goEditing];
+end;
+
+procedure TForm2.TitleSortAscMenuItemClick(Sender: TObject);
+var
+  performances: array of PerformanceRecord;
+  group: PerformanceRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(performances, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(performances) do
+    performances[i - 1] := createGroupFromStringGrid(i);
+
+  TArray.Sort<PerformanceRecord>(performances, TDelegatedComparer<PerformanceRecord>.Construct(
+    function(const Left, Right: PerformanceRecord): integer
+    begin
+      Result := TComparer<string>.Default.Compare(left.title, right.title);
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(performances) - 1 do
+    AddPerformanceToStringGrid(performances[i]);
+end;
+
+procedure TForm2.TitleSortDescMenuItemClick(Sender: TObject);
+begin
+  TitleSortAscMenuItemClick(TitleSortAscMenuItem);
+  ReverseStringGrid();
 end;
 
 end.
