@@ -47,6 +47,7 @@ type
     PriceFilterMenuItem: TMenuItem;
     DescriptionFilterMenuItem: TMenuItem;
     CustomerFullnameFilterMenuItem: TMenuItem;
+    SaleDateFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -76,6 +77,7 @@ type
     procedure PriceFilterMenuItemClick(Sender: TObject);
     procedure DescriptionFilterMenuItemClick(Sender: TObject);
     procedure CustomerFullnameFilterMenuItemClick(Sender: TObject);
+    procedure SaleDateFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -96,7 +98,7 @@ var
 
 implementation
 
-uses Unit1, Unit3, Unit4;
+uses Unit1, Unit3, Unit4, Unit5;
 
 {$R *.dfm}
 
@@ -560,6 +562,36 @@ procedure TForm2.PriceSortDescMenuItemClick(Sender: TObject);
 begin
   PriceSortAscMenuItemClick(PriceSortAscMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.SaleDateFilterMenuItemClick(Sender: TObject);
+var
+  dateStart, dateEnd: integer;
+  facilities: array of FacilityRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  DateRangeInputForm.SecretEdit.Text := '0';
+  DateRangeInputForm.ShowModal;
+  if DateRangeInputForm.SecretEdit.Text <> '1' then exit;
+
+  dateStart := DateTimeToUnix(DateRangeInputForm.DateTimePicker1.Date);
+  dateEnd := DateTimeToUnix(DateRangeInputForm.DateTimePicker2.Date);
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(facilities, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(facilities) do
+    facilities[i - 1] := createFacilityFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(facilities) - 1 do
+    if (DateTimeToUnix(StrToDateTime(facilities[i].saleDate)) >= dateStart) and (DateTimeToUnix(StrToDateTime(facilities[i].saleDate)) <= dateEnd) then AddFacilityToStringGrid(facilities[i]);
 end;
 
 procedure TForm2.SaleDateSortAscMenuItemClick(Sender: TObject);

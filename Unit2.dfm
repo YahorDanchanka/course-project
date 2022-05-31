@@ -170,6 +170,10 @@ object Form2: TForm2
         Caption = #1060#1048#1054' '#1087#1086#1082#1091#1087#1072#1090#1077#1083#1103
         OnClick = CustomerFullnameFilterMenuItemClick
       end
+      object SaleDateFilterMenuItem: TMenuItem
+        Caption = #1044#1072#1090#1072' '#1087#1088#1086#1076#1072#1078#1080
+        OnClick = SaleDateFilterMenuItemClick
+      end
     end
   end
   object OpenDialog1: TOpenDialog
