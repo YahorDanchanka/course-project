@@ -43,6 +43,7 @@ type
     N10: TMenuItem;
     CategoryFilterMenuItem: TMenuItem;
     AddressFilterMenuItem: TMenuItem;
+    OwnerFullnameFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -68,6 +69,7 @@ type
     procedure SaleDateSortDescMenuItemClick(Sender: TObject);
     procedure CategoryFilterMenuItemClick(Sender: TObject);
     procedure AddressFilterMenuItemClick(Sender: TObject);
+    procedure OwnerFullnameFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -191,7 +193,7 @@ begin
   Form2.StringGrid1.RowCount := 1;
 
   for i := 0 to Length(facilities) - 1 do
-    if Trim(LowerCase(facilities[i].address)) = Trim(LowerCase(value)) then AddFacilityToStringGrid(facilities[i]);
+    if Trim(AnsiLowerCase(facilities[i].address)) = Trim(AnsiLowerCase(value)) then AddFacilityToStringGrid(facilities[i]);
 end;
 
 procedure TForm2.AddressSortAscMenuItemClick(Sender: TObject);
@@ -375,6 +377,33 @@ begin
 
   SetStorageFilePath(OpenDialog1.FileName);
   CloseFile(storageFile);
+end;
+
+procedure TForm2.OwnerFullnameFilterMenuItemClick(Sender: TObject);
+var
+  value: string;
+  facilities: array of FacilityRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  value := InputBox('Фильтрация по полю "ФИО владельца"', 'ФИО владельца: ', '');
+
+  if length(value) = 0 then exit;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(facilities, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(facilities) do
+    facilities[i - 1] := createFacilityFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(facilities) - 1 do
+    if Trim(AnsiLowerCase(facilities[i].ownerFullName)) = Trim(AnsiLowerCase(value)) then AddFacilityToStringGrid(facilities[i]);
 end;
 
 procedure TForm2.OwnerFullnameSortAscMenuItemClick(Sender: TObject);

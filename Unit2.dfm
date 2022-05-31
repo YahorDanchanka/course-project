@@ -154,6 +154,10 @@ object Form2: TForm2
         Caption = #1040#1076#1088#1077#1089
         OnClick = AddressFilterMenuItemClick
       end
+      object OwnerFullnameFilterMenuItem: TMenuItem
+        Caption = #1060#1048#1054' '#1074#1083#1072#1076#1077#1083#1100#1094#1072
+        OnClick = OwnerFullnameFilterMenuItemClick
+      end
     end
   end
   object OpenDialog1: TOpenDialog
