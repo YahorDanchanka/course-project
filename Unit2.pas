@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls,
-  System.Generics.Collections, System.Generics.Defaults;
+  System.Generics.Collections, System.Generics.Defaults, DateUtils;
 
 type
   TForm2 = class(TForm)
@@ -37,6 +37,9 @@ type
     N8: TMenuItem;
     CustomerFullnameSortAscMenuItem: TMenuItem;
     CustomerFullnameSortDescMenuItem: TMenuItem;
+    N9: TMenuItem;
+    SaleDateSortAscMenuItem: TMenuItem;
+    SaleDateSortDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -58,6 +61,8 @@ type
     procedure DescriptionSortDescMenuItemClick(Sender: TObject);
     procedure CustomerFullnameSortAscMenuItemClick(Sender: TObject);
     procedure CustomerFullnameSortDescMenuItemClick(Sender: TObject);
+    procedure SaleDateSortAscMenuItemClick(Sender: TObject);
+    procedure SaleDateSortDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -368,6 +373,36 @@ end;
 procedure TForm2.PriceSortDescMenuItemClick(Sender: TObject);
 begin
   PriceSortAscMenuItemClick(PriceSortAscMenuItem);
+  ReverseStringGrid();
+end;
+
+procedure TForm2.SaleDateSortAscMenuItemClick(Sender: TObject);
+var facilities: array of FacilityRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(facilities, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(facilities) do
+    facilities[i - 1] := createFacilityFromStringGrid(i);
+
+  TArray.Sort<FacilityRecord>(facilities, TDelegatedComparer<FacilityRecord>.Construct(
+    function(const Left, Right: FacilityRecord): integer
+    begin
+      Result := TComparer<integer>.Default.Compare(DateTimeToUnix(StrToDateTime(left.saleDate)), DateTimeToUnix(StrToDateTime(right.saleDate)));
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(facilities) - 1 do
+    AddFacilityToStringGrid(facilities[i]);
+end;
+
+procedure TForm2.SaleDateSortDescMenuItemClick(Sender: TObject);
+begin
+  SaleDateSortAscMenuItemClick(SaleDateSortAscMenuItem);
   ReverseStringGrid();
 end;
 
