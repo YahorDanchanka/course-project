@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls,
+  System.Generics.Collections, System.Generics.Defaults;
 
 type
   TForm2 = class(TForm)
@@ -17,6 +18,10 @@ type
     OpenDialog1: TOpenDialog;
     AddFacilityButton: TButton;
     SaveDialog1: TSaveDialog;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    CategorySortAscMenuItem: TMenuItem;
+    CategorySortDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -26,6 +31,8 @@ type
     procedure StringGrid1DblClick(Sender: TObject);
     procedure StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+    procedure CategorySortAscMenuItemClick(Sender: TObject);
+    procedure CategorySortDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -49,6 +56,40 @@ implementation
 uses Unit1, Unit3;
 
 {$R *.dfm}
+
+procedure UpdateStringGridFromFile(path: string);
+var facility: FacilityRecord;
+begin
+  Form2.StringGrid1.RowCount := 1;
+
+  AssignFile(storageFile, path);
+  Reset(storageFile);
+
+  for i := 1 to Filesize(storageFile) do
+  begin
+    read(storageFile, facility);
+    AddFacilityToStringGrid(facility);
+  end;
+
+  CloseFile(storageFile);
+end;
+
+procedure ReverseStringGrid();
+var
+  i, j, k, cnt: integer;
+  s: string;
+begin
+  cnt := Form2.StringGrid1.RowCount;
+  k := Form2.StringGrid1.RowCount div 2;
+
+  for j := 0 to 6 do
+    for i := 1 to k do
+    begin
+      s := Form2.StringGrid1.Cells[j,i];
+      Form2.StringGrid1.Cells[j,i] := Form2.StringGrid1.Cells[j,cnt-i];
+      Form2.StringGrid1.Cells[j,cnt-i] := s;
+    end;
+end;
 
 procedure AddFacilityToStringGrid(facility: FacilityRecord);
 begin
@@ -89,6 +130,38 @@ procedure TForm2.AddFacilityButtonClick(Sender: TObject);
 begin
   Form3.Caption := 'Добавить объект';
   Form3.ShowModal;
+end;
+
+procedure TForm2.CategorySortAscMenuItemClick(Sender: TObject);
+var
+  facilities: array of FacilityRecord;
+  group: FacilityRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(facilities, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(facilities) do
+    facilities[i - 1] := createFacilityFromStringGrid(i);
+
+  TArray.Sort<FacilityRecord>(facilities, TDelegatedComparer<FacilityRecord>.Construct(
+    function(const Left, Right: FacilityRecord): integer
+    begin
+      Result := TComparer<string>.Default.Compare(left.category, right.category);
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(facilities) - 1 do
+    AddFacilityToStringGrid(facilities[i]);
+end;
+
+procedure TForm2.CategorySortDescMenuItemClick(Sender: TObject);
+begin
+  CategorySortAscMenuItemClick(CategorySortAscMenuItem);
+  ReverseStringGrid();
 end;
 
 procedure TForm2.FormActivate(Sender: TObject);
