@@ -42,6 +42,7 @@ type
     SaleDateSortDescMenuItem: TMenuItem;
     N10: TMenuItem;
     CategoryFilterMenuItem: TMenuItem;
+    AddressFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -66,6 +67,7 @@ type
     procedure SaleDateSortAscMenuItemClick(Sender: TObject);
     procedure SaleDateSortDescMenuItemClick(Sender: TObject);
     procedure CategoryFilterMenuItemClick(Sender: TObject);
+    procedure AddressFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -163,6 +165,33 @@ procedure TForm2.AddFacilityButtonClick(Sender: TObject);
 begin
   Form3.Caption := 'Добавить объект';
   Form3.ShowModal;
+end;
+
+procedure TForm2.AddressFilterMenuItemClick(Sender: TObject);
+var
+  value: string;
+  facilities: array of FacilityRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  value := InputBox('Фильтрация по полю "Адрес"', 'Адрес: ', '');
+
+  if length(value) = 0 then exit;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(facilities, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(facilities) do
+    facilities[i - 1] := createFacilityFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(facilities) - 1 do
+    if Trim(LowerCase(facilities[i].address)) = Trim(LowerCase(value)) then AddFacilityToStringGrid(facilities[i]);
 end;
 
 procedure TForm2.AddressSortAscMenuItemClick(Sender: TObject);
