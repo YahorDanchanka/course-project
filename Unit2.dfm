@@ -77,6 +77,17 @@ object Form2: TForm2
           OnClick = CategorySortDescMenuItemClick
         end
       end
+      object N4: TMenuItem
+        Caption = #1040#1076#1088#1077#1089
+        object AddressSortAscMenuItem: TMenuItem
+          Caption = #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+          OnClick = AddressSortAscMenuItemClick
+        end
+        object AddressSortDescMenuItem: TMenuItem
+          Caption = #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102
+          OnClick = AddressSortDescMenuItemClick
+        end
+      end
     end
   end
   object OpenDialog1: TOpenDialog
