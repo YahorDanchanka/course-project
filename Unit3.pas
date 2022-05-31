@@ -58,7 +58,8 @@ begin
   facility.description := DescriptionEdit.Text;
   facility.customerFullName := CustomerFullNameEdit.Text;
   facility.saleDate := DateToStr(SaleDateDateTimePicker.Date);
-  AddFacilityToStringGrid(facility);
+
+  if Pos('добавить', AnsiLowerCase(Form3.Caption)) <> 0 then AddFacilityToStringGrid(facility);
   Form3.Close;
 end;
 

@@ -23,6 +23,7 @@ type
     procedure OpenMenuItemClick(Sender: TObject);
     procedure SaveMenuItemClick(Sender: TObject);
     procedure AddFacilityButtonClick(Sender: TObject);
+    procedure StringGrid1DblClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -84,6 +85,7 @@ end;
 
 procedure TForm2.AddFacilityButtonClick(Sender: TObject);
 begin
+  Form3.Caption := 'Добавить объект';
   Form3.ShowModal;
 end;
 
@@ -156,6 +158,44 @@ begin
   end;
 
   CloseFile(storageFile);
+end;
+
+procedure TForm2.StringGrid1DblClick(Sender: TObject);
+var facility: FacilityRecord;
+begin
+  if StringGrid1.Row = 0 then exit;
+
+  facility := createFacilityFromStringGrid(StringGrid1.Row);
+
+  with Form3 do
+  begin
+    Caption := 'Редактировать объект';
+    CategoryComboBox.ItemIndex := CategoryComboBox.Items.IndexOf(facility.category);
+    AddressEdit.Text := facility.address;
+    OwnerFullNameEdit.Text := facility.ownerFullName;
+    PriceEdit.Text := facility.price;
+    DescriptionEdit.Text := facility.description;
+    CustomerFullNameEdit.Text := facility.customerFullName;
+    SaleDateDateTimePicker.Date := StrToDate(facility.saleDate);
+
+    ShowModal;
+
+    facility.category := CategoryComboBox.Text;
+    facility.address := AddressEdit.Text;
+    facility.ownerFullName := OwnerFullNameEdit.Text;
+    facility.price := PriceEdit.Text;
+    facility.description := DescriptionEdit.Text;
+    facility.customerFullName := CustomerFullNameEdit.Text;
+    facility.saleDate := DateToStr(SaleDateDateTimePicker.Date);
+  end;
+
+  StringGrid1.Cells[0, StringGrid1.Row] := facility.category;
+  StringGrid1.Cells[1, StringGrid1.Row] := facility.address;
+  StringGrid1.Cells[2, StringGrid1.Row] := facility.ownerFullName;
+  StringGrid1.Cells[3, StringGrid1.Row] := facility.price;
+  StringGrid1.Cells[4, StringGrid1.Row] := facility.description;
+  StringGrid1.Cells[5, StringGrid1.Row] := facility.customerFullName;
+  StringGrid1.Cells[6, StringGrid1.Row] := facility.saleDate;
 end;
 
 end.

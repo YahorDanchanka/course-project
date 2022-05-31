@@ -28,6 +28,7 @@ object Form2: TForm2
     FixedRows = 0
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goFixedRowDefAlign]
     TabOrder = 0
+    OnDblClick = StringGrid1DblClick
   end
   object AddFacilityButton: TButton
     Left = 8
