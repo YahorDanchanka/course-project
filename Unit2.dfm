@@ -4,8 +4,8 @@ object Form2: TForm2
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = #1054#1089#1085#1086#1074#1085#1072#1103' '#1092#1086#1088#1084#1072
-  ClientHeight = 399
-  ClientWidth = 920
+  ClientHeight = 387
+  ClientWidth = 1100
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,17 +21,18 @@ object Form2: TForm2
   object StringGrid1: TStringGrid
     Left = 8
     Top = 8
-    Width = 904
+    Width = 1084
     Height = 337
     FixedCols = 0
     RowCount = 1
     FixedRows = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goFixedRowDefAlign]
     TabOrder = 0
   end
   object AddFacilityButton: TButton
     Left = 8
-    Top = 360
-    Width = 904
+    Top = 351
+    Width = 1084
     Height = 30
     Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1086#1073#1098#1077#1082#1090
     Font.Charset = DEFAULT_CHARSET
@@ -44,7 +45,7 @@ object Form2: TForm2
     OnClick = AddFacilityButtonClick
   end
   object MainMenu1: TMainMenu
-    Left = 872
+    Left = 1056
     Top = 304
     object N1: TMenuItem
       Caption = #1060#1072#1081#1083
@@ -63,7 +64,15 @@ object Form2: TForm2
     end
   end
   object OpenDialog1: TOpenDialog
-    Left = 840
+    DefaultExt = 'dat'
+    Filter = #1054#1073#1098#1077#1082#1090#1099'|*.dat'
+    Left = 1024
+    Top = 304
+  end
+  object SaveDialog1: TSaveDialog
+    DefaultExt = 'dat'
+    Filter = #1054#1073#1098#1077#1082#1090#1099'|*.dat'
+    Left = 992
     Top = 304
   end
 end

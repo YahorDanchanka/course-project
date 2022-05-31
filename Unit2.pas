@@ -16,6 +16,7 @@ type
     StringGrid1: TStringGrid;
     OpenDialog1: TOpenDialog;
     AddFacilityButton: TButton;
+    SaveDialog1: TSaveDialog;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -122,9 +123,9 @@ end;
 
 procedure TForm2.SaveAsMenuItemClick(Sender: TObject);
 begin
-  if OpenDialog1.Execute <> true then exit;
+  if SaveDialog1.Execute <> true then exit;
 
-  AssignFile(storageFile, OpenDialog1.FileName);
+  AssignFile(storageFile, SaveDialog1.FileName);
   Rewrite(storageFile);
 
   for i := 1 to StringGrid1.RowCount - 1 do
@@ -133,7 +134,7 @@ begin
     write(storageFile, facility);
   end;
 
-  SetStorageFilePath(OpenDialog1.FileName);
+  SetStorageFilePath(SaveDialog1.FileName);
   CloseFile(storageFile);
 end;
 
