@@ -174,6 +174,13 @@ object Form2: TForm2
         OnClick = DaysFilterMenuItemClick
       end
     end
+    object N11: TMenuItem
+      Caption = #1060#1091#1085#1082#1094#1080#1080
+      object DeletePerformancesFunction: TMenuItem
+        Caption = #1059#1076#1072#1083#1080#1090#1100' '#1074#1089#1077' '#1079#1072#1087#1080#1089#1080' '#1089' '#1076#1072#1090#1086#1081' '#1087#1088#1077#1084#1100#1077#1088#1099' '#1073#1086#1083#1100#1096#1077' 3 '#1084#1077#1089#1103#1094#1077#1074
+        OnClick = DeletePerformancesFunctionClick
+      end
+    end
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = 'dat'

@@ -48,6 +48,8 @@ type
     PriceFilterMenuItem: TMenuItem;
     PremiereDateFilterMenuItem: TMenuItem;
     DaysFilterMenuItem: TMenuItem;
+    N11: TMenuItem;
+    DeletePerformancesFunction: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -77,6 +79,7 @@ type
     procedure PriceFilterMenuItemClick(Sender: TObject);
     procedure PremiereDateFilterMenuItemClick(Sender: TObject);
     procedure DaysFilterMenuItemClick(Sender: TObject);
+    procedure DeletePerformancesFunctionClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -356,6 +359,33 @@ procedure TForm2.DaysSortDescMenuItemClick(Sender: TObject);
 begin
   DaysSortAscMenuItemClick(DaysSortAscMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.DeletePerformancesFunctionClick(Sender: TObject);
+var
+  performances: array of PerformanceRecord;
+  monthNumber, currentMonthNumber: integer;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(performances, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(performances) do
+    performances[i - 1] := createPerformanceFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(performances) - 1 do
+  begin
+    monthNumber := MonthOf(StrToDate(performances[i].premiereDate));
+    currentMonthNumber := MonthOf(now);
+    if (CurrentYear = YearOf(StrToDate(performances[i].premiereDate))) and (currentMonthNumber - monthNumber <= 3) then AddPerformanceToStringGrid(performances[i]);
+  end;
 end;
 
 procedure TForm2.DurationFilterMenuItemClick(Sender: TObject);
