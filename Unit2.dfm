@@ -4,7 +4,7 @@ object Form2: TForm2
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = #1054#1089#1085#1086#1074#1085#1072#1103' '#1092#1086#1088#1084#1072
-  ClientHeight = 430
+  ClientHeight = 399
   ClientWidth = 920
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -28,12 +28,12 @@ object Form2: TForm2
     FixedRows = 0
     TabOrder = 0
   end
-  object AddGroupButton: TButton
+  object AddFacilityButton: TButton
     Left = 8
     Top = 360
-    Width = 161
+    Width = 904
     Height = 30
-    Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1075#1088#1091#1087#1087#1091
+    Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1086#1073#1098#1077#1082#1090
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -17
@@ -41,11 +41,11 @@ object Form2: TForm2
     Font.Style = []
     ParentFont = False
     TabOrder = 1
-    OnClick = AddGroupButtonClick
+    OnClick = AddFacilityButtonClick
   end
   object MainMenu1: TMainMenu
-    Left = 888
-    Top = 392
+    Left = 872
+    Top = 304
     object N1: TMenuItem
       Caption = #1060#1072#1081#1083
       object OpenMenuItem: TMenuItem
@@ -63,7 +63,7 @@ object Form2: TForm2
     end
   end
   object OpenDialog1: TOpenDialog
-    Left = 848
-    Top = 392
+    Left = 840
+    Top = 304
   end
 end

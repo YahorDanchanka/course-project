@@ -15,13 +15,13 @@ type
     SaveAsMenuItem: TMenuItem;
     StringGrid1: TStringGrid;
     OpenDialog1: TOpenDialog;
-    AddGroupButton: TButton;
+    AddFacilityButton: TButton;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
-    procedure AddGroupButtonClick(Sender: TObject);
     procedure OpenMenuItemClick(Sender: TObject);
     procedure SaveMenuItemClick(Sender: TObject);
+    procedure AddFacilityButtonClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -81,7 +81,7 @@ begin
   Form2.Caption := 'Основная форма - ' + storageFilePath;
 end;
 
-procedure TForm2.AddGroupButtonClick(Sender: TObject);
+procedure TForm2.AddFacilityButtonClick(Sender: TObject);
 begin
   Form3.ShowModal;
 end;
