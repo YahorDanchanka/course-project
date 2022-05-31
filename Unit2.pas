@@ -40,6 +40,8 @@ type
     N9: TMenuItem;
     SaleDateSortAscMenuItem: TMenuItem;
     SaleDateSortDescMenuItem: TMenuItem;
+    N10: TMenuItem;
+    CategoryFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -63,6 +65,7 @@ type
     procedure CustomerFullnameSortDescMenuItemClick(Sender: TObject);
     procedure SaleDateSortAscMenuItemClick(Sender: TObject);
     procedure SaleDateSortDescMenuItemClick(Sender: TObject);
+    procedure CategoryFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -83,7 +86,7 @@ var
 
 implementation
 
-uses Unit1, Unit3;
+uses Unit1, Unit3, Unit4;
 
 {$R *.dfm}
 
@@ -190,6 +193,35 @@ procedure TForm2.AddressSortDescMenuItemClick(Sender: TObject);
 begin
   AddressSortAscMenuItemClick(AddressSortAscMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.CategoryFilterMenuItemClick(Sender: TObject);
+var
+  facilities: array of FacilityRecord;
+  value: string;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  Form4.SecretEdit.Text := '0';
+  Form4.ShowModal;
+  if Form4.SecretEdit.Text <> '1' then exit;
+
+  value := Form4.CategoryComboBox.Text;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(facilities, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(facilities) do
+    facilities[i - 1] := createFacilityFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(facilities) - 1 do
+    if Trim(LowerCase(facilities[i].category)) = Trim(LowerCase(value)) then AddFacilityToStringGrid(facilities[i]);
 end;
 
 procedure TForm2.CategorySortAscMenuItemClick(Sender: TObject);

@@ -144,6 +144,13 @@ object Form2: TForm2
         end
       end
     end
+    object N10: TMenuItem
+      Caption = #1060#1080#1083#1100#1090#1088#1072#1094#1080#1103
+      object CategoryFilterMenuItem: TMenuItem
+        Caption = #1042#1080#1076' '#1086#1073#1098#1077#1082#1090#1072
+        OnClick = CategoryFilterMenuItemClick
+      end
+    end
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = 'dat'
