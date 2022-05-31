@@ -27,15 +27,16 @@ type
   public
     { Public declarations }
   end;
-  groupRecord = record
-    number, level, fullName, price, day, time, studentsCount: string[20];
+  FacilityRecord = record
+    category, address, ownerFullName, price, description, customerFullName, saleDate: string[30];
   end;
+  procedure AddFacilityToStringGrid(facility: FacilityRecord);
 
-const fields: array of String = ['Номер группы', 'Уровень', 'ФИО преподавателя', 'Стоимость за занятие', 'День проведения', 'Время проведения', 'Количество учащихся'];
+const fields: array of String = ['Вид объекта', 'Адрес', 'ФИО владельца', 'Стоимость', 'Описание', 'ФИО покупателя', 'Дата продажи'];
 
 var
   Form2: TForm2;
-  storageFile: file of groupRecord;
+  storageFile: file of FacilityRecord;
   storageFilePath: string;
   i, j: integer;
 
@@ -45,17 +46,33 @@ uses Unit1, Unit3;
 
 {$R *.dfm}
 
-function createGroupFromStringGrid(rowIndex: integer): groupRecord;
-var group: groupRecord;
+procedure AddFacilityToStringGrid(facility: FacilityRecord);
 begin
-  group.number := Form2.StringGrid1.Cells[0, rowIndex];
-  group.level := Form2.StringGrid1.Cells[1, rowIndex];
-  group.fullName := Form2.StringGrid1.Cells[2, rowIndex];
-  group.price := Form2.StringGrid1.Cells[3, rowIndex];
-  group.day := Form2.StringGrid1.Cells[4, rowIndex];
-  group.time := Form2.StringGrid1.Cells[5, rowIndex];
-  group.studentsCount := Form2.StringGrid1.Cells[6, rowIndex];
-  result := group;
+  Form2.StringGrid1.RowCount := Form2.StringGrid1.RowCount + 1;
+  Form2.StringGrid1.FixedRows := 1;
+
+  const rowIndex = Form2.StringGrid1.RowCount - 1;
+
+  Form2.StringGrid1.Cells[0, rowIndex] := facility.category;
+  Form2.StringGrid1.Cells[1, rowIndex] := facility.address;
+  Form2.StringGrid1.Cells[2, rowIndex] := facility.ownerFullName;
+  Form2.StringGrid1.Cells[3, rowIndex] := facility.price;
+  Form2.StringGrid1.Cells[4, rowIndex] := facility.description;
+  Form2.StringGrid1.Cells[5, rowIndex] := facility.customerFullName;
+  Form2.StringGrid1.Cells[6, rowIndex] := facility.saleDate;
+end;
+
+function createFacilityFromStringGrid(rowIndex: integer): FacilityRecord;
+var facility: FacilityRecord;
+begin
+  facility.category := Form2.StringGrid1.Cells[0, rowIndex];
+  facility.address := Form2.StringGrid1.Cells[1, rowIndex];
+  facility.ownerFullName := Form2.StringGrid1.Cells[2, rowIndex];
+  facility.price := Form2.StringGrid1.Cells[3, rowIndex];
+  facility.description := Form2.StringGrid1.Cells[4, rowIndex];
+  facility.customerFullName := Form2.StringGrid1.Cells[5, rowIndex];
+  facility.saleDate := Form2.StringGrid1.Cells[6, rowIndex];
+  result := facility;
 end;
 
 procedure SetStorageFilePath(path: string);
@@ -84,7 +101,7 @@ begin
 end;
 
 procedure TForm2.OpenMenuItemClick(Sender: TObject);
-var group: groupRecord;
+var group: FacilityRecord;
 begin
   if OpenDialog1.Execute <> true then exit;
 
@@ -96,7 +113,7 @@ begin
   for i := 1 to Filesize(storageFile) do
   begin
     read(storageFile, group);
-    AddGroupToStringGrid(group);
+    AddFacilityToStringGrid(group);
   end;
 
   SetStorageFilePath(OpenDialog1.FileName);
@@ -112,8 +129,8 @@ begin
 
   for i := 1 to StringGrid1.RowCount - 1 do
   begin
-    var group: groupRecord := createGroupFromStringGrid(i);
-    write(storageFile, group);
+    var facility: FacilityRecord := createFacilityFromStringGrid(i);
+    write(storageFile, facility);
   end;
 
   SetStorageFilePath(OpenDialog1.FileName);
@@ -133,8 +150,8 @@ begin
 
   for i := 1 to StringGrid1.RowCount - 1 do
   begin
-    var group: groupRecord := createGroupFromStringGrid(i);
-    write(storageFile, group);
+    var facility: FacilityRecord := createFacilityFromStringGrid(i);
+    write(storageFile, facility);
   end;
 
   CloseFile(storageFile);

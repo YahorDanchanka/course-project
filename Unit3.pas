@@ -9,27 +9,27 @@ uses
 type
   TForm3 = class(TForm)
     Label1: TLabel;
-    NumberEdit: TEdit;
-    LevelEdit: TEdit;
+    AddressEdit: TEdit;
     Label2: TLabel;
-    FullnameEdit: TEdit;
+    OwnerFullNameEdit: TEdit;
     Label3: TLabel;
     PriceEdit: TEdit;
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
-    CountEdit: TEdit;
     Label7: TLabel;
-    AddGroupButton: TButton;
-    DateTimePicker1: TDateTimePicker;
-    DateTimePicker2: TDateTimePicker;
-    procedure AddGroupButtonClick(Sender: TObject);
+    AddFacilityButton: TButton;
+    CategoryComboBox: TComboBox;
+    DescriptionEdit: TEdit;
+    CustomerFullNameEdit: TEdit;
+    SaleDateDateTimePicker: TDateTimePicker;
+    procedure AddFacilityButtonClick(Sender: TObject);
+    procedure PriceEditKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
     { Public declarations }
   end;
-  procedure AddGroupToStringGrid(group: groupRecord);
 
 var
   Form3: TForm3;
@@ -38,34 +38,33 @@ implementation
 
 {$R *.dfm}
 
-procedure AddGroupToStringGrid(group: groupRecord);
+procedure TForm3.AddFacilityButtonClick(Sender: TObject);
+var
+  facility: FacilityRecord;
+  i: integer;
 begin
-  Form2.StringGrid1.RowCount := Form2.StringGrid1.RowCount + 1;
-  Form2.StringGrid1.FixedRows := 1;
+  for i := 0 to Form3.ComponentCount - 1 do
+    if Form3.Components[i] is TEdit then
+      if TEdit(Form3.Components[i]).Text = '' then
+      begin
+        ShowMessage('Заполните все поля!');
+        exit;
+      end;
 
-  const rowIndex = Form2.StringGrid1.RowCount - 1;
-
-  Form2.StringGrid1.Cells[0, rowIndex] := group.number;
-  Form2.StringGrid1.Cells[1, rowIndex] := group.level;
-  Form2.StringGrid1.Cells[2, rowIndex] := group.fullName;
-  Form2.StringGrid1.Cells[3, rowIndex] := group.price;
-  Form2.StringGrid1.Cells[4, rowIndex] := group.day;
-  Form2.StringGrid1.Cells[5, rowIndex] := group.time;
-  Form2.StringGrid1.Cells[6, rowIndex] := group.studentsCount;
+  facility.category := CategoryComboBox.Text;
+  facility.address := AddressEdit.Text;
+  facility.ownerFullName := OwnerFullNameEdit.Text;
+  facility.price := PriceEdit.Text;
+  facility.description := DescriptionEdit.Text;
+  facility.customerFullName := CustomerFullNameEdit.Text;
+  facility.saleDate := DateToStr(SaleDateDateTimePicker.Date);
+  AddFacilityToStringGrid(facility);
+  Form3.Close;
 end;
 
-procedure TForm3.AddGroupButtonClick(Sender: TObject);
-var group: groupRecord;
+procedure TForm3.PriceEditKeyPress(Sender: TObject; var Key: Char);
 begin
-  group.number := NumberEdit.Text;
-  group.level := LevelEdit.Text;
-  group.fullName := FullnameEdit.Text;
-  group.price := PriceEdit.Text;
-  group.day := DateToStr(DateTimePicker1.Date);
-  group.time := TimeToStr(DateTimePicker2.Time);
-  group.studentsCount := CountEdit.Text;
-  AddGroupToStringGrid(group);
-  Form3.Close;
+  if not (Key in ['0'..'9', ',', #8]) then Key := #0;
 end;
 
 end.
