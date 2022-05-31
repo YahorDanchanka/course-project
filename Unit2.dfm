@@ -186,6 +186,10 @@ object Form2: TForm2
           '%'
         OnClick = IncreasePerformancesFunctionClick
       end
+      object DumpPerformancesFunction: TMenuItem
+        Caption = #1042#1099#1074#1077#1089#1090#1080' '#1074#1089#1077' '#1089#1087#1077#1082#1090#1072#1082#1083#1080', '#1082#1086#1090#1086#1088#1099#1077' '#1087#1086#1082#1072#1079#1099#1074#1072#1102#1090' '#1074' '#1089#1073
+        OnClick = DumpPerformancesFunctionClick
+      end
     end
   end
   object OpenDialog1: TOpenDialog

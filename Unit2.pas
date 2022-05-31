@@ -51,6 +51,7 @@ type
     N11: TMenuItem;
     DeletePerformancesFunction: TMenuItem;
     IncreasePerformancesFunction: TMenuItem;
+    DumpPerformancesFunction: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -82,6 +83,7 @@ type
     procedure DaysFilterMenuItemClick(Sender: TObject);
     procedure DeletePerformancesFunctionClick(Sender: TObject);
     procedure IncreasePerformancesFunctionClick(Sender: TObject);
+    procedure DumpPerformancesFunctionClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -388,6 +390,27 @@ begin
     currentMonthNumber := MonthOf(now);
     if (CurrentYear = YearOf(StrToDate(performances[i].premiereDate))) and (currentMonthNumber - monthNumber <= 3) then AddPerformanceToStringGrid(performances[i]);
   end;
+end;
+
+procedure TForm2.DumpPerformancesFunctionClick(Sender: TObject);
+var performances: array of PerformanceRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(performances, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(performances) do
+    performances[i - 1] := createPerformanceFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(performances) - 1 do
+    if Pos('сб', AnsiLowerCase(performances[i].days)) <> 0 then AddPerformanceToStringGrid(performances[i]);
 end;
 
 procedure TForm2.DurationFilterMenuItemClick(Sender: TObject);
