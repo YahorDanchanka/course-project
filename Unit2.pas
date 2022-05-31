@@ -34,6 +34,9 @@ type
     N7: TMenuItem;
     DescriptionSortAscMenuItem: TMenuItem;
     DescriptionSortDescMenuItem: TMenuItem;
+    N8: TMenuItem;
+    CustomerFullnameSortAscMenuItem: TMenuItem;
+    CustomerFullnameSortDescMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -53,6 +56,8 @@ type
     procedure PriceSortDescMenuItemClick(Sender: TObject);
     procedure DescriptionSortAscMenuItemClick(Sender: TObject);
     procedure DescriptionSortDescMenuItemClick(Sender: TObject);
+    procedure CustomerFullnameSortAscMenuItemClick(Sender: TObject);
+    procedure CustomerFullnameSortDescMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -209,6 +214,36 @@ end;
 procedure TForm2.CategorySortDescMenuItemClick(Sender: TObject);
 begin
   CategorySortAscMenuItemClick(CategorySortAscMenuItem);
+  ReverseStringGrid();
+end;
+
+procedure TForm2.CustomerFullnameSortAscMenuItemClick(Sender: TObject);
+var facilities: array of FacilityRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(facilities, StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(facilities) do
+    facilities[i - 1] := createFacilityFromStringGrid(i);
+
+  TArray.Sort<FacilityRecord>(facilities, TDelegatedComparer<FacilityRecord>.Construct(
+    function(const Left, Right: FacilityRecord): integer
+    begin
+      Result := TComparer<string>.Default.Compare(left.customerFullName, right.customerFullName);
+    end
+  ));
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(facilities) - 1 do
+    AddFacilityToStringGrid(facilities[i]);
+end;
+
+procedure TForm2.CustomerFullnameSortDescMenuItemClick(Sender: TObject);
+begin
+  CustomerFullnameSortAscMenuItemClick(CustomerFullnameSortAscMenuItem);
   ReverseStringGrid();
 end;
 
