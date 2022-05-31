@@ -50,6 +50,7 @@ type
     DaysFilterMenuItem: TMenuItem;
     N11: TMenuItem;
     DeletePerformancesFunction: TMenuItem;
+    IncreasePerformancesFunction: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -80,6 +81,7 @@ type
     procedure PremiereDateFilterMenuItemClick(Sender: TObject);
     procedure DaysFilterMenuItemClick(Sender: TObject);
     procedure DeletePerformancesFunctionClick(Sender: TObject);
+    procedure IncreasePerformancesFunctionClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -472,6 +474,35 @@ end;
 procedure TForm2.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Form1.Close;
+end;
+
+procedure TForm2.IncreasePerformancesFunctionClick(Sender: TObject);
+var
+  performances: array of PerformanceRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(performances, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(performances) do
+    performances[i - 1] := createPerformanceFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(performances) - 1 do
+  begin
+    if performances[i].ageLimit = '16' then
+      performances[i].price := FloatToStr(StrToFloat(performances[i].price) + StrToFloat(performances[i].price) * 10 / 100);
+
+    AddPerformanceToStringGrid(performances[i]);
+  end;
+
+  SaveMenuItemClick(SaveMenuItem);
 end;
 
 procedure TForm2.OpenMenuItemClick(Sender: TObject);
