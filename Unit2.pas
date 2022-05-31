@@ -46,6 +46,7 @@ type
     OwnerFullnameFilterMenuItem: TMenuItem;
     PriceFilterMenuItem: TMenuItem;
     DescriptionFilterMenuItem: TMenuItem;
+    CustomerFullnameFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -74,6 +75,7 @@ type
     procedure OwnerFullnameFilterMenuItemClick(Sender: TObject);
     procedure PriceFilterMenuItemClick(Sender: TObject);
     procedure DescriptionFilterMenuItemClick(Sender: TObject);
+    procedure CustomerFullnameFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -287,6 +289,33 @@ procedure TForm2.CategorySortDescMenuItemClick(Sender: TObject);
 begin
   CategorySortAscMenuItemClick(CategorySortAscMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.CustomerFullnameFilterMenuItemClick(Sender: TObject);
+var
+  value: string;
+  facilities: array of FacilityRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  value := InputBox('Фильтрация по полю "ФИО покупателя"', 'ФИО покупателя: ', '');
+
+  if length(value) = 0 then exit;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(facilities, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(facilities) do
+    facilities[i - 1] := createFacilityFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(facilities) - 1 do
+    if Trim(AnsiLowerCase(facilities[i].customerFullName)) = Trim(AnsiLowerCase(value)) then AddFacilityToStringGrid(facilities[i]);
 end;
 
 procedure TForm2.CustomerFullnameSortAscMenuItemClick(Sender: TObject);
