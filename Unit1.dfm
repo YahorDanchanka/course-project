@@ -18,7 +18,7 @@ object Form1: TForm1
   TextHeight = 15
   object HeaderLabel: TLabel
     Left = 136
-    Top = 80
+    Top = 56
     Width = 470
     Height = 74
     Alignment = taCenter
@@ -32,8 +32,8 @@ object Form1: TForm1
     WordWrap = True
   end
   object AuthorLabel: TLabel
-    Left = 552
-    Top = 231
+    Left = 296
+    Top = 159
     Width = 145
     Height = 31
     Caption = #1045#1083#1077#1085#1072' '#1058#1088#1080#1073#1086#1081
@@ -47,7 +47,7 @@ object Form1: TForm1
   object Button1: TButton
     Left = 16
     Top = 232
-    Width = 115
+    Width = 696
     Height = 30
     Caption = #1055#1077#1088#1077#1081#1090#1080
     Font.Charset = DEFAULT_CHARSET
