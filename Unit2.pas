@@ -44,6 +44,7 @@ type
     CategoryFilterMenuItem: TMenuItem;
     AddressFilterMenuItem: TMenuItem;
     OwnerFullnameFilterMenuItem: TMenuItem;
+    PriceFilterMenuItem: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -70,6 +71,7 @@ type
     procedure CategoryFilterMenuItemClick(Sender: TObject);
     procedure AddressFilterMenuItemClick(Sender: TObject);
     procedure OwnerFullnameFilterMenuItemClick(Sender: TObject);
+    procedure PriceFilterMenuItemClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -434,6 +436,42 @@ procedure TForm2.OwnerFullnameSortDescMenuItemClick(Sender: TObject);
 begin
   OwnerFullnameSortAscMenuItemClick(OwnerFullnameSortAscMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.PriceFilterMenuItemClick(Sender: TObject);
+var
+  valueNum1, valueNum2: string;
+  facilities: array of FacilityRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  valueNum1 := InputBox('Фильтрация по полю "Стоимость"', 'От: ', '');
+  valueNum2 := InputBox('Фильтрация по полю "Стоимость"', 'До: ', '');
+
+  try
+    StrToFloat(valueNum1);
+    StrToFloat(valueNum2);
+  except
+    ShowMessage('Введите число!');
+    exit;
+  end;
+
+  if (length(valueNum1) = 0) or (length(valueNum2) = 0) then exit;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(facilities, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(facilities) do
+    facilities[i - 1] := createFacilityFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(facilities) - 1 do
+    if (StrToFloat(facilities[i].price) >= StrToFloat(valueNum1)) and (StrToFloat(facilities[i].price) <= StrToFloat(valueNum2)) then AddFacilityToStringGrid(facilities[i]);
 end;
 
 procedure TForm2.PriceSortAscMenuItemClick(Sender: TObject);
