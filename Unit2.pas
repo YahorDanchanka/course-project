@@ -24,6 +24,8 @@ type
     procedure SaveMenuItemClick(Sender: TObject);
     procedure AddFacilityButtonClick(Sender: TObject);
     procedure StringGrid1DblClick(Sender: TObject);
+    procedure StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
   private
     { Private declarations }
   public
@@ -158,6 +160,32 @@ begin
   end;
 
   CloseFile(storageFile);
+end;
+
+procedure TForm2.StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+var
+  activeIndex, buttonSelected: integer;
+  facilities: array of FacilityRecord;
+begin
+  if StringGrid1.Row = 0 then exit;
+  activeIndex := StringGrid1.Row;
+
+  SetLength(facilities, StringGrid1.RowCount - 1);
+
+  for i := 1 to StringGrid1.RowCount - 1 do
+    facilities[i - 1] := createFacilityFromStringGrid(i);
+
+  buttonSelected := MessageDlg('Вы точно хотите удалить объект (' + facilities[activeIndex - 1].ownerFullName + ')?', mtConfirmation, mbOKCancel, 0);
+  if buttonSelected <> mrOk then exit;
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(facilities) - 1 do
+    if i + 1 <> activeIndex then AddFacilityToStringGrid(facilities[i]);
+
+  if StringGrid1.RowCount <= 1 then StringGrid1.Options := StringGrid1.Options - [goEditing];
+  SaveMenuItemClick(SaveMenuItem);
 end;
 
 procedure TForm2.StringGrid1DblClick(Sender: TObject);
