@@ -191,6 +191,10 @@ object Form2: TForm2
         OnClick = DumpPerformancesFunctionClick
       end
     end
+    object ClearStringGrid: TMenuItem
+      Caption = #1054#1095#1080#1089#1090#1080#1090#1100' '#1090#1072#1073#1083#1080#1094#1091
+      OnClick = ClearStringGridClick
+    end
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = 'dat'

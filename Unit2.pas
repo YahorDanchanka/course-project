@@ -52,6 +52,7 @@ type
     DeletePerformancesFunction: TMenuItem;
     IncreasePerformancesFunction: TMenuItem;
     DumpPerformancesFunction: TMenuItem;
+    ClearStringGrid: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -84,6 +85,7 @@ type
     procedure DeletePerformancesFunctionClick(Sender: TObject);
     procedure IncreasePerformancesFunctionClick(Sender: TObject);
     procedure DumpPerformancesFunctionClick(Sender: TObject);
+    procedure ClearStringGridClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -304,6 +306,12 @@ procedure TForm2.CategorySortDescMenuItemClick(Sender: TObject);
 begin
   CategorySortAscMenuItemClick(CategorySortAscMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.ClearStringGridClick(Sender: TObject);
+begin
+  StringGrid1.RowCount := 1;
+  Form2.StringGrid1.Options := Form2.StringGrid1.Options - [goEditing];
 end;
 
 procedure TForm2.DaysFilterMenuItemClick(Sender: TObject);
