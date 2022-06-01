@@ -51,6 +51,7 @@ type
     SearchEdit: TEdit;
     N11: TMenuItem;
     DeleteFunction: TMenuItem;
+    IncreaseFunction: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -83,6 +84,7 @@ type
     procedure SaleDateFilterMenuItemClick(Sender: TObject);
     procedure SearchEditChange(Sender: TObject);
     procedure DeleteFunctionClick(Sender: TObject);
+    procedure IncreaseFunctionClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -151,7 +153,7 @@ begin
   Form2.StringGrid1.Cells[0, rowIndex] := facility.category;
   Form2.StringGrid1.Cells[1, rowIndex] := facility.address;
   Form2.StringGrid1.Cells[2, rowIndex] := facility.ownerFullName;
-  Form2.StringGrid1.Cells[3, rowIndex] := facility.price;
+  Form2.StringGrid1.Cells[3, rowIndex] := formatfloat('0.00', StrToFloat(facility.price));
   Form2.StringGrid1.Cells[4, rowIndex] := facility.description;
   Form2.StringGrid1.Cells[5, rowIndex] := facility.customerFullName;
   Form2.StringGrid1.Cells[6, rowIndex] := facility.saleDate;
@@ -455,6 +457,35 @@ end;
 procedure TForm2.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Form1.Close;
+end;
+
+procedure TForm2.IncreaseFunctionClick(Sender: TObject);
+var
+  facilities: array of FacilityRecord;
+  price: real;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(facilities, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(facilities) do
+    facilities[i - 1] := createFacilityFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(facilities) - 1 do
+  begin
+    price := StrToFloat(facilities[i].price);
+    facilities[i].price := FloatToStr(price + price * 5 / 100);
+    AddFacilityToStringGrid(facilities[i]);
+  end;
+
+  SaveMenuItemClick(SaveMenuItem);
 end;
 
 procedure TForm2.OpenMenuItemClick(Sender: TObject);
