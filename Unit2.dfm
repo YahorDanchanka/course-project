@@ -190,6 +190,13 @@ object Form2: TForm2
         OnClick = SaleDateFilterMenuItemClick
       end
     end
+    object N11: TMenuItem
+      Caption = #1060#1091#1085#1082#1094#1080#1080
+      object DeleteFunction: TMenuItem
+        Caption = #1059#1076#1072#1083#1080#1090#1100' '#1074#1089#1077' '#1079#1072#1087#1080#1089#1080' '#1086#1073' '#1086#1073#1098#1077#1082#1090#1072#1093' '#1082#1086#1085#1082#1088#1077#1090#1085#1086#1075#1086' '#1074#1080#1076#1072
+        OnClick = DeleteFunctionClick
+      end
+    end
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = 'dat'
