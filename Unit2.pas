@@ -52,6 +52,7 @@ type
     N11: TMenuItem;
     DeleteFunction: TMenuItem;
     IncreaseFunction: TMenuItem;
+    DumpFunction: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -85,6 +86,7 @@ type
     procedure SearchEditChange(Sender: TObject);
     procedure DeleteFunctionClick(Sender: TObject);
     procedure IncreaseFunctionClick(Sender: TObject);
+    procedure DumpFunctionClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -443,6 +445,27 @@ procedure TForm2.DescriptionSortDescMenuItemClick(Sender: TObject);
 begin
   DescriptionSortAscMenuItemClick(DescriptionSortAscMenuItem);
   ReverseStringGrid();
+end;
+
+procedure TForm2.DumpFunctionClick(Sender: TObject);
+var facilities: array of FacilityRecord;
+begin
+  if length(storageFilePath) = 0 then
+  begin
+    ShowMessage('Данные не найдены.');
+    exit;
+  end;
+
+  UpdateStringGridFromFile(storageFilePath);
+  SetLength(facilities, Form2.StringGrid1.RowCount - 1);
+
+  for i := 1 to Length(facilities) do
+    facilities[i - 1] := createFacilityFromStringGrid(i);
+
+  Form2.StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(facilities) - 1 do
+    if YearOf(StrToDate(facilities[i].saleDate)) = CurrentYear - 1 then AddFacilityToStringGrid(facilities[i]);
 end;
 
 procedure TForm2.FormActivate(Sender: TObject);
