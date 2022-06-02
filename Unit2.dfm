@@ -55,6 +55,7 @@ object Form2: TForm2
     FixedRows = 0
     TabOrder = 0
     OnContextPopup = StringGrid1ContextPopup
+    OnDblClick = StringGrid1DblClick
   end
   object AddGroupButton: TButton
     Left = 8

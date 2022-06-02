@@ -83,6 +83,7 @@ type
     procedure PriceFilterMenuItemClick(Sender: TObject);
     procedure DateFilterMenuItemClick(Sender: TObject);
     procedure StudentsCountFilterClick(Sender: TObject);
+    procedure StringGrid1DblClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -164,6 +165,7 @@ end;
 
 procedure TForm2.AddGroupButtonClick(Sender: TObject);
 begin
+  Form3.Caption := 'Добавить группу';
   Form3.ShowModal;
 end;
 
@@ -623,6 +625,44 @@ begin
     if i + 1 <> activeIndex then AddGroupToStringGrid(students[i]);
 
   if StringGrid1.RowCount <= 1 then StringGrid1.Options := StringGrid1.Options - [goEditing];
+end;
+
+procedure TForm2.StringGrid1DblClick(Sender: TObject);
+var group: groupRecord;
+begin
+  if StringGrid1.Row = 0 then exit;
+
+  group := createGroupFromStringGrid(StringGrid1.Row);
+
+  with Form3 do
+  begin
+    Caption := 'Редактировать группу';
+    NumberComboBox.ItemIndex := NumberComboBox.Items.IndexOf(group.number);
+    LevelComboBox.Text := group.level;
+    FullnameEdit.Text := group.fullName;
+    PriceEdit.Text := group.price;
+    DateTimePicker1.Date := StrToDate(group.day);
+    DateTimePicker2.Time := StrToTime(group.time);
+    CountEdit.Text := group.studentsCount;
+
+    ShowModal;
+
+    group.number := NumberComboBox.Text;
+    group.level := LevelComboBox.Text;
+    group.fullName := FullnameEdit.Text;
+    group.price := PriceEdit.Text;
+    group.day := DateToStr(DateTimePicker1.Date);
+    group.time := TimeToStr(DateTimePicker2.Time);
+    group.studentsCount := CountEdit.Text;
+  end;
+
+  StringGrid1.Cells[0, StringGrid1.Row] := group.number;
+  StringGrid1.Cells[1, StringGrid1.Row] := group.level;
+  StringGrid1.Cells[2, StringGrid1.Row] := group.fullName;
+  StringGrid1.Cells[3, StringGrid1.Row] := group.price;
+  StringGrid1.Cells[4, StringGrid1.Row] := group.day;
+  StringGrid1.Cells[5, StringGrid1.Row] := group.time;
+  StringGrid1.Cells[6, StringGrid1.Row] := group.studentsCount;
 end;
 
 procedure TForm2.StudentsCountFilterClick(Sender: TObject);

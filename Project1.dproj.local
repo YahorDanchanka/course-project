@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899.12.30 00:00:00.000.510,=C:\Users\danchenko\Documents\ОАИП\course-project\Unit5.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.726,=C:\Users\danchenko\Documents\ОАИП\course-project\Unit4.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.918,=C:\Users\danchenko\Documents\ОАИП\course-project\Unit3.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.114,C:\Users\danchenko\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\danchenko\Documents\ОАИП\course-project\Unit1.dfm</Transaction>
     <Transaction>1899.12.30 00:00:00.000.995,=C:\Users\danchenko\Documents\ОАИП\course-project\Unit6.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.683,C:\Users\danchenko\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\danchenko\Documents\ОАИП\course-project\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.726,=C:\Users\danchenko\Documents\ОАИП\course-project\Unit4.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.510,=C:\Users\danchenko\Documents\ОАИП\course-project\Unit5.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.918,=C:\Users\danchenko\Documents\ОАИП\course-project\Unit3.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.114,C:\Users\danchenko\Documents\ОАИП\course-project\Unit1.pas=C:\Users\danchenko\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.863,=C:\Users\danchenko\Documents\ОАИП\course-project\Unit2.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.114,C:\Users\danchenko\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\danchenko\Documents\ОАИП\course-project\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.114,C:\Users\danchenko\Documents\ОАИП\course-project\Unit1.dfm=C:\Users\danchenko\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.683,C:\Users\danchenko\Documents\ОАИП\course-project\Project1.dproj=C:\Users\danchenko\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
     <Transaction>1899.12.30 00:00:00.000.933,=C:\Users\danchenko\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
   </Transactions>
 </BorlandProject>

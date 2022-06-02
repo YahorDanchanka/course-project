@@ -58,7 +58,6 @@ procedure AddGroupToStringGrid(group: groupRecord);
 begin
   Form2.StringGrid1.RowCount := Form2.StringGrid1.RowCount + 1;
   Form2.StringGrid1.FixedRows := 1;
-  Form2.StringGrid1.Options := Form2.StringGrid1.Options + [goEditing];
 
 
   const rowIndex = Form2.StringGrid1.RowCount - 1;
@@ -92,7 +91,8 @@ begin
   group.day := DateToStr(DateTimePicker1.Date);
   group.time := TimeToStr(DateTimePicker2.Time);
   group.studentsCount := CountEdit.Text;
-  AddGroupToStringGrid(group);
+
+  if Pos('добавить', AnsiLowerCase(Form3.Caption)) <> 0 then AddGroupToStringGrid(group);
   Form3.Close;
 end;
 
