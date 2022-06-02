@@ -9,13 +9,13 @@ object Form3: TForm3
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -12
+  Font.Height = -17
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poDesktopCenter
   OnCreate = FormCreate
   PixelsPerInch = 96
-  TextHeight = 15
+  TextHeight = 23
   object Label1: TLabel
     Left = 8
     Top = 8
@@ -107,33 +107,6 @@ object Form3: TForm3
     Font.Style = []
     ParentFont = False
   end
-  object NumberEdit: TEdit
-    Left = 8
-    Top = 37
-    Width = 324
-    Height = 31
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -17
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    NumbersOnly = True
-    ParentFont = False
-    TabOrder = 0
-  end
-  object LevelEdit: TEdit
-    Left = 8
-    Top = 99
-    Width = 324
-    Height = 31
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -17
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 1
-  end
   object FullnameEdit: TEdit
     Left = 8
     Top = 165
@@ -145,7 +118,8 @@ object Form3: TForm3
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 2
+    TabOrder = 0
+    OnKeyPress = FullnameEditKeyPress
   end
   object PriceEdit: TEdit
     Left = 8
@@ -157,9 +131,9 @@ object Form3: TForm3
     Font.Height = -17
     Font.Name = 'Segoe UI'
     Font.Style = []
-    NumbersOnly = True
     ParentFont = False
-    TabOrder = 3
+    TabOrder = 1
+    OnKeyPress = PriceEditKeyPress
   end
   object CountEdit: TEdit
     Left = 8
@@ -173,7 +147,7 @@ object Form3: TForm3
     Font.Style = []
     NumbersOnly = True
     ParentFont = False
-    TabOrder = 4
+    TabOrder = 2
   end
   object AddGroupButton: TButton
     Left = 8
@@ -187,7 +161,7 @@ object Form3: TForm3
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 5
+    TabOrder = 3
     OnClick = AddGroupButtonClick
   end
   object DateTimePicker1: TDateTimePicker
@@ -203,7 +177,7 @@ object Form3: TForm3
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 6
+    TabOrder = 4
   end
   object DateTimePicker2: TDateTimePicker
     Left = 8
@@ -219,6 +193,58 @@ object Form3: TForm3
     Font.Style = []
     Kind = dtkTime
     ParentFont = False
+    TabOrder = 5
+  end
+  object NumberComboBox: TComboBox
+    Left = 8
+    Top = 37
+    Width = 324
+    Height = 31
+    Style = csDropDownList
+    ItemIndex = 0
+    TabOrder = 6
+    Text = #1055#1054'-11'
+    Items.Strings = (
+      #1055#1054'-11'
+      #1055#1054'-12'
+      #1055#1054'-13'
+      #1055#1054'-21'
+      #1055#1054'-22'
+      #1055#1054'-23'
+      #1055#1054'-31'
+      #1055#1054'-32'
+      #1055#1054'-33'
+      #1055#1054'-41'
+      #1055#1054'-42'
+      #1055#1054'-43'
+      #1041#1041'-11'
+      #1041#1041'-12'
+      #1041#1041'-13'
+      #1041#1041'-21'
+      #1041#1041'-22'
+      #1041#1041'-23'
+      #1041#1041'-31'
+      #1041#1041'-32'
+      #1041#1041'-33')
+  end
+  object LevelComboBox: TComboBox
+    Left = 8
+    Top = 99
+    Width = 324
+    Height = 31
+    Style = csDropDownList
+    ItemIndex = 0
     TabOrder = 7
+    Text = 'A1'
+    Items.Strings = (
+      'A1'
+      'A2'
+      'A3'
+      'B1'
+      'B2'
+      'B3'
+      'C1'
+      'C2'
+      'C3')
   end
 end

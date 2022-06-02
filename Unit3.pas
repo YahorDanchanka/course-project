@@ -9,8 +9,6 @@ uses
 type
   TForm3 = class(TForm)
     Label1: TLabel;
-    NumberEdit: TEdit;
-    LevelEdit: TEdit;
     Label2: TLabel;
     FullnameEdit: TEdit;
     Label3: TLabel;
@@ -23,8 +21,12 @@ type
     AddGroupButton: TButton;
     DateTimePicker1: TDateTimePicker;
     DateTimePicker2: TDateTimePicker;
+    NumberComboBox: TComboBox;
+    LevelComboBox: TComboBox;
     procedure AddGroupButtonClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure PriceEditKeyPress(Sender: TObject; var Key: Char);
+    procedure FullnameEditKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -38,6 +40,19 @@ var
 implementation
 
 {$R *.dfm}
+
+function IsRussianChars(const S: String): Boolean;
+var
+  i: Integer;
+begin
+  Result:= True;
+  for i:= 1 to Length(S) do
+    if (Ord(S[i]) >= $C0)
+        or (Ord(S[i]) = $A8)
+        or (Ord(S[i]) = $B8)
+    then Exit;
+  Result:= False;
+end;
 
 procedure AddGroupToStringGrid(group: groupRecord);
 begin
@@ -70,8 +85,8 @@ begin
         exit;
       end;
 
-  group.number := NumberEdit.Text;
-  group.level := LevelEdit.Text;
+  group.number := NumberComboBox.Text;
+  group.level := LevelComboBox.Text;
   group.fullName := FullnameEdit.Text;
   group.price := PriceEdit.Text;
   group.day := DateToStr(DateTimePicker1.Date);
@@ -84,6 +99,16 @@ end;
 procedure TForm3.FormCreate(Sender: TObject);
 begin
 Form3.Color :=$C0DCC0;
+end;
+
+procedure TForm3.FullnameEditKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not ((Key in [' ', #8]) or (IsRussianChars(Key))) then Key := #0;
+end;
+
+procedure TForm3.PriceEditKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not (Key in ['0'..'9', ',', #8]) then Key := #0;
 end;
 
 end.
