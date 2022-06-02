@@ -93,8 +93,9 @@ begin
   group.studentsCount := CountEdit.Text;
 
   if Pos('добавить', AnsiLowerCase(Form3.Caption)) <> 0 then AddGroupToStringGrid(group);
-  Form2.SaveMenuItemClick(Form2.SaveMenuItem);
+
   Form3.Close;
+  Form2.SaveMenuItemClick(Form2.SaveMenuItem);
 end;
 
 procedure TForm3.FormCreate(Sender: TObject);
