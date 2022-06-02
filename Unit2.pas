@@ -457,7 +457,7 @@ begin
   TArray.Sort<groupRecord>(groups, TDelegatedComparer<groupRecord>.Construct(
     function(const Left, Right: groupRecord): integer
     begin
-      Result := TComparer<integer>.Default.Compare(StrToInt(left.number), StrToInt(right.number));
+      Result := TComparer<string>.Default.Compare(left.number, right.number);
     end
   ));
 
