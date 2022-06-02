@@ -104,7 +104,7 @@ end;
 
 procedure TForm3.FullnameEditKeyPress(Sender: TObject; var Key: Char);
 begin
-  if not ((Key in [' ', #8]) or (IsRussianChars(Key))) then Key := #0;
+  if not ((Key in [' ', '-', #8]) or (IsRussianChars(Key))) then Key := #0;
 end;
 
 procedure TForm3.PriceEditKeyPress(Sender: TObject; var Key: Char);

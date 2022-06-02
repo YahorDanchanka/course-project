@@ -51,6 +51,7 @@ type
     StudentsCountFilter: TMenuItem;
     SaveDialog1: TSaveDialog;
     HelpLabelDelete: TLabel;
+    N11: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -84,6 +85,7 @@ type
     procedure DateFilterMenuItemClick(Sender: TObject);
     procedure StudentsCountFilterClick(Sender: TObject);
     procedure StringGrid1DblClick(Sender: TObject);
+    procedure N11Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -411,6 +413,11 @@ procedure TForm2.LevelSortDescClick(Sender: TObject);
 begin
   LevelSortAscClick(LevelSortAsc);
   ReverseStringGrid();
+end;
+
+procedure TForm2.N11Click(Sender: TObject);
+begin
+ UpdateStringGridFromFile(OpenDialog1.FileName);
 end;
 
 procedure TForm2.NumberFilterMenuItemClick(Sender: TObject);

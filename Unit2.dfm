@@ -228,6 +228,10 @@ object Form2: TForm2
         OnClick = DumpGroupsInDayMenuItemClick
       end
     end
+    object N11: TMenuItem
+      Caption = #1054#1090#1084#1077#1085#1080#1090#1100' '#1080#1079#1084#1077#1085#1077#1085#1080#1103
+      OnClick = N11Click
+    end
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = 'pgdat'
