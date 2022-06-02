@@ -541,7 +541,7 @@ begin
   TArray.Sort<groupRecord>(groups, TDelegatedComparer<groupRecord>.Construct(
     function(const Left, Right: groupRecord): integer
     begin
-      Result := TComparer<integer>.Default.Compare(StrToInt(left.price), StrToInt(right.price));
+      Result := TComparer<real>.Default.Compare(StrToFloat(left.price), StrToFloat(right.price));
     end
   ));
 
