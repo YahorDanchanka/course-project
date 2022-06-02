@@ -13,6 +13,7 @@ object DateRangeInputForm: TDateRangeInputForm
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poDesktopCenter
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 23
   object Label1: TLabel

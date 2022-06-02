@@ -32,6 +32,19 @@ object Form2: TForm2
     Font.Style = []
     ParentFont = False
   end
+  object HelpLabelDelete: TLabel
+    Left = 576
+    Top = 397
+    Width = 286
+    Height = 25
+    Caption = #1059#1076#1072#1083#1077#1085#1080#1077' '#1089#1090#1088#1086#1082#1080' '#1080#1079' '#1090#1072#1073#1083#1080#1094#1072' - '#1055#1050#1052
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -18
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
   object StringGrid1: TStringGrid
     Left = 8
     Top = 45
