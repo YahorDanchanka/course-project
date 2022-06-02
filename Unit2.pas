@@ -608,23 +608,27 @@ end;
 procedure TForm2.StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
   var Handled: Boolean);
 var
-  activeIndex: integer;
-  students: array of groupRecord;
+  activeIndex, buttonSelected: integer;
+  groups: array of groupRecord;
 begin
   if StringGrid1.Row = 0 then exit;
   activeIndex := StringGrid1.Row;
 
-  SetLength(students, StringGrid1.RowCount - 1);
+  SetLength(groups, StringGrid1.RowCount - 1);
 
   for i := 1 to StringGrid1.RowCount - 1 do
-    students[i - 1] := createGroupFromStringGrid(i);
+    groups[i - 1] := createGroupFromStringGrid(i);
+
+  buttonSelected := MessageDlg('Вы точно хотите удалить группу (' + groups[activeIndex - 1].fullName + ')?', mtConfirmation, mbOKCancel, 0);
+  if buttonSelected <> mrOk then exit;
 
   StringGrid1.RowCount := 1;
 
-  for i := 0 to Length(students) - 1 do
-    if i + 1 <> activeIndex then AddGroupToStringGrid(students[i]);
+  for i := 0 to Length(groups) - 1 do
+    if i + 1 <> activeIndex then AddGroupToStringGrid(groups[i]);
 
   if StringGrid1.RowCount <= 1 then StringGrid1.Options := StringGrid1.Options - [goEditing];
+  SaveMenuItemClick(SaveMenuItem);
 end;
 
 procedure TForm2.StringGrid1DblClick(Sender: TObject);
