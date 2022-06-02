@@ -31,7 +31,8 @@ uses Unit2, Unit3;
 
 procedure TForm5.ApplyFilterButtonClick(Sender: TObject);
 var
-  i, price: integer;
+  i: integer;
+  price: real;
   group: groupRecord;
 begin
   if ListBox1.ItemIndex = -1 then
@@ -52,8 +53,8 @@ begin
     group := createGroupFromStringGrid(i);
     if group.level <> ListBox1.Items[ListBox1.ItemIndex] then continue;
 
-    price := StrToInt(group.price);
-    Form2.StringGrid1.Cells[3, i] := IntToStr(round(price + (price * 10 / 100)));
+    price := StrToFloat(group.price);
+    Form2.StringGrid1.Cells[3, i] := FloatToStr(round(price + (price * 10 / 100)));
   end;
 end;
 
