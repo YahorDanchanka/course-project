@@ -239,12 +239,9 @@ object Form3: TForm3
     Items.Strings = (
       'A1'
       'A2'
-      'A3'
       'B1'
       'B2'
-      'B3'
       'C1'
-      'C2'
-      'C3')
+      'C2')
   end
 end
