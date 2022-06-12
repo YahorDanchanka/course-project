@@ -37,7 +37,6 @@ type
     StudentsCountSortAsc: TMenuItem;
     StudentsCountSortDesc: TMenuItem;
     N8: TMenuItem;
-    DeleteGroupsButton: TButton;
     N10: TMenuItem;
     IncreasePriceMenuItem: TMenuItem;
     SearchEdit: TEdit;
@@ -52,6 +51,7 @@ type
     SaveDialog1: TSaveDialog;
     HelpLabelDelete: TLabel;
     N11: TMenuItem;
+    N101: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure SaveAsMenuItemClick(Sender: TObject);
@@ -86,6 +86,7 @@ type
     procedure StudentsCountFilterClick(Sender: TObject);
     procedure StringGrid1DblClick(Sender: TObject);
     procedure N11Click(Sender: TObject);
+    procedure N101Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -413,6 +414,26 @@ procedure TForm2.LevelSortDescClick(Sender: TObject);
 begin
   LevelSortAscClick(LevelSortAsc);
   ReverseStringGrid();
+end;
+
+procedure TForm2.N101Click(Sender: TObject);
+var
+  groups: array of groupRecord;
+  group: groupRecord;
+begin
+  if length(storageFilePath) = 0 then exit;
+  UpdateStringGridFromFile(storageFilePath);
+
+  SetLength(groups, StringGrid1.RowCount - 1);
+
+  // Skip first row
+  for i := 1 to Length(groups) do
+    groups[i - 1] := createGroupFromStringGrid(i);
+
+  StringGrid1.RowCount := 1;
+
+  for i := 0 to Length(groups) - 1 do
+    if StrToInt(groups[i].studentsCount) >= 10 then AddGroupToStringGrid(groups[i]);
 end;
 
 procedure TForm2.N11Click(Sender: TObject);
