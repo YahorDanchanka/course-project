@@ -679,7 +679,7 @@ end;
 procedure TForm2.StringGrid1ContextPopup(Sender: TObject; MousePos: TPoint;
   var Handled: Boolean);
 var
-  activeIndex: integer;
+  activeIndex, buttonSelected: integer;
   students: array of studentRecord;
 begin
   if StringGrid1.Row = 0 then exit;
@@ -690,12 +690,16 @@ begin
   for i := 1 to StringGrid1.RowCount - 1 do
     students[i - 1] := createStudentFromStringGrid(i);
 
+  buttonSelected := MessageDlg('¬ы точно хотите удалить выступление (' + students[activeIndex - 1].fullname + ')?', mtConfirmation, mbOKCancel, 0);
+  if buttonSelected <> mrOk then exit;
+
   StringGrid1.RowCount := 1;
 
   for i := 0 to Length(students) - 1 do
     if i + 1 <> activeIndex then AddStudentToStringGrid(students[i]);
 
   if StringGrid1.RowCount <= 1 then StringGrid1.Options := StringGrid1.Options - [goEditing];
+  SaveMenuItemClick(SaveMenuItem);
 end;
 
 end.
