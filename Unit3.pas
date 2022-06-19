@@ -58,7 +58,7 @@ begin
   student.specialty := SpecialtyComboBox.Text;
   student.groupNumber := Edit6.Text;
   student.receiptDate := DateToStr(DateTimePicker2.Date);
-  AddStudentToStringGrid(student);
+  if Pos('добавить', AnsiLowerCase(Form3.Caption)) <> 0 then AddStudentToStringGrid(student);
   Form3.Close;
 end;
 

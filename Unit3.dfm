@@ -69,7 +69,7 @@ object Form3: TForm3
     Top = 462
     Width = 324
     Height = 30
-    Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1091#1095#1072#1097#1077#1075#1086#1089#1103
+    Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -17

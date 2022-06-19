@@ -80,6 +80,7 @@ type
     procedure SpecialtyFIlterMenuItemClick(Sender: TObject);
     procedure GroupNumberFilterMenuItemClick(Sender: TObject);
     procedure ReceiptDateFilterMenuItemClick(Sender: TObject);
+    procedure StringGrid1DblClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -151,7 +152,6 @@ procedure AddStudentToStringGrid(student: studentRecord);
 begin
   Form2.StringGrid1.RowCount := Form2.StringGrid1.RowCount + 1;
   Form2.StringGrid1.FixedRows := 1;
-  Form2.StringGrid1.Options := Form2.StringGrid1.Options + [goEditing];
 
   const rowIndex = Form2.StringGrid1.RowCount - 1;
 
@@ -185,7 +185,9 @@ end;
 
 procedure TForm2.AddGroupButtonClick(Sender: TObject);
 begin
+  Form3.Caption := 'Добавить запись';
   Form3.ShowModal;
+  SaveMenuItemClick(SaveMenuItem);
 end;
 
 procedure TForm2.AddressAscMenuItemClick(Sender: TObject);
@@ -699,6 +701,46 @@ begin
     if i + 1 <> activeIndex then AddStudentToStringGrid(students[i]);
 
   if StringGrid1.RowCount <= 1 then StringGrid1.Options := StringGrid1.Options - [goEditing];
+  SaveMenuItemClick(SaveMenuItem);
+end;
+
+procedure TForm2.StringGrid1DblClick(Sender: TObject);
+var student: StudentRecord;
+begin
+  if StringGrid1.Row = 0 then exit;
+
+  student := createStudentFromStringGrid(StringGrid1.Row);
+
+  with Form3 do
+  begin
+    Caption := 'Редактировать запись';
+    Edit1.Text := student.fullname;
+    DateTimePicker1.Date := StrToDate(student.birthday);
+    MaskEdit1.Text := student.phone;
+    Edit4.Text := student.address;
+    SpecialtyComboBox.ItemIndex := SpecialtyComboBox.Items.IndexOf(student.specialty);
+    Edit6.Text := student.groupNumber;
+    DateTimePicker2.Date := StrToDate(student.receiptDate);
+
+    ShowModal;
+
+    student.fullname := Edit1.Text;
+    student.birthday := DateToStr(DateTimePicker1.Date);
+    student.phone := MaskEdit1.Text;
+    student.address := Edit4.Text;
+    student.specialty := SpecialtyComboBox.Text;
+    student.groupNumber := Edit6.Text;
+    student.receiptDate := DateToStr(DateTimePicker2.Date);
+  end;
+
+  Form2.StringGrid1.Cells[0, StringGrid1.Row] := student.fullname;
+  Form2.StringGrid1.Cells[1, StringGrid1.Row] := student.birthday;
+  Form2.StringGrid1.Cells[2, StringGrid1.Row] := student.phone;
+  Form2.StringGrid1.Cells[3, StringGrid1.Row] := student.address;
+  Form2.StringGrid1.Cells[4, StringGrid1.Row] := student.specialty;
+  Form2.StringGrid1.Cells[5, StringGrid1.Row] := student.groupNumber;
+  Form2.StringGrid1.Cells[6, StringGrid1.Row] := student.receiptDate;
+
   SaveMenuItemClick(SaveMenuItem);
 end;
 
