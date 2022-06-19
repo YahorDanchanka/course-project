@@ -93,20 +93,13 @@ object Form3: TForm3
     Height = 31
     TabOrder = 2
   end
-  object Edit5: TEdit
-    Left = 8
-    Top = 293
-    Width = 324
-    Height = 31
-    TabOrder = 3
-  end
   object Edit6: TEdit
     Left = 8
     Top = 357
     Width = 324
     Height = 31
     NumbersOnly = True
-    TabOrder = 4
+    TabOrder = 3
   end
   object DateTimePicker1: TDateTimePicker
     Left = 8
@@ -115,7 +108,7 @@ object Form3: TForm3
     Height = 31
     Date = 44693.000000000000000000
     Time = 0.825116180552868200
-    TabOrder = 5
+    TabOrder = 4
   end
   object DateTimePicker2: TDateTimePicker
     Left = 8
@@ -124,7 +117,7 @@ object Form3: TForm3
     Height = 31
     Date = 44693.000000000000000000
     Time = 0.825116180552868200
-    TabOrder = 6
+    TabOrder = 5
   end
   object MaskEdit1: TMaskEdit
     Left = 8
@@ -133,7 +126,21 @@ object Form3: TForm3
     Height = 31
     EditMask = '375-99-999-99-99;1;_'
     MaxLength = 16
-    TabOrder = 7
+    TabOrder = 6
     Text = '375-  -   -  -  '
+  end
+  object SpecialtyComboBox: TComboBox
+    Left = 8
+    Top = 293
+    Width = 324
+    Height = 31
+    Style = csDropDownList
+    ItemIndex = 0
+    TabOrder = 7
+    Text = #1055#1088#1086#1075#1088#1072#1084#1084#1080#1089#1090
+    Items.Strings = (
+      #1055#1088#1086#1075#1088#1072#1084#1084#1080#1089#1090
+      #1041#1091#1093#1075#1072#1083#1090#1077#1088
+      #1069#1082#1086#1085#1086#1084#1080#1089#1090)
   end
 end

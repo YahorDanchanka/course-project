@@ -16,7 +16,6 @@ type
     Label3: TLabel;
     Edit4: TEdit;
     Label4: TLabel;
-    Edit5: TEdit;
     Label5: TLabel;
     Edit6: TEdit;
     Label6: TLabel;
@@ -24,6 +23,7 @@ type
     DateTimePicker1: TDateTimePicker;
     DateTimePicker2: TDateTimePicker;
     MaskEdit1: TMaskEdit;
+    SpecialtyComboBox: TComboBox;
     procedure AddStudentButtonClick(Sender: TObject);
   private
     { Private declarations }
@@ -44,7 +44,7 @@ var
   i: integer;
 begin
   for i := 0 to Form3.ComponentCount - 1 do
-    if Form3.Components[i] is TEdit then
+    if (Form3.Components[i] is TEdit) or (Form3.Components[i] is TComboBox) then
       if TEdit(Form3.Components[i]).Text = '' then
       begin
         ShowMessage('Заполните все поля!');
@@ -55,7 +55,7 @@ begin
   student.birthday := DateToStr(DateTimePicker1.Date);
   student.phone := MaskEdit1.Text;
   student.address := Edit4.Text;
-  student.specialty := Edit5.Text;
+  student.specialty := SpecialtyComboBox.Text;
   student.groupNumber := Edit6.Text;
   student.receiptDate := DateToStr(DateTimePicker2.Date);
   AddStudentToStringGrid(student);
