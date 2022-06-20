@@ -182,6 +182,10 @@ end;
 
 procedure TForm2.AddPerfomanceButtonClick(Sender: TObject);
 begin
+  Form3.TitleEdit.Text := '';
+  Form3.DurationEdit.Text := '';
+  Form3.AgeLimitEdit.Text := '';
+  Form3.PriceEdit.Text := '';
   Form3.ShowModal;
 end;
 

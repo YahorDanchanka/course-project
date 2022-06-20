@@ -135,7 +135,7 @@ object Form3: TForm3
   end
   object AgeLimitEdit: TEdit
     Left = 8
-    Top = 165
+    Top = 163
     Width = 324
     Height = 31
     Font.Charset = DEFAULT_CHARSET
@@ -164,7 +164,7 @@ object Form3: TForm3
   end
   object PriceEdit: TEdit
     Left = 8
-    Top = 293
+    Top = 291
     Width = 324
     Height = 31
     Font.Charset = DEFAULT_CHARSET
