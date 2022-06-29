@@ -293,6 +293,12 @@ begin
   dateStart := DateTimeToUnix(DateRangeInputForm.DateTimePicker1.Date);
   dateEnd := DateTimeToUnix(DateRangeInputForm.DateTimePicker2.Date);
 
+  if dateEnd < dateStart then
+  begin
+    ShowMessage('Дата "от" должна быть меньше даты "до".');
+    exit;
+  end;
+
   UpdateStringGridFromFile(storageFilePath);
   SetLength(students, Form2.StringGrid1.RowCount - 1);
 
@@ -571,6 +577,12 @@ begin
 
   dateStart := DateTimeToUnix(DateRangeInputForm.DateTimePicker1.Date);
   dateEnd := DateTimeToUnix(DateRangeInputForm.DateTimePicker2.Date);
+
+  if dateEnd < dateStart then
+  begin
+    ShowMessage('Дата "от" должна быть меньше даты "до".');
+    exit;
+  end;
 
   UpdateStringGridFromFile(storageFilePath);
   SetLength(students, Form2.StringGrid1.RowCount - 1);
